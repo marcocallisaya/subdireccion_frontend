@@ -1,0 +1,51 @@
+
+        
+        <!-- menu -->
+        <div id="MainMenu">
+          <div class="list-group panel">
+            <a href="#SeguimientoDocumental" class="list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu">Seguimiento Documental <i class="fa fa-caret-down"></i></a>
+            <div class="collapse" id="SeguimientoDocumental">
+              <app-link [nombre]="'Documento'" [link]="'documento'"></app-link>
+              <app-link [nombre]="'Tipo de Solicitante'" [link]="'tipo_solicitante'"></app-link>
+              <app-link [nombre]="'Solicitante'" [link]="'solicitante'"></app-link>
+              <app-link [nombre]="'Tipo de Tramite'" [link]="'tipo_tramite'"></app-link>
+              <a href="#Tramite" class="list-group-item text-center" data-toggle="collapse" data-parent="#Tramite">Tramite <i class="fa fa-caret-down"></i></a>
+              <div class="collapse list-group-submenu" id="Tramite">
+                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Ver Tramites</a>
+                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Solicitud</a>
+                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Derivacion</a>
+                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Evaluacion</a>
+                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Devolucion</a>
+              </div>
+              
+            </div>
+            <a href="#Publicaciones" class="list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu">Publicaciones  <i class="fa fa-caret-down"></i></a>
+            <div class="collapse" id="Publicaciones">
+              <app-link [nombre]="'Instructivo'" [link]="'instructivo'"></app-link>
+              <app-link [nombre]="'Convocatoria'" [link]="'convocotaria'"></app-link>
+              <app-link [nombre]="'Circular'" [link]="'circular'"></app-link>
+            </div>
+            <a href="#Reportes" class="list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu">Reportes  <i class="fa fa-caret-down"></i></a>
+            <div class="collapse" id="Reportes">
+                <app-link [nombre]="'Reporte de Tramites'" [link]="'reporte_tramite'"></app-link>
+                <app-link [nombre]="'Reporte de Documentos'" [link]="'reporte_documento'"></app-link>
+            </div>
+            <a href="#ParametrosGenerales" class="list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu">Parametros Generales  <i class="fa fa-caret-down"></i></a>
+            <div class="collapse" id="ParametrosGenerales">
+                <app-link [nombre]="'Funcionario'" [link]="'funcionario'"></app-link>
+                <app-link [nombre]="'Tipo de documento'" [link]="'tipo_documento'"></app-link>
+                <app-link [nombre]="'Estante'" [link]="'estante'"></app-link>
+                <app-link [nombre]="'Ubicacion'" [link]="'ubicacion'"></app-link>
+                <app-link [nombre]="'Distrito Educativo'" [link]="'distrito'"></app-link>
+                <app-link [nombre]="'Centro de formacion'" [link]="'centro_formacion'"></app-link>
+                <app-link [nombre]="'Carrera Tecnica'" [link]="'carrera'"></app-link>
+            </div>
+            <a href="#Seguridad" class="list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu">Seguridad  <i class="fa fa-caret-down"></i></a>
+            <div class="collapse" id="Seguridad">
+              <app-link [nombre]="'Bitacora'" [link]="'bitacora'"></app-link>
+              <app-link [nombre]="'Permiso'" [link]="'permiso'"></app-link>
+              <app-link [nombre]="'Usuario'" [link]="'usuario'"></app-link>
+              <app-link [nombre]="'Rol'" [link]="'rol'"></app-link>
+            </div>
+          </div>
+        </div>

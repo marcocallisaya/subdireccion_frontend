@@ -1,0 +1,23 @@
+<table mat-table [dataSource]="dataSource">
+              
+    <!-- Position Column -->
+    <ng-container *ngFor="let item of headers" [matColumnDef]="item">
+      <th mat-header-cell *matHeaderCellDef> {{item | titlecase}} </th>
+      <td mat-cell *matCellDef="let element"> {{ element[item]}} </td>
+    </ng-container>
+
+    <ng-container *ngFor="let item of opciones" [matColumnDef]="item.nombre">
+      <th mat-header-cell *matHeaderCellDef> {{item.nombre | titlecase}} </th>
+      <td mat-cell *matCellDef="let element"> 
+        <button (click)="enviar(element.id, item.nombre, element)"  mat-mini-fab [color]="item.boton" >
+          <i [class]="item.icono"></i>
+        </button>
+     <!--    <button (click)="enviar(element.id, item.nombre, element)" [class]="item.boton">
+      <i [class]="item.icono"></i></button> -->
+     </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="headers.concat(data)"></tr>
+    <tr mat-row *matRowDef="let row; columns: headers.concat(data);"></tr>
+  </table>
+
