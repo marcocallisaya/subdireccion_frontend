@@ -1,0 +1,44 @@
+<div class="row justify-content-center" >
+    <div class="col-7">
+     <h1 mat-dialog-title> Información de la solicitud  </h1>
+    </div>
+ 
+  </div>
+  
+   <div mat-dialog-content class="mat-typography">
+     <div class="row clearfix">
+       <div class="col-sm-12 col-md-6">
+         <h4> <b>Solicitante :</b>  {{data.solicitud.solicitante.nombre}} {{data.solicitud.solicitante.apellido}}</h4>
+        
+       </div>
+       <div class="col-sm-12 col-md-6">
+           <h4> <b>Centro :</b>  {{data.solicitud.centro_formacion.nombre}}</h4>
+          
+         </div>
+       
+     </div>
+   <div class="row">
+    
+     <div class="col-sm-12">
+       <h4 > <b>Tramite : </b></h4>
+       <p> {{data.referencia}}</p>
+     </div>
+   </div>
+
+
+     <div class="row">
+    
+       <div class="col-sm-6">
+         <h4 > <b>Fecha de registro : </b> {{data.solicitud.created_at|date: "dd/MM/yyyy"}}</h4>
+       </div>
+       <div class="col-sm-6">
+           <h4 > <b>Hora de registro : </b> {{data.solicitud.created_at|date: 'shortTime'}}</h4>
+         </div>
+     </div>
+   </div>
+     <div class="row justify-content-center">
+       
+       <div class="col-3">
+           <button mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+       </div>
+     </div>

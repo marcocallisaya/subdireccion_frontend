@@ -12,11 +12,11 @@
                           [headers]="displayedColumns" 
                           [opciones]="opciones">
                </app-table>
-               <mat-paginator
-               [length]="length" 
-               [pageSize]="5" 
-               [pageSizeOptions]="[5, 10, 25, 100]">
-                </mat-paginator>
+               <mat-paginator 
+               [length]="length"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="pagination($event)"></mat-paginator>
             </div>   
             <div [hidden]="BanderaDatos">
                <app-spinner></app-spinner>

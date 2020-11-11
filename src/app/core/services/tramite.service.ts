@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {Tramite} from '../../shared/models/tramite.model';
+import {Tramite, ListaTramite} from '../../shared/models/tramite.model';
 import {ConstantesService} from '../../config/constantes.service';
 
 @Injectable({
@@ -16,6 +16,13 @@ export class TramiteService {
 
    uri = this.urls.URL;
    url = 'tramite';
+
+
+   getPaginated(perPage: number, currentPage: number): Observable <ListaTramite> {
+
+    return this.http.get<ListaTramite>(this.uri + this.url + '?per_page=' + perPage + '&page=' + currentPage);
+
+   }
 
    get(): Observable <any> {
      return this.http.get<any>(this.uri + this.url);

@@ -11,18 +11,18 @@
               <app-link [nombre]="'Tipo de Tramite'" [link]="'tipo_tramite'"></app-link>
               <a href="#Tramite" class="list-group-item text-center" data-toggle="collapse" data-parent="#Tramite">Tramite <i class="fa fa-caret-down"></i></a>
               <div class="collapse list-group-submenu" id="Tramite">
-                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Ver Tramites</a>
-                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Solicitud</a>
-                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Derivacion</a>
-                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Evaluacion</a>
-                <a href="#" class="list-group-item text-center" data-parent="#Tramite">Devolucion</a>
+                <a routerLink="tramite" class="list-group-item text-center" data-parent="#Tramite">Ver Tramites</a>
+                <a routerLink="solicitud" class="list-group-item text-center" data-parent="#Tramite">Solicitud</a>
+                <a routerLink="derivacion" class="list-group-item text-center" data-parent="#Tramite">Derivacion</a>
+                <a routerLink="evaluacion" class="list-group-item text-center" data-parent="#Tramite">Evaluacion</a>
+                <a routerLink="devolucion" class="list-group-item text-center" data-parent="#Tramite">Devolucion</a>
               </div>
               
             </div>
             <a href="#Publicaciones" class="list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu">Publicaciones  <i class="fa fa-caret-down"></i></a>
             <div class="collapse" id="Publicaciones">
               <app-link [nombre]="'Instructivo'" [link]="'instructivo'"></app-link>
-              <app-link [nombre]="'Convocatoria'" [link]="'convocotaria'"></app-link>
+              <app-link [nombre]="'Convocatoria'" [link]="'convocatoria'"></app-link>
               <app-link [nombre]="'Circular'" [link]="'circular'"></app-link>
             </div>
             <a href="#Reportes" class="list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu">Reportes  <i class="fa fa-caret-down"></i></a>

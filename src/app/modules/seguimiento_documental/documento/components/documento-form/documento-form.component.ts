@@ -27,9 +27,11 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
 
   BanderaBoton; // bandera para el boton
 
+  BanderaTitulo;
+
   codigo; // id del modelo
 
-  public documento: Documento; // datos del modelo
+  documento: Documento; // datos del modelo
 
   tiposDocumento; ubicaciones; tramites;
 
@@ -47,7 +49,7 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-  this.cargarDatos();
+    this.cargarDatos();
   }
 
   cargarDatos(): void {
@@ -65,10 +67,12 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
       if (res === null) {
         // crear
         this.BanderaBoton = false;
+        this.BanderaTitulo = 'REGISTRO';
       } else {
         // actualizar
         this.documento = res.data;
         this.BanderaBoton = true;
+        this.BanderaTitulo = 'ACTUALIZACION';
       }
       this.cargarDatosAdicionales();
       this.cargarFormulario();
@@ -84,7 +88,7 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
       numero_paginas: [this.documento?.numero_paginas || '', Validators.required],
       estado: [this.documento?.estado || '', Validators.required],
       tipo_documento_id: [this.documento?.tipo_documento_id || '', Validators.required],
-      ubicacion_id: [this.documento?.ubicacion_id || null],
+      ubicacion_id: [this.documento?.ubicacion_id || ''],
       tramite_id: [this.documento?.tramite_id || '', Validators.required]
     });
   }
@@ -96,12 +100,13 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
       this.tramite.get()
     ).subscribe( resp => {
       const [resp1, resp2, resp3] = resp;
-      this.tiposDocumento = resp1.data;
-      this.ubicaciones = resp2.data;
-      this.tramites = resp3.data;
+      this.tiposDocumento = resp1;
+      this.ubicaciones = resp2;
+      this.tramites = resp3;
     });
 
   }
+
 
   enviar(myForm): void {
     console.log(myForm.value);
@@ -117,13 +122,23 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
         this.router.navigate(['/sistema/documento']);
       },
       error => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: 'Ha habido un error'
-        });
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarError(errores);
       }
     );
+  }
+
+  tratarErrores(errores): string {
+    let datos = '';
+    if (errores.descripcion !=  null) {
+      const error = '<div>' + errores.descripcion[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.numero_paginas !=  null) {
+      const error = '<div>' + errores.numero_paginas[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    return datos;
   }
 
   actualizar(): void {
@@ -135,6 +150,19 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
         'success'
       );
       this.router.navigate(['/sistema/documento']);
+    },
+    error => {
+      const errores =  this.tratarErrores(error.error.errors);
+      this.mostrarError(errores);
+    });
+  }
+
+  mostrarError(errores): void {
+    console.log(errores);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      html: errores
     });
   }
 

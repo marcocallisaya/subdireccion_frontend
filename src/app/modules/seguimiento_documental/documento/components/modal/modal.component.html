@@ -1,5 +1,11 @@
 
-    <h1 mat-dialog-title class="align-center"> Información del documento  </h1>
+   <div class="row justify-content-center" >
+     <div class="col-7">
+      <h1 mat-dialog-title> Información del documento  </h1>
+     </div>
+  
+   </div>
+   
     <div mat-dialog-content class="mat-typography">
       <div class="row clearfix">
         <div class="col-sm-12 col-md-6">
@@ -36,7 +42,7 @@
          
         </div>
         <div class="col-sm-6">
-          <h4 > <b>Ubicacion :</b>   {{data.ubicacion.codigo}}</h4>
+          <h4 > <b>Ubicacion :</b>   {{data.ubicacion?.codigo || 'Sin Ubicacion'}}</h4>
         </div>
         
       </div>

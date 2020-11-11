@@ -18,9 +18,16 @@ th.mat-header-cell {
 }
 td.mat-cell {
     text-align: center;
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
 }
 
 td {
     margin-left: 0.3rem;
     margin-right: 0.3rem;
+}
+
+th.mat-header-cell { 
+  padding: 0.3rem;
+
 }

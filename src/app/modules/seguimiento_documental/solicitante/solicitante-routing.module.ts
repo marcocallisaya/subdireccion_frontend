@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { componentes } from '../documento/documento-routing.module';
+
 import { SolicitanteFormComponent } from './components/solicitante-form/solicitante-form.component';
 import { SolicitanteComponent } from './components/solicitante/solicitante.component';
+import {ModalComponent} from './components/modal/modal.component';
 
 const routes: Routes = [
   {path: '',  component: SolicitanteComponent},
@@ -15,3 +16,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class SolicitanteRoutingModule { }
+
+export const componentes = [SolicitanteComponent, SolicitanteFormComponent, ModalComponent];

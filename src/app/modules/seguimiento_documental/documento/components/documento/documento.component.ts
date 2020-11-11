@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import { PageEvent} from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -16,8 +15,6 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class DocumentoComponent implements OnInit, OnDestroy{
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   documento$: Subscription = new Subscription();
 
   constructor(private router: Router, private servicio: DocumentoService, public dialog: MatDialog) { }
@@ -28,37 +25,47 @@ export class DocumentoComponent implements OnInit, OnDestroy{
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
               {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
-              {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'},
-              {nombre: 'estante', boton: 'primary', icono: 'fas fa-book-open'}];
+              {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
 
   dataSource; // fuente de datos para la tabla
 
-  length; // tamaño de la respuesta
-
   BanderaDatos: boolean; // bandera para la carga de datos
 
+  // variables para la paginacion
+  length = 100;
+  pageSize = 5;
+  currentPage = 1;
+  pageSizeOptions: number[] = [5, 10, 20];
+  pageEvent: PageEvent;
+
   ngOnInit(): void {
-    this.cargarTabla();
+    this.cargarTabla(this.pageSize, this.currentPage);
   }
 
-  cargarTabla(): void {
-  this.documento$ =  this.servicio.get().subscribe((res: any) =>
-    {this.llenarTabla(res.data); this.length = res.data.length; this.BanderaDatos = true; });
+  cargarTabla(size: number, current: number): void {
+  this.documento$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
+    {
+     this.dataSource = res.data; console.log(res);
+     this.length = res.total;
+     this.BanderaDatos = true;
+    });
   }
 
-  // llenar tabla tipo mat-table
-  llenarTabla(data): void {
-    this.dataSource = new MatTableDataSource<Documento>(data);
-    this.dataSource.paginator = this.paginator;
-  }
 
   // ver modelo
-  ver(element: Documento): void {
-
-    this.dialog.open(ModalComponent, {width: '40vw', data:  element });
-
+  ver(documento: Documento): void {
+    this.dialog.open(ModalComponent, {width: '40vw', data:  documento });
   }
+
+  // evento de paginacion
+  pagination(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex + 1;
+    this.cargarTabla(this.pageSize, this.currentPage);
+  }
+
+
 
   cargar(data): void {
     switch (data.tipoAccion) {
@@ -75,7 +82,6 @@ export class DocumentoComponent implements OnInit, OnDestroy{
   }
 
   eliminar(id: number): void {
-
       Swal.fire({
         title: 'Estas Seguro?',
         text: 'Una vez eliminado no se puede recuperar',
@@ -99,7 +105,7 @@ export class DocumentoComponent implements OnInit, OnDestroy{
             `El documento ha sido eliminado`,
             'success'
           );
-          this.cargarTabla();
+          this.cargarTabla(this.pageSize, this.currentPage);
           }
       );
     }

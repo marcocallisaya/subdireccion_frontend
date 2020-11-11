@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SolicitanteRoutingModule } from './solicitante-routing.module';
-import { SolicitanteComponent } from './components/solicitante/solicitante.component';
-import { SolicitanteFormComponent } from './components/solicitante-form/solicitante-form.component';
+import { SolicitanteRoutingModule, componentes } from './solicitante-routing.module';
+import { MaterialModule } from '../../../shared/material.module';
+import {SharedModule} from '../../../shared/shared.module';
 
 
 @NgModule({
-  declarations: [SolicitanteComponent, SolicitanteFormComponent],
+  declarations: [componentes],
   imports: [
     CommonModule,
-    SolicitanteRoutingModule
+    SolicitanteRoutingModule,
+    SharedModule,
+    MaterialModule
   ]
 })
 export class SolicitanteModule { }
