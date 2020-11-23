@@ -32,8 +32,6 @@ export class SolicitanteFormComponent implements OnInit, OnDestroy {
 
   tiposSolicitante;
 
-  estado = [{nombre: 'PASIVO', valor: 'pasivo'}, {nombre: 'ACTIVO', valor: 'activo'}];
-
   uri = 'solicitante';
 
   constructor(private fb: FormBuilder,
@@ -83,7 +81,6 @@ export class SolicitanteFormComponent implements OnInit, OnDestroy {
       apellido: [this.solicitante?.apellido || '', Validators.required],
       telefono: [this.solicitante?.telefono || '', Validators.required],
       ci: [this.solicitante?.ci || '', Validators.required],
-      estado: [this.solicitante?.estado || '', Validators.required],
       tipo_solicitante_id: [this.solicitante?.tipo_solicitante_id || '', Validators.required]
     });
   }
@@ -103,13 +100,11 @@ export class SolicitanteFormComponent implements OnInit, OnDestroy {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'El documento ha sido registrado con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
+        Swal.fire(
+          'Felicidades',
+          'El solicitante ha sido registrado con exito',
+          'success'
+        );
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {

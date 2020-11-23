@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {EvaluacionService} from 'src/app/core/services/evaluacion.service';
@@ -8,6 +8,7 @@ import { Evaluacion } from 'src/app/shared/models/evaluacion.model';
 import { Tramite } from 'src/app/shared/models/tramite.model';
 import { TramiteModalComponent } from '../../../solicitud/components/tramite-modal/tramite-modal.component';
 import { ModalComponent } from '../modal/modal.component';
+import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.component';
 
 @Component({
   selector: 'app-evaluacion',
@@ -16,9 +17,14 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class EvaluacionComponent implements OnInit, OnDestroy {
 
+  banderaDatos: string ;
+
   evaluacion$: Subscription = new Subscription();
 
-  constructor(private router: Router, private servicio: EvaluacionService, public dialog: MatDialog) { }
+  constructor(private router: Router,
+              private servicio: EvaluacionService,
+              public dialog: MatDialog,
+              private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
   displayedColumns: string[] = ['descripcion'];
@@ -42,17 +48,38 @@ export class EvaluacionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cargarTabla(this.pageSize, this.currentPage);
+    this.cambiarIdiomaPaginacion();
   }
 
   cargarTabla(size: number, current: number): void {
-  this.evaluacion$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
+    this.evaluacion$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
+      {
+       this.dataSource = res.data; console.log(res);
+       this.length = res.total;
+       this.BanderaDatos = true;
+      });
+    }
+
+  cargarDatosBusqueda(nombre: string): void {
+      this.comprobarBuscadorVacio(nombre);
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+      this.banderaDatos = nombre;
+  }
+
+  comprobarBuscadorVacio(nombre: string): void {
+    if (this.banderaDatos !== nombre) {
+      this.pageSize = 5;
+      this.currentPage =  1;
+    }
+  }
+
+  cargarTablaFiltrada(size: number, current: number, nombre: string): void {
+    this.evaluacion$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
      this.length = res.total;
-     this.BanderaDatos = true;
     });
   }
-
 
   // ver modelo
   ver(evaluacion: Evaluacion): void {
@@ -62,15 +89,6 @@ export class EvaluacionComponent implements OnInit, OnDestroy {
   verTramite(tramite: Tramite): void {
    this.dialog.open(TramiteModalComponent, {width: '40vw', data:  tramite });
   }
-
-  // evento de paginacion
-  pagination(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex + 1;
-    this.cargarTabla(this.pageSize, this.currentPage);
-  }
-
-
 
   cargar(data): void {
     switch (data.tipoAccion) {
@@ -86,9 +104,34 @@ export class EvaluacionComponent implements OnInit, OnDestroy {
   }
 
 
+   // evento de paginacion
+   pagination(event: PageEvent, nombre: string): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex + 1;
+    this.verificarTipoTabla(nombre);
+  }
+
+  verificarTipoTabla(nombre: string): void {
+    if (nombre === '') {
+      this.cargarTabla(this.pageSize, this.currentPage);
+    }
+    else {
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+    }
+  }
+
+  cambiarIdiomaPaginacion(): void {
+    this.paginator.itemsPerPageLabel = 'Registros por página';
+    this.paginator.previousPageLabel = 'Pagina Anterior';
+    this.paginator.nextPageLabel = 'Pagina Siguiente';
+  }
+
+  abrirReporteDetalles(): void  {
+    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+  }
+
   ngOnDestroy(): void {
     this.evaluacion$.unsubscribe();
   }
-
 
 }

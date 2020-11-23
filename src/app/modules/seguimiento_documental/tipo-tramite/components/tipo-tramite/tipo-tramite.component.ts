@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TipoTramiteService } from 'src/app/core/services/tipo-tramite.service';
 import { TipoTramite } from 'src/app/shared/models/tipo_tramite.model';
 import Swal from 'sweetalert2';
 import { ModalComponent } from '../modal/modal.component';
+import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.component';
 
 @Component({
   selector: 'app-tipo-tramite',
@@ -15,16 +16,23 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class TipoTramiteComponent implements OnInit, OnDestroy {
 
+  banderaDatos ;
+
   tipo$: Subscription = new Subscription();
 
-  constructor(private router: Router, private servicio: TipoTramiteService, public dialog: MatDialog) { }
+  constructor(private router: Router,
+              private servicio: TipoTramiteService,
+              public dialog: MatDialog,
+              private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['nombre', 'descripcion'];
+  displayedColumns: string[] = ['nombre', 'estado', 'descripcion'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
               {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
+              {nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open'},
+              {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
               {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
 
@@ -41,31 +49,42 @@ export class TipoTramiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cargarTabla(this.pageSize, this.currentPage);
+    this.cambiarIdiomaPaginacion();
   }
 
   cargarTabla(size: number, current: number): void {
-  this.tipo$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
+    this.tipo$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
+      {
+       this.dataSource = res.data; console.log(res);
+       this.length = res.total;
+       this.BanderaDatos = true;
+      });
+    }
+
+  cargarDatosBusqueda(nombre: string): void {
+      this.comprobarBuscadorVacio(nombre);
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+      this.banderaDatos = nombre;
+  }
+
+  comprobarBuscadorVacio(nombre: string): void {
+    if (this.banderaDatos !== nombre) {
+      this.pageSize = 5;
+      this.currentPage =  1;
+    }
+  }
+
+  cargarTablaFiltrada(size: number, current: number, nombre: string): void {
+    this.tipo$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
      this.length = res.total;
-     this.BanderaDatos = true;
     });
   }
 
-
-  // ver modelo
-  ver(tipo: TipoTramite): void {
+  ver(tipo: TipoTramiteService): void {
     this.dialog.open(ModalComponent, {width: '40vw', data:  tipo });
   }
-
-  // evento de paginacion
-  pagination(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex + 1;
-    this.cargarTabla(this.pageSize, this.currentPage);
-  }
-
-
 
   cargar(data): void {
     switch (data.tipoAccion) {
@@ -75,13 +94,20 @@ export class TipoTramiteComponent implements OnInit, OnDestroy {
       case 'editar':
         this.router.navigate(['/sistema/tipo_tramite/form/' + data.identificador]);
         break;
+      case 'eliminar':
+        this.eliminar(data);
+        break;
+      case 'habilitar':
+        this.habilitarDocumento(data.identificador);
+        break;
       default:
-        this.eliminar(data.identificador);
-        console.log('Eliminado', data.identificador);
+        this.desabilitarDocumento(data.identificador);
     }
   }
 
-  eliminar(id: number): void {
+  eliminar(data: any): void {
+    const estado = this.verificarEstado(data.informacion.estado);
+    if (!estado) {
       Swal.fire({
         title: 'Estas Seguro?',
         text: 'Una vez eliminado no se puede recuperar',
@@ -92,8 +118,16 @@ export class TipoTramiteComponent implements OnInit, OnDestroy {
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Si, eliminalo!'
       }).then((result) => {
-        this.confirmarEliminacion(result, id);
+        this.confirmarEliminacion(result, data.identificador);
       });
+    }
+    else {
+      Swal.fire(
+        'Error',
+        `Debes deshabilitar el tipo de tramite antes de eliminarlo`,
+        'error'
+      );
+    }
   }
 
   confirmarEliminacion(result, id: number): void {
@@ -102,14 +136,65 @@ export class TipoTramiteComponent implements OnInit, OnDestroy {
         async () => {
           await Swal.fire(
             'Eliminado ',
-            `El tipo de tramite ha sido eliminado`,
-            'success'
+            `El documento ha sido eliminado`,
+            'error'
           );
           this.cargarTabla(this.pageSize, this.currentPage);
           }
       );
     }
   }
+
+  habilitarDocumento(id: number): void {
+    const data = {estado: 'HABILITADO'};
+    this.servicio.changeState(data, id).subscribe(res => {
+      console.log(res);
+      this.currentPage = 1;
+      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+
+  }
+
+  desabilitarDocumento(id: number): void {
+    const data = {estado: 'DESAHABILITADO'};
+    this.servicio.changeState(data, id).subscribe(res => {
+      console.log(res);
+      this.currentPage = 1;
+      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+  }
+
+  verificarEstado(estado: string): boolean {
+    return (estado === 'HABILITADO') ? true : false ;
+  }
+
+   // evento de paginacion
+   pagination(event: PageEvent, nombre: string): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex + 1;
+    this.verificarTipoTabla(nombre);
+  }
+
+  verificarTipoTabla(nombre: string): void {
+    if (nombre === '') {
+      this.cargarTabla(this.pageSize, this.currentPage);
+    }
+    else {
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+    }
+  }
+
+  cambiarIdiomaPaginacion(): void {
+    this.paginator.itemsPerPageLabel = 'Registros por página';
+    this.paginator.previousPageLabel = 'Pagina Anterior';
+    this.paginator.nextPageLabel = 'Pagina Siguiente';
+  }
+
+  abrirReporteDetalles(): void  {
+    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+  }
+
+/*   abrirReporteReferencia(): void  {
+    this.dialog.open(ReporteReferenciaComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+  } */
 
   ngOnDestroy(): void {
     this.tipo$.unsubscribe();

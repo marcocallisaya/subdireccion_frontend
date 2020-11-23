@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { EstanteComponent } from './components/estante/estante.component';
 import { EstanteFormComponent } from './components/estante-form/estante-form.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 
 const routes: Routes = [
   {path: '', component: EstanteComponent},
@@ -16,4 +17,4 @@ const routes: Routes = [
 })
 export class EstanteRoutingModule { }
 
-export const components = [EstanteComponent, EstanteFormComponent, ModalComponent];
+export const components = [EstanteComponent, EstanteFormComponent, ModalComponent, ReporteDetallesComponent];

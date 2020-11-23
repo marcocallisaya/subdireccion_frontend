@@ -1,1 +1,93 @@
-<p>usuario-form works!</p>
+<div class="row justify-content-center">
+    <div class="col-xs-12 col-md-6 mt-5">
+
+      <ng-container  *ngIf="BanderaDatos;else spinner">
+        <mat-card class="example-card">
+         
+            <div class="row justify-content-center">
+              <div class="col-10">
+                <mat-card-header>
+                <mat-card-title> {{BanderaTitulo}} DE USUARIO</mat-card-title>
+              </mat-card-header> 
+              </div>
+            </div>
+           
+          <mat-card-content>
+           <form  [formGroup]="myForm">
+            <div class="row">
+              <div class="col-sm-12">
+                <mat-form-field class="ancho-completo">
+                  <mat-label>Usuario*</mat-label>
+                  <input matInput formControlName="usuario" name="usuario">
+                </mat-form-field>
+              </div>
+            
+             
+            </div>
+            <div class="row" *ngIf="!BanderaBoton">
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field class="ancho-completo">
+                        <mat-label>Contraseña*</mat-label>
+                        <input type="password" matInput formControlName="contrasena" name="contrasena">
+                      </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <mat-form-field class="ancho-completo">
+                        <mat-label> Confirmar Contraseña*</mat-label>
+                        <input type="password" matInput formControlName="contrasena_confirmation" name="contrasena_confirmation">
+                      </mat-form-field>
+                  </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field class="ancho-completo">
+                      <mat-label>Rol*</mat-label>
+                      <mat-select formControlName="rol_id" name="rol_id">
+                        <mat-option *ngIf="BanderaBoton" [value]="usuario.rol_id">
+                          {{usuario.rol.nombre}}
+                        </mat-option>
+                        <mat-option *ngFor="let item of roles"  [value]="item.id">
+                          {{item.nombre}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <mat-form-field class="ancho-completo">
+                      <mat-label>Funcionario*</mat-label>
+                      <mat-select formControlName="funcionario_id" name="funcionario_id">
+                        <mat-option *ngIf="BanderaBoton" [value]="usuario.funcionario_id">
+                          {{usuario.funcionario.nombre}}    {{usuario.funcionario.apellido}}
+                        </mat-option>
+                        <mat-option *ngFor="let item of funcionarios"  [value]="item.id">
+                          {{item.nombre}}  {{item.apellido}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+            </div>
+           </form>
+          </mat-card-content>
+          <mat-card-actions>
+            <div class="row justify-content-center">
+              <div class="col-4" *ngIf="!BanderaBoton">
+                <button mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="enviar(myForm)">REGISTRAR</button>
+              </div>
+              <div class="col-4" *ngIf="BanderaBoton">
+                <button mat-raised-button color="primary" (click)="actualizar()">ACTUALIZAR</button>
+              </div>
+              <div class="col-4">
+                <button mat-raised-button color="warn" (click)="atras()">CANCELAR</button>
+              </div>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+      </ng-container>
+      <ng-template #spinner>
+        <app-spinner></app-spinner>
+      </ng-template>
+
+
+    
+    </div>
+</div>

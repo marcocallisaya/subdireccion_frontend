@@ -41,6 +41,8 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
 
   uri = 'solicitud';
 
+  filteredProducts; nameLiteral = '';
+
   constructor(private fb: FormBuilder,
               private servicio: SolicitudService,
               private route: ActivatedRoute,
@@ -107,18 +109,31 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
 
   }
 
+  imprimir(name): void {
+    console.log(name);
+    console.log(this.solicitantes);
+    this.filteredProducts = this.filterData(name);
+    console.log( this.filteredProducts);
+  }
+
+  selectOpt(solicitante: Solicitante): void {
+    console.log(solicitante);
+    this.myForm.controls.solicitante_id.setValue(solicitante.id);
+    this.nameLiteral = solicitante.nombre + ' ' + solicitante.apellido;
+    console.log(this.nameLiteral);
+  }
+
+  filterData(name): any {
+    return  this.solicitantes.filter((item) => item.nombre.toLowerCase().includes(name.toLowerCase()));
+  }
 
   enviar(myForm): void {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'La solicitud ha sido registrada con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
+        Swal.fire( 'Felicidades',
+        'La solicitud ha sido registrada con exito',
+        'success');
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {

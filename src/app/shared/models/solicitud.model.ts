@@ -1,12 +1,16 @@
+import { CentroFormacion } from './centro_formacion.model';
+import { Solicitante } from './solicitante.model';
+import { Tramite } from './tramite.model';
+
 export interface Solicitud {
     id: number;
     created_at: Date;
     tramite_id: number;
     solicitante_id: number;
     centro_formacion_id: number;
-    tramite: any;
-    solicitante: any;
-    centro_formacion: any;
+    tramite: Tramite;
+    solicitante: Solicitante;
+    centro_formacion: CentroFormacion;
 
 }
 

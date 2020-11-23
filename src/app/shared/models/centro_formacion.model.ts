@@ -1,3 +1,5 @@
+import { Distrito } from './distrito.model';
+
 export interface CentroFormacion {
     id: number;
     nombre: string;
@@ -10,7 +12,7 @@ export interface CentroFormacion {
     estado: string;
     created_at: Date;
     distrito_id: number;
-    distrito: any;
+    distrito: Distrito;
 }
 
 export interface ListaCentroFormacion {

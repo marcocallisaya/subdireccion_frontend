@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CarreraComponent } from './components/carrera/carrera.component';
 import { CarreraFormComponent } from './components/carrera-form/carrera-form.component';
 import { ModalComponent } from './components/modal/modal.component';
-
+import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 
 const routes: Routes = [
   {path: '', component: CarreraComponent},
@@ -17,4 +17,4 @@ const routes: Routes = [
 })
 export class CarreraRoutingModule { }
 
-export const componentes = [CarreraComponent, CarreraFormComponent, ModalComponent];
+export const componentes = [CarreraComponent, CarreraFormComponent, ModalComponent, ReporteDetallesComponent];

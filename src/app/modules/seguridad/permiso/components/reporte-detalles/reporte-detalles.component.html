@@ -1,0 +1,47 @@
+
+    <div *ngIf="BanderaVista" class="reporte">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="text-center">LISTADO DE PERMISOS</h4>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <div class="boton mt-3 mb-3">
+                                <button mat-raised-button color="primary" (click)="generatePDF()">GENERAR PDF <i
+                                        class="fas fa-file-pdf"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table style="width:100%">
+                    <tr>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Tipo</th>
+                        <th class="text-center">Descripcion</th>
+                    </tr>
+                    <tr *ngFor="let item of permisos">
+                        <td class="text-justify ">{{item.nombre}}</td>
+                        <td class="text-center ">{{item.tipo}} </td>
+                        <td class="text-justify">{{item.descripcion}} </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!BanderaVista">
+        <app-spinner></app-spinner>
+        <div class="row mt-5 justify-content-center">
+            <div class="col-12">
+                <span class="spiner">En este momento se esta generando el reporte. Espera ........ <i
+                        class="fas fa-file-pdf"></i></span>
+            </div>
+        </div>
+    </div>

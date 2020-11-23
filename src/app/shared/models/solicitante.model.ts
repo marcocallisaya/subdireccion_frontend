@@ -1,3 +1,5 @@
+import { TipoSolicitante } from './tipo_solicitante.model';
+
 export interface Solicitante {
     id: number;
     nombre: string;
@@ -7,7 +9,7 @@ export interface Solicitante {
     estado: string;
     created_at: Date;
     tipo_solicitante_id: number;
-    tipo_solicitante: any;
+    tipo_solicitante: TipoSolicitante;
 }
 
 export interface ListaSolicitante {

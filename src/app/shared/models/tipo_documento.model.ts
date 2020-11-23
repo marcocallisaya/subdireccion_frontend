@@ -5,7 +5,7 @@ export interface TipoDocumento {
     descripcion: string;
     codigo: string;
     estado: string;
-
+    created_at: Date;
 }
 
 export interface ListaTipoDocumento {

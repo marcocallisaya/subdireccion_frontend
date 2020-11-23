@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { UbicacionFormComponent } from './components/ubicacion-form/ubicacion-form.component';
+import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 
 const routes: Routes = [
   {path: '', component: UbicacionComponent},
@@ -16,4 +17,4 @@ const routes: Routes = [
 })
 export class UbicacionRoutingModule { }
 
-export const componentes = [UbicacionComponent, ModalComponent, UbicacionFormComponent];
+export const componentes = [UbicacionComponent, ModalComponent, UbicacionFormComponent, ReporteDetallesComponent];

@@ -4,6 +4,7 @@ import { DerivacionFormComponent } from './components/derivacion-form/derivacion
 import { DerivacionComponent } from './components/derivacion/derivacion.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { FuncionarioModalComponent } from './components/funcionario-modal/funcionario-modal.component';
+import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 
 const routes: Routes = [
   {path: '', component: DerivacionComponent},
@@ -17,4 +18,4 @@ const routes: Routes = [
 })
 export class DerivacionRoutingModule { }
 
-export const componentes = [DerivacionFormComponent, DerivacionComponent, ModalComponent, FuncionarioModalComponent];
+export const componentes = [DerivacionFormComponent, DerivacionComponent, ModalComponent, FuncionarioModalComponent, ReporteDetallesComponent];

@@ -1,1 +1,45 @@
-<p>estante works!</p>
+<div class="row">
+    <div class="col-4">
+        <app-boton-crear titulo="Registrar nuevo estante"></app-boton-crear>
+    </div>
+    <div class="col-3  mt-4">
+        <button mat-raised-button color="accent" (click)="abrirReporteDetalles()">Ver Reporte de Listado </button>
+    </div>
+    <div class="col-5 row justify-content-center">
+        <div class="col-5 mt-2">
+            <mat-form-field class="example-full-width">
+                <mat-label>Codigo</mat-label>
+                <input matInput placeholder="Ingresa un codigo" #nombre>
+            </mat-form-field>
+        </div>
+        <div class="col-5 mt-4">
+            <button (click)="cargarDatosBusqueda(nombre.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
+        </div>
+      
+       
+    </div>
+    </div>
+    
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-11">
+                <div [hidden]="!BanderaDatos" class="mat-elevation-z8">
+                   <app-table (envio)="cargar($event)" 
+                              [dataSource]="dataSource" 
+                              [headers]="displayedColumns" 
+                              [opciones]="opciones">
+                   </app-table>
+                   <mat-paginator 
+                   [length]="length"
+                   [pageSize]="pageSize"
+                   [pageIndex]="currentPage - 1"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pagination($event, nombre.value)"></mat-paginator>
+                </div>   
+                <div [hidden]="BanderaDatos">
+                   <app-spinner></app-spinner>
+                </div> 
+            </div>
+        </div>
+    </div>
+    

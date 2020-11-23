@@ -29,8 +29,6 @@ export class TipoTramiteFormComponent implements OnInit, OnDestroy {
 
   tipo: TipoTramite; // datos del modelo
 
-  estado = [{nombre: 'PASIVO', valor: 'pasivo'}, {nombre: 'ACTIVO', valor: 'activo'}];
-
   uri = 'tipo_tramite';
 
   constructor(private fb: FormBuilder,
@@ -75,8 +73,8 @@ export class TipoTramiteFormComponent implements OnInit, OnDestroy {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       nombre: [this.tipo?.nombre || '', Validators.required],
-      estado: [this.tipo?.estado || '', Validators.required],
-      descripcion: [this.tipo?.descripcion || '', Validators.required]
+      descripcion: [this.tipo?.descripcion || '', Validators.required],
+      codigo: [this.tipo?.codigo || '', Validators.required]
     });
   }
 
@@ -85,13 +83,9 @@ export class TipoTramiteFormComponent implements OnInit, OnDestroy {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'El tipo de tramite ha sido registrado con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
+        Swal.fire(  'Felicidades',
+        'El tipo de tramite ha sido registrado con exito',
+        'success');
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {

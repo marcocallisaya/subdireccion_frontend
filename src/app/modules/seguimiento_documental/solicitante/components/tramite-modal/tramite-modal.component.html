@@ -1,0 +1,56 @@
+<ng-container *ngIf="BanderaDatos else vacio">
+    
+    <div *ngIf="BanderaError" class="tramite">
+        <div class="row justify-content-center" >
+            <div class="col-5">
+             <h1 mat-dialog-title> Lista de Tramites </h1>
+            </div>
+         
+          </div>
+          
+           <div *ngFor="let data of tramites" mat-dialog-content class="mat-typography">
+            
+             <div class="row clearfix">
+                <div class="col-sm-12">
+                  <h4> <b>Referencia :</b>  {{data.referencia}}</h4>
+                 
+                </div>
+                
+              </div>
+              <div class="row clearfix">
+                <div class="col-sm-4">
+                    <h4 > <b>Dias Restantes :</b>   {{data.fecha_limite | date: 'dd/MM/yyyy'}}</h4>
+                  </div>
+                <div class="col-sm-12 col-md-4">
+                    <h4> <b>Codigo :</b>  {{data.codigo}}</h4>
+                   
+                  </div>
+                  <div class="col-sm-4">
+                    <h4 > <b>Ingreso : </b> {{data.created_at|date: "dd/MM/yyyy"}}</h4>
+                  </div>
+              </div>
+              <h6>***************************************************************************************************************************</h6>
+           </div>
+             <div class="row justify-content-center">
+               
+               <div class="col-3">
+                   <button mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+               </div>
+             </div>
+    </div>
+     
+    <div *ngIf="!BanderaError" class="error">
+        <div class="row justify-content-center" >
+            <div class="col-12">
+             <h1 mat-dialog-title> ESTE SOLICITANTE AUN NO TIENE TRAMITES  <i class="fas fa-exclamation-triangle"></i></h1>
+            </div>
+         
+          </div>
+    </div>
+   
+</ng-container>
+
+
+     <ng-template #vacio>
+         <app-spinner></app-spinner>
+      </ng-template>

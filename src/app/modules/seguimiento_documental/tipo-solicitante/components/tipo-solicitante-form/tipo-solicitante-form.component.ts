@@ -77,7 +77,6 @@ export class TipoSolicitanteFormComponent implements OnInit, OnDestroy {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       nombre: [this.tipo?.nombre || '', Validators.required],
-      estado: [this.tipo?.estado || '', Validators.required],
       descripcion: [this.tipo?.descripcion || '', Validators.required]
     });
   }
@@ -87,13 +86,11 @@ export class TipoSolicitanteFormComponent implements OnInit, OnDestroy {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'El tipo de solicitante ha sido registrado con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
+        Swal.fire(
+          'Felicidades',
+          'El tipo de solicitante ha sido registrado con exito',
+          'success'
+        );
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {

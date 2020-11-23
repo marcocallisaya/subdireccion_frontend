@@ -3,6 +3,7 @@ export interface TipoTramite {
     nombre: string;
     descripcion: string;
     estado: string;
+    codigo: string;
     created_at: Date;
 }
 

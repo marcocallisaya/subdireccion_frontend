@@ -83,10 +83,8 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       nombre: [this.documento?.nombre || '', Validators.required],
-      codigo: [this.documento?.codigo || '', Validators.required],
       descripcion: [this.documento?.descripcion || '', Validators.required],
       numero_paginas: [this.documento?.numero_paginas || '', Validators.required],
-      estado: [this.documento?.estado || '', Validators.required],
       tipo_documento_id: [this.documento?.tipo_documento_id || '', Validators.required],
       ubicacion_id: [this.documento?.ubicacion_id || ''],
       tramite_id: [this.documento?.tramite_id || '', Validators.required]
@@ -112,16 +110,15 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'El documento ha sido registrado con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
+        Swal.fire(
+          'Felicidades',
+          'Se ha registrado el documento de manera exitosa',
+          'success'
+        );
         this.router.navigate(['/sistema/documento']);
       },
       error => {
+        console.log(error);
         const errores =  this.tratarErrores(error.error.errors);
         this.mostrarError(errores);
       }
@@ -141,6 +138,16 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
     return datos;
   }
 
+  mostrarError(errores): void {
+    console.log(errores);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      html: errores
+    });
+  }
+
+
   actualizar(): void {
     console.log(this.myForm.value);
     this.servicio.update(this.myForm.value, this.codigo).subscribe(res => {
@@ -154,15 +161,6 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
     error => {
       const errores =  this.tratarErrores(error.error.errors);
       this.mostrarError(errores);
-    });
-  }
-
-  mostrarError(errores): void {
-    console.log(errores);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error...',
-      html: errores
     });
   }
 

@@ -1,1 +1,59 @@
-<p>modal works!</p>
+<div class="row justify-content-center" >
+    <div class="col-8">
+     <h1 mat-dialog-title> Información del Estante  </h1>
+    </div>
+ 
+  </div>
+  
+   <div mat-dialog-content class="mat-typography">
+     <div class="row clearfix">
+       <div class="col-sm-12 col-md-6">
+         <h4> <b>Codigo :</b>  {{data.codigo}}</h4>
+        
+       </div>
+       <div class="col-sm-12 col-md-6">
+        <h4 > <b>Material :</b>   {{data.material}}</h4>
+          
+         </div>
+        
+     </div>
+   <div class="row">
+    
+    <div class="col-sm-12 col-md-6">
+        <h4 > <b>Color :</b>   {{data.color}}</h4>
+          
+         </div>
+         <div class="col-sm-12 col-md-6">
+            <h4 > <b>Estado :</b>   {{data.estado}}</h4>
+              
+             </div>
+   </div>
+   <div class="row">
+    
+    <div class="col-sm-12 col-md-6">
+        <h4 > <b>Altura :</b>   {{data.altura}} m</h4>
+          
+         </div>
+         <div class="col-sm-12 col-md-6">
+            <h4 > <b>Ancho :</b>   {{data.ancho}} m</h4>
+              
+             </div>
+   </div>
+
+
+     <div class="row">
+    
+       <div class="col-sm-6">
+         <h4 > <b>Fecha de registro : </b> {{data.created_at|date: "dd/MM/yyyy"}}</h4>
+       </div>
+       <div class="col-sm-6">
+           <h4 > <b>Hora de registro : </b> {{data.created_at|date: 'shortTime'}}</h4>
+         </div>
+     </div>
+   </div>
+     <div class="row justify-content-center">
+       
+       <div class="col-3">
+           <button mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+       </div>
+     </div>

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SolicitudService } from 'src/app/core/services/solicitud.service';
@@ -12,6 +12,8 @@ import { Tramite } from 'src/app/shared/models/tramite.model';
 import { ModalComponent } from '../modal/modal.component';
 import {SolicitanteModalComponent} from '../solicitante-modal/solicitante-modal.component';
 import {TramiteModalComponent} from '../tramite-modal/tramite-modal.component';
+import {ReporteDetallesComponent} from '../reporte-detalles/reporte-detalles.component';
+import { SolicitanteService } from 'src/app/core/services/solicitante.service';
 
 @Component({
   selector: 'app-solicitud',
@@ -20,9 +22,17 @@ import {TramiteModalComponent} from '../tramite-modal/tramite-modal.component';
 })
 export class SolicitudComponent implements OnInit, OnDestroy {
 
-  solicitud$: Subscription = new Subscription();
+  tipo$: Subscription = new Subscription();
 
-  constructor(private router: Router, private servicio: SolicitudService, public dialog: MatDialog) { }
+  solicitantes: Solicitante[];
+
+  nameLiteral = '' ; filteredProducts ; codigo;
+
+  constructor(private router: Router,
+              private servicio: SolicitudService,
+              private solicitante: SolicitanteService,
+              public dialog: MatDialog,
+              private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
   displayedColumns: string[] = ['id'];
@@ -48,19 +58,36 @@ export class SolicitudComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cargarTabla(this.pageSize, this.currentPage);
+    this.cargarDatosAdicionales();
+    this.cambiarIdiomaPaginacion();
   }
 
   cargarTabla(size: number, current: number): void {
-  this.solicitud$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
-    {
-     this.dataSource = res.data; console.log(res);
-     this.length = res.total;
-     this.BanderaDatos = true;
-    });
+    this.tipo$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
+      {
+       this.dataSource = res.data; console.log(res);
+       this.length = res.total;
+       this.BanderaDatos = true;
+      });
+    }
+
+    cargarDatosAdicionales(): void {
+      this.solicitante.get().subscribe(res => this.solicitantes = res);
+    }
+
+  cargarDatosBusqueda(): void {
+      this.verificarTipoTabla(this.nameLiteral);
   }
 
 
-  // ver modelo
+  cargarTablaFiltrada(size: number, current: number, nombre: number): void {
+    this.tipo$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
+    {
+     this.dataSource = res.data; console.log(res);
+     this.length = res.total;
+    });
+  }
+
   ver(solicitud: Solicitud): void {
     this.dialog.open(ModalComponent, {width: '40vw', data:  solicitud });
   }
@@ -77,14 +104,23 @@ export class SolicitudComponent implements OnInit, OnDestroy {
     this.dialog.open(TramiteModalComponent, {width: '40vw', data:  tramite });
   }
 
-  // evento de paginacion
-  pagination(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex + 1;
-    this.cargarTabla(this.pageSize, this.currentPage);
+  imprimir(name): void {
+    console.log(name);
+    console.log(this.solicitantes);
+    this.filteredProducts = this.filterData(name);
+    console.log( this.filteredProducts);
   }
 
+  selectOpt(solicitante: Solicitante): void {
+    console.log(solicitante);
+    this.nameLiteral = solicitante.nombre + ' ' + solicitante.apellido;
+    this.codigo = solicitante.id;
+    console.log(this.nameLiteral);
+  }
 
+  filterData(name): any {
+    return  this.solicitantes.filter((item) => item.nombre.toLowerCase().includes(name.toLowerCase()));
+  }
 
   cargar(data): void {
     switch (data.tipoAccion) {
@@ -106,8 +142,36 @@ export class SolicitudComponent implements OnInit, OnDestroy {
   }
 
 
+   // evento de paginacion
+   pagination(event: PageEvent, nombre: string): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex + 1;
+    this.verificarTipoTabla(nombre);
+  }
+
+  verificarTipoTabla(nombre: string): void {
+    if (nombre === '') {
+      this.cargarTabla(this.pageSize, this.currentPage);
+      console.log('vacio');
+    }
+    else {
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, this.codigo);
+      console.log('codigo, ' + this.codigo);
+    }
+  }
+
+  cambiarIdiomaPaginacion(): void {
+    this.paginator.itemsPerPageLabel = 'Registros por página';
+    this.paginator.previousPageLabel = 'Pagina Anterior';
+    this.paginator.nextPageLabel = 'Pagina Siguiente';
+  }
+
+  abrirReporteDetalles(): void  {
+    this.dialog.open(ReporteDetallesComponent, {width:  '60vw', maxHeight: '90vh'});
+  }
+
   ngOnDestroy(): void {
-    this.solicitud$.unsubscribe();
+    this.tipo$.unsubscribe();
   }
 
 }

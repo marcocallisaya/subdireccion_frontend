@@ -15,19 +15,18 @@
           <mat-card-content>
            <form  [formGroup]="myForm">
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-12  col-md-6">
                 <mat-form-field class="ancho-completo">
                   <mat-label>Nombre*</mat-label>
                   <input matInput formControlName="nombre" name="nombre">
                 </mat-form-field>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-12 col-md-6">
                 <mat-form-field class="ancho-completo">
-                  <mat-label>Codigo*</mat-label>
-                  <input matInput formControlName="codigo" name="codigo">
+                  <mat-label>Numero de Paginas*</mat-label>
+                  <input matInput formControlName="numero_paginas" name="numero_paginas">
                 </mat-form-field>
               </div>
-             
             </div>
             <div class="row">
               <div class="col-sm-12">
@@ -36,25 +35,6 @@
                   <input matInput formControlName="descripcion" name="descripcion">
                 </mat-form-field>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-6">
-                <mat-form-field class="ancho-completo">
-                  <mat-label>Numero de Paginas*</mat-label>
-                  <input matInput formControlName="numero_paginas" name="numero_paginas">
-                </mat-form-field>
-              </div>
-              <div class="col-sm-12 col-md-6">
-                <mat-form-field class="ancho-completo">
-                  <mat-label>Estado*</mat-label>
-                  <mat-select formControlName="estado" name="estado">
-                    <mat-option *ngFor="let item of estado"  [value]="item.valor">
-                      {{item.nombre}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-             
             </div>
             <div class="row">
               <div class="col-sm-12 col-md-6">

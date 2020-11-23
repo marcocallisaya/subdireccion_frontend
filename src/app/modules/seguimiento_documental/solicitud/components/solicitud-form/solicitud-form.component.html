@@ -57,17 +57,21 @@
             <div class="row">
                 
                     <div class="col-sm-12">
-                        <mat-form-field class="ancho-completo">
-                          <mat-label>Solicitante*</mat-label>
-                          <mat-select formControlName="solicitante_id" name="solicitante_id">
-                            <mat-option *ngIf="BanderaBoton" [value]="solicitud.solicitante_id">
-                              {{solicitud.solicitante.nombre + ' ' + solicitud.solicitante.apellido}}
-                            </mat-option>
-                            <mat-option *ngFor="let item of solicitantes"  [value]="item.id">
-                              {{item.nombre + ' ' + item.apellido}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
+                      <mat-form-field class="ancho-completo">
+                        <input (keyup)="imprimir(nombre.value)" type="text"
+                               placeholder="Selecciona un solicitante"
+                               aria-label="Number"
+                               matInput
+                               [(ngModel)]="nameLiteral"
+                               [ngModelOptions]="{standalone: true}"
+                               [matAutocomplete]="auto"
+                               #nombre>
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                          <mat-option (click)="selectOpt(option)" *ngFor="let option of filteredProducts" [value]="option.id">
+                            {{option.nombre}}  {{option.apellido}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
                       </div>
                 
             </div>

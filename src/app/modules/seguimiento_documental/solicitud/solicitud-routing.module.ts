@@ -6,6 +6,7 @@ import { SolicitudFormComponent } from './components/solicitud-form/solicitud-fo
 import { SolicitanteModalComponent } from './components/solicitante-modal/solicitante-modal.component';
 import { CentroFormacionModalComponent } from './components/centro-formacion-modal/centro-formacion-modal.component';
 import { TramiteModalComponent } from './components/tramite-modal/tramite-modal.component';
+import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 
 const routes: Routes = [
   {path: '', component: SolicitudComponent},
@@ -20,4 +21,4 @@ const routes: Routes = [
 export class SolicitudRoutingModule { }
 
 export const componentes = [ModalComponent, SolicitudComponent,
-                            SolicitudFormComponent,  SolicitanteModalComponent, CentroFormacionModalComponent, TramiteModalComponent];
+                            SolicitudFormComponent,  SolicitanteModalComponent, CentroFormacionModalComponent, TramiteModalComponent, ReporteDetallesComponent];

@@ -7,12 +7,15 @@ import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
     declarations: [],
     imports: [MatButtonModule, MatTableModule, MatPaginatorModule, MatInputModule,
-              MatCardModule, MatSelectModule, MatProgressSpinnerModule, MatDialogModule],
+              MatCardModule, MatSelectModule, MatProgressSpinnerModule, MatDialogModule,
+              MatAutocompleteModule],
     exports: [MatButtonModule, MatTableModule, MatPaginatorModule, MatInputModule,
-              MatCardModule, MatSelectModule, MatProgressSpinnerModule, MatDialogModule]
+              MatCardModule, MatSelectModule, MatProgressSpinnerModule, MatDialogModule,
+              MatAutocompleteModule]
 })
 export class MaterialModule { }

@@ -1,1 +1,46 @@
-<p>modal works!</p>
+<div class="row justify-content-center" >
+    <div class="col-8">
+     <h1 mat-dialog-title> Información del distrito  </h1>
+    </div>
+ 
+  </div>
+  
+   <div mat-dialog-content class="mat-typography">
+     <div class="row clearfix">
+       <div class="col-sm-12 col-md-6">
+         <h4> <b>Nombre :</b>  {{data.nombre}}</h4>
+        
+       </div>
+       <div class="col-sm-12 col-md-6">
+        <h4 > <b>Ciudad :</b>   {{data.ciudad}}</h4>
+          
+         </div>
+     </div>
+   <div class="row">
+    
+     <div class="col-sm-8">
+       <h4 > <b>Direccion : </b> {{data.direccion}}</h4>
+     </div>
+     <div class="col-sm-4">
+        <h4 > <b>Estado : </b> {{data.estado}}</h4>
+      </div>
+   </div>
+
+
+
+     <div class="row">
+    
+       <div class="col-sm-6">
+         <h4 > <b>Fecha de registro : </b> {{data.created_at|date: "dd/MM/yyyy"}}</h4>
+       </div>
+       <div class="col-sm-6">
+           <h4 > <b>Hora de registro : </b> {{data.created_at|date: 'shortTime'}}</h4>
+         </div>
+     </div>
+   </div>
+     <div class="row justify-content-center">
+       
+       <div class="col-3">
+           <button mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+       </div>
+     </div>

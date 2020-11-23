@@ -33,9 +33,7 @@ export class EvaluacionFormComponent implements OnInit, OnDestroy {
 
   tramites: Tramite[];
 
-  estado = [{nombre: 'PASIVO', valor: 'pasivo'}, {nombre: 'ACTIVO', valor: 'activo'}];
-
-  estadoEvaluacion = ['EN ESPERA', 'EN EVALUACION', 'FINALIZADO'];
+  estadoEvaluacion = ['CORRECTO', 'INCORRECTO', 'CON ERRORES'];
 
   uri = 'evaluacion';
 

@@ -35,8 +35,6 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
 
   tramites: Tramite[];  funcionarios: Funcionario[];
 
-  estado = [{nombre: 'PASIVO', valor: 'pasivo'}, {nombre: 'ACTIVO', valor: 'activo'}];
-
   uri = 'derivacion';
 
   constructor(private fb: FormBuilder,
@@ -85,7 +83,7 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
     this.myForm = this.fb.group({
       tramite_id: [ {value: this.derivacion?.tramite_id || '', disabled: this.BanderaBoton }, Validators.required],
       funcionario_id: [this.derivacion?.funcionario_id || '', Validators.required],
-      dias: [{value: this.derivacion?.tramite.dias || '', disabled: this.BanderaBoton }, Validators.required]
+      fecha_limite: [{value: this.derivacion?.tramite.fecha_limite || '', disabled: this.BanderaBoton }, Validators.required]
     });
   }
 
@@ -106,13 +104,9 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'La derivacion ha sido registrada con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
+        Swal.fire( 'Felicidades',
+        'La derivacion ha sido registrada con exito',
+        'success');
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConstantesService } from 'src/app/config/constantes.service';
 import {Derivacion, ListaDerivacion} from 'src/app/shared/models/derivacion.model';
 
@@ -29,6 +30,15 @@ export class DerivacionService {
 
    }
 
+   getFiltered(perPage: number, currentPage: number, nombre: number): Observable <ListaDerivacion> {
+
+    return this.http.get<ListaDerivacion>(this.uri + this.url +
+                                              '?per_page=' + perPage +
+                                               '&page=' + currentPage +
+                                               '&consulta=' + nombre);
+
+   }
+
    send(body: Derivacion): Observable <Derivacion> {
 
      return this.http.post<Derivacion>(this.uri + this.url, body);
@@ -51,5 +61,19 @@ export class DerivacionService {
 
   return this.http.delete<Derivacion>(this.uri + this.url + '/' + id );
 
+  }
+
+  generateReportPdf( body): any {
+    return this.http.post(this.uri + this.url + '/reporte' , body , {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/pdf'
+      },
+      responseType: 'blob', observe: 'response'
+    }).pipe(
+      map((res: any) => {
+        return new Blob([res.body], { type: 'application/pdf' });
+      })
+    );
   }
 }

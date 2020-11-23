@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConstantesService } from 'src/app/config/constantes.service';
 import {Solicitud, ListaSolicitud} from 'src/app/shared/models/solicitud.model';
 
@@ -29,6 +30,21 @@ export class SolicitudService {
 
    }
 
+   getFiltered(perPage: number, currentPage: number, nombre: number): Observable <ListaSolicitud> {
+
+    return this.http.get<ListaSolicitud>(this.uri + this.url +
+                                              '?per_page=' + perPage +
+                                               '&page=' + currentPage +
+                                               '&consulta=' + nombre);
+
+   }
+
+   getWithState(estado): Observable <Solicitud[]> {
+
+    return this.http.get<Solicitud[]>(this.uri + this.url + '?estado=' + estado);
+
+   }
+
    send(body: Solicitud): Observable <Solicitud> {
 
      return this.http.post<Solicitud>(this.uri + this.url, body);
@@ -47,9 +63,17 @@ export class SolicitudService {
 
   }
 
-  delete(id: number): Observable <Solicitud> {
-
-  return this.http.delete<Solicitud>(this.uri + this.url + '/' + id );
-
+  generateReportPdf( body): any {
+    return this.http.post(this.uri + this.url + '/reporte' , body , {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/pdf'
+      },
+      responseType: 'blob', observe: 'response'
+    }).pipe(
+      map((res: any) => {
+        return new Blob([res.body], { type: 'application/pdf' });
+      })
+    );
   }
 }

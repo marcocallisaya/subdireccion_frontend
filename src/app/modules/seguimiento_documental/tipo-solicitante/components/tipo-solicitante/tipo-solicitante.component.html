@@ -1,9 +1,26 @@
 <div class="row">
-    <div class="col-12">
-        <button routerLink="form" class="mt-5" mat-raised-button color="primary">Crear Nuevo Tipo de Solicitante</button>
-    </div>
+<div class="col-4">
+    <app-boton-crear titulo="Crear Nuevo Tipo de Solicitante"></app-boton-crear>
 </div>
-<div class="container mt-5">
+<div class="col-3  mt-4">
+    <button mat-raised-button color="accent" (click)="abrirReporteDetalles()">Ver Reporte de Listado <i class="fas fa-clipboard-list"></i> </button>
+</div>
+<div class="col-5 row justify-content-center">
+    <div class="col-6 mt-2">
+        <mat-form-field class="example-full-width">
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Ingresa un nombre" #nombre>
+        </mat-form-field>
+    </div>
+    <div class="col-6 mt-4">
+        <button (click)="cargarDatosBusqueda(nombre.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
+    </div>
+  
+   
+</div>
+</div>
+
+<div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-11">
             <div [hidden]="!BanderaDatos" class="mat-elevation-z8">
@@ -15,8 +32,9 @@
                <mat-paginator 
                [length]="length"
                [pageSize]="pageSize"
+               [pageIndex]="currentPage - 1"
                [pageSizeOptions]="pageSizeOptions"
-               (page)="pagination($event)"></mat-paginator>
+               (page)="pagination($event, nombre.value)"></mat-paginator>
             </div>   
             <div [hidden]="BanderaDatos">
                <app-spinner></app-spinner>

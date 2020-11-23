@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConstantesService } from 'src/app/config/constantes.service';
 import {Evaluacion, ListaEvaluacion} from 'src/app/shared/models/evaluacion.model';
 
@@ -29,6 +30,21 @@ export class EvaluacionService {
 
    }
 
+   getFiltered(perPage: number, currentPage: number, nombre: string): Observable <ListaEvaluacion> {
+
+    return this.http.get<ListaEvaluacion>(this.uri + this.url +
+                                              '?per_page=' + perPage +
+                                               '&page=' + currentPage +
+                                               '&consulta=' + nombre);
+
+   }
+
+   getWithState(estado): Observable <Evaluacion[]> {
+
+    return this.http.get<Evaluacion[]>(this.uri + this.url + '?estado=' + estado) ;
+
+   }
+
    send(body: Evaluacion): Observable <Evaluacion> {
 
      return this.http.post<Evaluacion>(this.uri + this.url, body);
@@ -51,5 +67,19 @@ export class EvaluacionService {
 
   return this.http.delete<Evaluacion>(this.uri + this.url + '/' + id );
 
+  }
+
+  generateReportPdf( body): any {
+    return this.http.post(this.uri + this.url + '/reporte' , body , {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/pdf'
+      },
+      responseType: 'blob', observe: 'response'
+    }).pipe(
+      map((res: any) => {
+        return new Blob([res.body], { type: 'application/pdf' });
+      })
+    );
   }
 }

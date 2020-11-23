@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SolicitanteFormComponent } from './components/solicitante-form/solicitante-form.component';
 import { SolicitanteComponent } from './components/solicitante/solicitante.component';
 import {ModalComponent} from './components/modal/modal.component';
+import { TramiteModalComponent } from './components/tramite-modal/tramite-modal.component';
+import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 
 const routes: Routes = [
   {path: '',  component: SolicitanteComponent},
@@ -17,4 +19,5 @@ const routes: Routes = [
 })
 export class SolicitanteRoutingModule { }
 
-export const componentes = [SolicitanteComponent, SolicitanteFormComponent, ModalComponent];
+export const componentes = [SolicitanteComponent, SolicitanteFormComponent,
+                            ModalComponent, TramiteModalComponent, ReporteDetallesComponent];

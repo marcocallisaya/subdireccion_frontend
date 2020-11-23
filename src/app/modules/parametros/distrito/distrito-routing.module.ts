@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DistritoComponent } from './components/distrito/distrito.component';
 import { DistritoFormComponent } from './components/distrito-form/distrito-form.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 
 const routes: Routes = [
   {path: '', component: DistritoComponent},
@@ -16,4 +17,4 @@ const routes: Routes = [
 })
 export class DistritoRoutingModule { }
 
-export const componentes = [DistritoComponent, DistritoFormComponent, ModalComponent];
+export const componentes = [DistritoComponent, DistritoFormComponent, ModalComponent, ReporteDetallesComponent];
