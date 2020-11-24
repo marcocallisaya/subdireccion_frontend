@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Instructivo } from 'src/app/shared/models/instructivo.model';
 
 @Component({
   selector: 'app-modal',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModalComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<ModalComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: Instructivo) { }
 
-  ngOnInit(): void {
-  }
 
+    onNoClick(): void {
+    this.dialogRef.close();
+    }
+
+    ngOnInit(): void {
+    console.log(this.data);
+    }
 }

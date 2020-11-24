@@ -35,10 +35,8 @@ export class ReporteDetallesComponent implements OnInit {
 
   generatePDF(): void {
     this.BanderaVista = false;
-    const data = {data: this.centros,
-                  fechaInicial: this.myForm.get('fechaInicial').value,
-                  fechaFinal: this.myForm.get('fechaFinal').value,
-                  estado: this.myForm.get('estado').value};
+    const data = {data: this.centros, estado: this.myForm.get('estado').value,
+                  distrito: this.myForm.get('distrito').value };
     this.servicio.generateReportPdf(data).subscribe(res => {
       console.log(res);
       this.onNoClick();
@@ -54,46 +52,26 @@ export class ReporteDetallesComponent implements OnInit {
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      fechaInicial: ['', Validators.required],
-      fechaFinal: ['', Validators.required],
       estado:  [''],
-      distrito:  [''],
+      distrito:  ['']
     });
   }
 
-  tratarErrores(errores): string {
-    let datos = '';
-    if (errores.fechaFinal !=  null) {
-      const error = '<div>' + errores.fechaFinal[0] + '</div> <br>';
-      datos = datos.concat(error);
-    }
-    return datos;
-  }
-
-  mostrarError(errores): void {
-    console.log(errores);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error...',
-      html: errores
-    });
-  }
 
   mostrarReporte(): void {
-    const inicio = this.myForm.get('fechaInicial').value;
-    const final = this.myForm.get('fechaFinal').value;
     const estado = this.myForm.get('estado').value;
     const distrito = this.myForm.get('distrito').value;
-    console.log(estado);
-    console.log(distrito);
-    this.servicio.getAmongReferences(inicio, final, estado, distrito).subscribe(res => {
+    this.servicio.getWithState(estado, distrito).subscribe(res => {
       this.centros = res; console.log(res);
       this.BanderaDatos = false;
       this.BanderaVista = true; }, err => {
         console.log(err);
-        const errores =  this.tratarErrores(err.error.errors);
-        this.mostrarError(errores);
       });
+  }
+
+  atras(): void {
+    this.BanderaDatos = true;
+    this.BanderaVista = false;
   }
 
   onNoClick(): void {

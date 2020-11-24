@@ -39,9 +39,9 @@ export class TipoDocumentoService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <TipoDocumento[]> {
+   getWithState(estado): Observable <TipoDocumento[]> {
 
-    return this.http.get<TipoDocumento[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+    return this.http.get<TipoDocumento[]>(this.uri + this.url + '?estado=' + estado);
 
    }
 

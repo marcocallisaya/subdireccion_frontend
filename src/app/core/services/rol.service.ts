@@ -39,9 +39,9 @@ export class RolService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <Rol[]> {
+   getWithState(estado): Observable <Rol[]> {
 
-    return this.http.get<Rol[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+    return this.http.get<Rol[]>(this.uri + this.url + '?estado=' + estado);
 
    }
 

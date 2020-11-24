@@ -35,7 +35,7 @@ export class TramiteComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['tramite_estado' , 'referencia', 'dias_Restante'];
+  displayedColumns: string[] = ['tramite_estado' , 'referencia', 'codigo'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
@@ -126,7 +126,7 @@ export class TramiteComponent implements OnInit, OnDestroy {
   }
 
   verDocumentos(documentos: any): void {
-    this.dialog.open(DocumentoModalComponent, {width: '40vw', height: '80vh',  data:  documentos });
+    this.dialog.open(DocumentoModalComponent, {width: '40vw', maxHeight: '80vh',  data:  documentos });
  }
 
  cargar(data): void {

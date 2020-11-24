@@ -5,19 +5,13 @@
                 <h4 class="text-center">LISTADO DE PERMISOS</h4>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-12">
-                <table style="width:100%">
-                    <tr>
-                        <td>
-                            <div class="boton mt-3 mb-3">
-                                <button mat-raised-button color="primary" (click)="generatePDF()">GENERAR PDF <i
-                                        class="fas fa-file-pdf"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+        <div class="row  justify-content-around mt-4">
+            <div class="col-xs-6 mb-3">
+                 <button mat-raised-button color="primary" (click)="generatePDF()">Generar PDF</button>
             </div>
+            <div class="col-xs-6 mb-3">
+                <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+        </div>       
         </div>
         <div class="row">
             <div class="col-12">

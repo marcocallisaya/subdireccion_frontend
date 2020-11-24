@@ -39,9 +39,9 @@ export class FuncionarioService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <Funcionario[]> {
+   getWithState(estado): Observable <Funcionario[]> {
 
-    return this.http.get<Funcionario[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+    return this.http.get<Funcionario[]>(this.uri + this.url + '?estado=' + estado);
 
    }
 

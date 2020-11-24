@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { InstructivoComponent } from './components/instructivo/instructivo.component';
 import { InstructivoFormComponent } from './components/instructivo-form/instructivo-form.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { PublicacionModalComponent } from './components/publicacion-modal/publicacion-modal.component';
 
 const routes: Routes = [
   {path: '', component: InstructivoComponent},
@@ -16,4 +18,5 @@ const routes: Routes = [
 })
 export class InstructivoRoutingModule { }
 
-export const components = [InstructivoComponent, InstructivoFormComponent, ModalComponent];
+export const components = [InstructivoComponent, InstructivoFormComponent, 
+                           ModalComponent, ReporteDetallesComponent, PublicacionModalComponent];

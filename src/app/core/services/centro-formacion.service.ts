@@ -39,21 +39,12 @@ export class CentroFormacionService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <CentroFormacion[]> {
+   getWithState(estado, distrito): Observable <CentroFormacion[]> {
 
-    return this.http.get<CentroFormacion[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
-
-   }
-
-   getAmongReferences(fechaInicial, fechaFinal, estado, distrito): Observable <CentroFormacion[]> {
-
-    return this.http.get<CentroFormacion[]>(this.uri + this.url +
-                                     '?fechaInicial=' + fechaInicial +
-                                     '&fechaFinal=' + fechaFinal +
-                                     '&estado=' + estado +
-                                     '&distrito=' + distrito);
+    return this.http.get<CentroFormacion[]>(this.uri + this.url + '?estado=' + estado + '&distrito=' + distrito);
 
    }
+
 
    send(body: CentroFormacion): Observable <CentroFormacion> {
 

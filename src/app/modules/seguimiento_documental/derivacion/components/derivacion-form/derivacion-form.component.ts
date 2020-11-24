@@ -93,7 +93,7 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
       this.funcionario.get()
     ).subscribe( resp => {
       const [resp1, resp2] = resp;
-      this.tramites = resp1;
+      this.tramites = resp1.data;
       this.funcionarios = resp2;
     });
 

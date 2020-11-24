@@ -39,9 +39,9 @@ export class UsuarioService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <Usuario[]> {
+   getWithState(estado): Observable <Usuario[]> {
 
-    return this.http.get<Usuario[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+    return this.http.get<Usuario[]>(this.uri + this.url + '?estado=' + estado);
 
    }
 

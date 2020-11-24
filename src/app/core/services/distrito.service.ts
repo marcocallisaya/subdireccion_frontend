@@ -39,9 +39,9 @@ export class DistritoService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <Distrito[]> {
+   getWithState(estado): Observable <Distrito[]> {
 
-    return this.http.get<Distrito[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+    return this.http.get<Distrito[]>(this.uri + this.url + '?estado=' + estado);
 
    }
 

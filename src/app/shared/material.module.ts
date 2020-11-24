@@ -8,14 +8,15 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
     declarations: [],
     imports: [MatButtonModule, MatTableModule, MatPaginatorModule, MatInputModule,
               MatCardModule, MatSelectModule, MatProgressSpinnerModule, MatDialogModule,
-              MatAutocompleteModule],
+              MatAutocompleteModule, MatProgressBarModule],
     exports: [MatButtonModule, MatTableModule, MatPaginatorModule, MatInputModule,
               MatCardModule, MatSelectModule, MatProgressSpinnerModule, MatDialogModule,
-              MatAutocompleteModule]
+              MatAutocompleteModule, MatProgressBarModule]
 })
 export class MaterialModule { }

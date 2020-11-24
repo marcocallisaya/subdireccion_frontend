@@ -5,17 +5,16 @@
         </div>
     </div>
     <form [formGroup]="myForm">
-        <div class="row mt-3">
-            <div class="col-sm-12 col-md-6">
+        <div class="row mt-12">
+            <div class="col-sm-12">
                 <mat-form-field class="ancho-completo">
-                    <mat-label>Fecha Inicial*</mat-label>
-                    <input type="date" matInput formControlName="fechaInicial" name="fechaInicial">
-                </mat-form-field>
-            </div>
-            <div class="col-sm-12 col-md-6">
-                <mat-form-field class="ancho-completo">
-                    <mat-label>Fecha Final*</mat-label>
-                    <input type="date" matInput formControlName="fechaFinal" name="fechaFinal">
+                    <mat-label>Estado*</mat-label>
+                    <mat-select formControlName="estado" name="estado">
+                        <mat-option value=""> TODOS </mat-option>
+                        <mat-option *ngFor="let item of estados" [value]="item">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
         </div>
@@ -34,45 +33,35 @@
     <div *ngIf="BanderaVista" class="reporte">
         <div class="row">
             <div class="col-12">
-                <h4 class="text-center">LISTADO DE FUNCIONARIOS</h4>
+                <h4 class="text-center">FUNCIONARIOS</h4>
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-12">
-                <table style="width:100%">
-                    <tr>
-                        <td>
-                            <p> <b>Fecha de Inicio :</b> {{myForm.get('fechaInicial').value | date: 'dd/MM/yyyy'}}</p>
-                        </td>
-                        <td>
-                            <p> <b>Fecha Final : </b> {{myForm.get('fechaFinal').value | date: 'dd/MM/yyyy'}}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="boton mt-3 mb-3">
-                                <button mat-raised-button color="primary" (click)="generatePDF()">GENERAR PDF <i
-                                        class="fas fa-file-pdf"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+            <div class="col-4 mb-3">
+                    <button mat-raised-button color="primary" (click)="generatePDF()">Generar PDF</button>
             </div>
+            <div class="col-4 mb-3">
+                <button mat-raised-button color="accent" (click)="atras()">Cancelar </button>
+             </div>
         </div>
         <div class="row">
             <div class="col-12">
                 <table style="width:100%">
                     <tr>
-                        <th class="text-justify">Nombre</th>
-                        <th class="text-justify">Apellido</th>
-                        <th class="text-justify">Fecha de Nacimiento</th>
-                         <th class="text-center">Género</th>
+                        <th class="text-center">Nombre Completo</th>
+                        <th class="text-center">Fecha Nacimiento</th>
+                        <th class="text-center">Telefono</th>
+                        <th class="text-center">Género</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Cargo</th>
                     </tr>
                     <tr *ngFor="let item of funcionarios">
-                        <td class="text-justify ">{{item.nombre}}</td>
-                        <td class="text-justify ">{{item.apellido}} </td>
+                        <td class="text-justify ">{{item.nombre}} {{item.apellido}}</td>
                         <td class="text-center">{{item.fecha_nacimiento | date: 'dd/MM/yyyy'}} </td>
+                        <td class="text-center"> {{item.telefono}}</td>
                         <td class="text-center">{{item.genero}} </td>
+                        <td class="text-center"> {{item.estado}}</td>
+                        <td class="text-center">{{item.cargo}} </td>
                     </tr>
                 </table>
             </div>

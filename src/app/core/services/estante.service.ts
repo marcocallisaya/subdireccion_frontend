@@ -39,9 +39,9 @@ export class EstanteService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <Estante[]> {
+   getWithState(estado): Observable <Estante[]> {
 
-    return this.http.get<Estante[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+    return this.http.get<Estante[]>(this.uri + this.url + '?estado=' + estado);
 
    }
 

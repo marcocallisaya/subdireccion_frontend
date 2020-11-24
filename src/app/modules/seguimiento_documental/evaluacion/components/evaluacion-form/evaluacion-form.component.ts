@@ -92,7 +92,7 @@ export class EvaluacionFormComponent implements OnInit, OnDestroy {
       this.tramite.get()
     ).subscribe( resp => {
       const [resp1] = resp;
-      this.tramites = resp1;
+      this.tramites = resp1.data;
     });
 
   }

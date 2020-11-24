@@ -29,8 +29,8 @@ export class TramiteModalComponent implements OnInit {
   }
 
   cargarTramites(id: number): void {
-    this.servicio.getTramites(id).subscribe(res => {
-      this.tramites = res;
+    this.servicio.getTramites(id).subscribe((res: any) => {
+      this.tramites = res.data;
       console.log(res);
       this.BanderaError = this.verExistencia();
       this.BanderaDatos = true;});

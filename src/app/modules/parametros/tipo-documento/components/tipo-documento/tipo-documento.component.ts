@@ -155,7 +155,7 @@ export class TipoDocumentoComponent implements OnInit, OnDestroy {
   }
 
   desabilitarDocumento(id: number): void {
-    const data = {estado: 'DESAHABILITADO'};
+    const data = {estado: 'DESHABILITADO'};
     this.servicio.changeState(data, id).subscribe(res => {
       console.log(res);
       this.currentPage = 1;

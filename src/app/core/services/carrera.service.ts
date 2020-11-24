@@ -39,9 +39,9 @@ export class CarreraService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <Carrera[]> {
+   getWithState(estado): Observable <Carrera[]> {
 
-    return this.http.get<Carrera[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+    return this.http.get<Carrera[]>(this.uri + this.url + '?estado=' + estado);
 
    }
 

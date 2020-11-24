@@ -4,7 +4,8 @@ export interface Tramite {
     tramite_estado: string;
     referencia: string;
     codigo: string;
-    fecha_limite: number;
+    fecha_limite: Date;
+    dias_Restante: number;
     tipo_tramite_id: number;
     created_at: Date;
     tipo_tramite: any;

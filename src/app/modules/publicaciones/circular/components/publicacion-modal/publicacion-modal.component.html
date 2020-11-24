@@ -1,0 +1,22 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <h4 class="text-center">PUBLICACION DE LA CIRCULAR</h4>
+    </div>
+</div>
+
+
+<div *ngIf="BanderaDatos" class="row mt-2 justify-content-center">
+    <div class="col-12">
+        <input type="file" (change)="cargandoImagen($event.target.files)" multiple>
+    </div>
+   
+</div>
+<div *ngIf="!BanderaDatos" class="loader">
+    <div class="row">
+        <div class="col-12">
+            <p>Subiendo Circular</p>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+    </div>
+   
+</div>

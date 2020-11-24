@@ -39,9 +39,9 @@ export class UbicacionService {
 
    }
 
-   getAmongDates(fechaInicial, fechaFinal): Observable <Ubicacion[]> {
+   getWithState(estado): Observable <Ubicacion[]> {
 
-    return this.http.get<Ubicacion[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+    return this.http.get<Ubicacion[]>(this.uri + this.url + '?estado=' + estado);
 
    }
 

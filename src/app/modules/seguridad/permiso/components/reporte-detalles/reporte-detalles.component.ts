@@ -35,8 +35,6 @@ export class ReporteDetallesComponent implements OnInit {
     }, err => console.log(err));
   }
 
-
-
   onNoClick(): void {
     this.dialogRef.close();
   }

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DistritoService } from 'src/app/core/services/distrito.service';
 import { Distrito } from 'src/app/shared/models/distrito.model';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reporte-detalles',
@@ -16,6 +15,7 @@ export class ReporteDetallesComponent implements OnInit {
   BanderaVista: boolean;
   distritos: Distrito[];
   myForm: FormGroup; // formulario reactivo
+  estados = ['HABILITADO', 'DESHABILITADO'];
 
   constructor(public dialogRef: MatDialogRef<ReporteDetallesComponent>,
               private servicio: DistritoService,
@@ -28,8 +28,7 @@ export class ReporteDetallesComponent implements OnInit {
 
   generatePDF(): void {
     this.BanderaVista = false;
-    const data = {data: this.distritos, fechaInicial: this.myForm.get('fechaInicial').value,
-                                         fechaFinal: this.myForm.get('fechaFinal').value };
+    const data = {data: this.distritos, estado: this.myForm.get('estado').value };
     this.servicio.generateReportPdf(data).subscribe(res => {
       console.log(res);
       this.onNoClick();
@@ -41,41 +40,25 @@ export class ReporteDetallesComponent implements OnInit {
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      fechaInicial: ['', Validators.required],
-      fechaFinal: ['', Validators.required]
+      estado: ['']
     });
   }
 
   mostrarReporte(): void {
-    const inicio = this.myForm.get('fechaInicial').value;
-    const final = this.myForm.get('fechaFinal').value;
-    this.servicio.getAmongDates(inicio, final).subscribe(res => {
+    const estado = this.myForm.get('estado').value;
+    this.servicio.getWithState(estado).subscribe(res => {
       this.distritos = res;
+      console.log(res);
       this.BanderaDatos = false;
       this.BanderaVista = true; }, err => {
         console.log(err);
-        const errores =  this.tratarErrores(err.error.errors);
-        this.mostrarError(errores); });
+       });
   }
 
-  tratarErrores(errores): string {
-    let datos = '';
-    if (errores.fechaFinal !=  null) {
-      const error = '<div>' + errores.fechaFinal[0] + '</div> <br>';
-      datos = datos.concat(error);
-    }
-    return datos;
+  atras(): void {
+    this.BanderaDatos = true;
+    this.BanderaVista = false;
   }
-
-  mostrarError(errores): void {
-    console.log(errores);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error...',
-      html: errores
-    });
-  }
-
 
   onNoClick(): void {
     this.dialogRef.close();

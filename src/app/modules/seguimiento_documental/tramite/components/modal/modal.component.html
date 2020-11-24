@@ -2,7 +2,9 @@
     <div class="col-7">
      <h1 mat-dialog-title> Información del Tramite </h1>
     </div>
- 
+    <div class="col-2">
+      <span  [ngClass]="['badge',colorEstado(data.created_at, data.fecha_limite)]">{{titulo}}</span>
+    </div>
   </div>
   
    <div mat-dialog-content class="mat-typography">
@@ -31,7 +33,7 @@
         
        </div>
        <div class="col-sm-6">
-         <h4 > <b>Fecha Limite :</b>   {{data.fecha_limite | date: 'dd/MM/yyyy'}}</h4>
+         <h4 > <b>Dias restantes :</b>   {{data.dias_Restante}}</h4>
        </div>
        
      </div>
