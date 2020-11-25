@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ConstantesService } from 'src/app/config/constantes.service';
 import { Estante, ListaEstante } from 'src/app/shared/models/estante.model';
 import { map } from 'rxjs/operators';
+import { Ubicacion } from 'src/app/shared/models/ubicacion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,12 @@ export class EstanteService {
    getWithState(estado): Observable <Estante[]> {
 
     return this.http.get<Estante[]>(this.uri + this.url + '?estado=' + estado);
+
+   }
+
+   getUbicaciones(id: number): Observable <Ubicacion[]> {
+
+    return this.http.get<Ubicacion[]>(this.uri + this.url + '/' + id + '/ubicaciones');
 
    }
 

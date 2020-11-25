@@ -24,4 +24,14 @@ export class CargaImagenService {
     return this.http.post(uri, formData);
 
   }
+
+  public postImagen(imagenParaSubir: File, id: number): any {
+
+    const uri = this.uri +  'centro_formacion/' + id + '/imagen';
+    const formData = new FormData();
+    formData.append('imagen', imagenParaSubir, imagenParaSubir.name);
+    return this.http.post(uri, formData);
+
+  }
+
 }

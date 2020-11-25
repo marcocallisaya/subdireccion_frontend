@@ -4,11 +4,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { ConstantesService } from 'src/app/config/constantes.service';
 import { CentroFormacionService } from 'src/app/core/services/centro-formacion.service';
 import { DistritoService } from 'src/app/core/services/distrito.service';
 import { CentroFormacion } from 'src/app/shared/models/centro_formacion.model';
 import { Distrito } from 'src/app/shared/models/distrito.model';
 import Swal from 'sweetalert2';
+
+
 
 @Component({
   selector: 'app-centro-formacion-form',
@@ -17,7 +20,7 @@ import Swal from 'sweetalert2';
 })
 export class CentroFormacionFormComponent implements OnInit, OnDestroy {
 
-  BanderaDatos: boolean;
+  BanderaDatos = false;
 
   centro$: Subscription = new Subscription();
 
@@ -37,12 +40,15 @@ export class CentroFormacionFormComponent implements OnInit, OnDestroy {
 
   turnos = ['MAÑANA', 'TARDE', 'NOCHE'];
 
+
+
   constructor(private fb: FormBuilder,
               private servicio: CentroFormacionService,
               private distrito: DistritoService,
               private route: ActivatedRoute,
               private router: Router,
-              private location: Location) { }
+              private location: Location,
+              private url: ConstantesService) { }
 
 
 
@@ -70,11 +76,13 @@ export class CentroFormacionFormComponent implements OnInit, OnDestroy {
       } else {
         // actualizar
         this.centro = res.data;
+        console.log(res.data);
         this.BanderaBoton = true;
         this.BanderaTitulo = 'ACTUALIZACION';
       }
-      this.cargarFormulario();
+
       this.BanderaDatos = true;
+      this.cargarFormulario();
     }));
   }
 
@@ -83,8 +91,8 @@ export class CentroFormacionFormComponent implements OnInit, OnDestroy {
       nombre: [this.centro?.nombre || '', Validators.required],
       sie: [this.centro?.sie || '', Validators.required],
       turno: [this.centro?.turno || '', Validators.required],
-      latitud: [this.centro?.latitud || '', Validators.required],
-      longitud: [this.centro?.longitud || '', Validators.required],
+      latitud: [this.centro?.latitud || ''],
+      longitud: [this.centro?.longitud || ''],
       direccion: [this.centro?.direccion || '', Validators.required],
       telefono: [this.centro?.telefono || '', Validators.required],
       distrito_id: [this.centro?.distrito_id || '', Validators.required]
@@ -93,6 +101,7 @@ export class CentroFormacionFormComponent implements OnInit, OnDestroy {
 
 
   enviar(myForm): void {
+
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
@@ -157,6 +166,7 @@ export class CentroFormacionFormComponent implements OnInit, OnDestroy {
   atras(): void {
     this.location.back();
   }
+
 
   ngOnDestroy(): void {
     this.centro$.unsubscribe();

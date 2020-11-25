@@ -4,6 +4,7 @@ import { DistritoComponent } from './components/distrito/distrito.component';
 import { DistritoFormComponent } from './components/distrito-form/distrito-form.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { CentroModalComponent } from './components/centro-modal/centro-modal.component';
 
 const routes: Routes = [
   {path: '', component: DistritoComponent},
@@ -17,4 +18,4 @@ const routes: Routes = [
 })
 export class DistritoRoutingModule { }
 
-export const componentes = [DistritoComponent, DistritoFormComponent, ModalComponent, ReporteDetallesComponent];
+export const componentes = [DistritoComponent, DistritoFormComponent, ModalComponent, ReporteDetallesComponent, CentroModalComponent];

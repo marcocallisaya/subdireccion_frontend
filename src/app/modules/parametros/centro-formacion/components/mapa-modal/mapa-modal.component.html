@@ -1,0 +1,17 @@
+<h6 class="text-center"> <b>Ubica tu dirección con el cursor en el Mapa</b> </h6>
+<div class="map-container">
+  <div *ngIf="BanderaBoton" class="map-marker-centered"></div>
+    <div id='mapid'></div>
+</div>
+<div class="row justify-content-center mt-2">
+       
+    <div class="col-3 ">
+        <button class="ancho-completo" mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+    </div>
+    <div class="col-3">
+        <button class="ancho-completo" mat-raised-button color="accent" (click)="editar()">Actualizar Ubicacion</button>
+    </div>
+    <div class="col-3">
+        <button class="ancho-completo" mat-raised-button color="primary" (click)="actualizar()">Confirmar Ubicacion</button>
+    </div>
+  </div>

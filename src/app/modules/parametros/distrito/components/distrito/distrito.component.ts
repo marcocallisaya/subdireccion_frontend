@@ -8,6 +8,8 @@ import { Distrito } from 'src/app/shared/models/distrito.model';
 import Swal from 'sweetalert2';
 import { ModalComponent } from '../modal/modal.component';
 import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.component';
+import {CentroFormacion} from 'src/app/shared/models/centro_formacion.model';
+import { CentroModalComponent } from '../centro-modal/centro-modal.component';
 
 @Component({
   selector: 'app-distrito',
@@ -33,6 +35,7 @@ export class DistritoComponent implements OnInit, OnDestroy {
               {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
               {nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open'},
               {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
+              {nombre: 'centros', boton: 'accent', icono: 'fas fa-school'},
               {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
 
@@ -86,6 +89,10 @@ export class DistritoComponent implements OnInit, OnDestroy {
     this.dialog.open(ModalComponent, {width: '40vw', data:  distrito });
   }
 
+  verCentros(centros: CentroFormacion[]): void {
+    this.dialog.open(CentroModalComponent, {width: '35vw', maxHeight: '80vh', data:  centros });
+  }
+
   cargar(data): void {
     switch (data.tipoAccion) {
       case 'ver':
@@ -99,6 +106,9 @@ export class DistritoComponent implements OnInit, OnDestroy {
         break;
       case 'habilitar':
         this.habilitarDocumento(data.identificador);
+        break;
+      case 'centros':
+        this.verCentros(data.informacion.centros);
         break;
       default:
         this.desabilitarDocumento(data.identificador);

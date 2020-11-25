@@ -4,6 +4,7 @@ export interface Carrera {
     descripcion: string;
     estado: string;
     created_at: Date;
+    pivot: any;
 }
 
 export interface ListaCarrera {

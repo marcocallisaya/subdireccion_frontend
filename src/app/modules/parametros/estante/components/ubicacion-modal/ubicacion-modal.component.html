@@ -1,0 +1,45 @@
+<ng-container *ngIf="BanderaDatos else vacio">
+    <div  *ngIf="BanderaError" class="lista">
+        <div class="row justify-content-center" >
+            <div class="col-3">
+             <h1 mat-dialog-title> Ubicaciones   </h1>
+            </div>
+         
+          </div>
+          
+           <div *ngFor="let item of ubicaciones" mat-dialog-content class="mat-typography">
+             <div class="row clearfix">
+               <div class="col-sm-12 col-md-3">
+                 <h4> <b>Codigo :</b>  {{item.codigo}}</h4>
+                
+               </div>
+               <div class="col-sm-12 col-md-5">
+                <h4 > <b>Disponibilidad :</b>   {{item.disponibilidad}}</h4>
+                  
+                 </div>
+                 <div class="col-sm-12 col-md-4">
+                    <h4> <b>Color :</b>  {{item.color}}</h4>
+                   
+                  </div>
+             </div>
+             <h6>***********************************************************************************************************************************************************</h6>
+           </div>
+             <div class="row justify-content-center">
+               
+               <div class="col-3">
+                   <button mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+               </div>
+             </div>
+    </div>
+    <div *ngIf="!BanderaError" class="error">
+        <div class="row justify-content-center" >
+            <div class="col-12">
+             <h1 mat-dialog-title> ESTE ESTANTE AUN NO TIENE UBICACIONES  <i class="fas fa-exclamation-triangle"></i></h1>
+            </div>
+         
+          </div>
+    </div>
+</ng-container>
+<ng-template #vacio>
+    <app-spinner></app-spinner>
+ </ng-template>

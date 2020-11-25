@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { UbicacionService } from 'src/app/core/services/ubicacion.service';
 import { Ubicacion } from 'src/app/shared/models/ubicacion.model';
 import Swal from 'sweetalert2';
+import { DocumentoModalComponent } from '../documento-modal/documento-modal.component';
 import { ModalComponent } from '../modal/modal.component';
 import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.component';
 
@@ -33,6 +34,7 @@ export class UbicacionComponent implements OnInit, OnDestroy {
               {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
               {nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open'},
               {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
+              {nombre: 'documentos', boton: 'accent', icono: 'fas fa-file-alt'},
               {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
 
@@ -86,6 +88,10 @@ export class UbicacionComponent implements OnInit, OnDestroy {
     this.dialog.open(ModalComponent, {width: '40vw', data:  ubicacion });
   }
 
+  verDocumentos(documentos): void {
+    this.dialog.open(DocumentoModalComponent, {width:'50vw', maxHeight : '80vh', data:  documentos });
+  }
+
   cargar(data): void {
     switch (data.tipoAccion) {
       case 'ver':
@@ -99,6 +105,9 @@ export class UbicacionComponent implements OnInit, OnDestroy {
         break;
       case 'habilitar':
         this.habilitarDocumento(data.identificador);
+        break;
+      case 'documentos':
+        this.verDocumentos(data.informacion.documentos);
         break;
       default:
         this.desabilitarDocumento(data.identificador);

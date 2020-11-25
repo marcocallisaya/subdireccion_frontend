@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {Ubicacion, ListaUbicacion} from '../../shared/models/ubicacion.model';
 import {ConstantesService} from '../../config/constantes.service';
 import { map } from 'rxjs/operators';
+import { Documento } from 'src/app/shared/models/documento.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,12 @@ export class UbicacionService {
    getWithState(estado): Observable <Ubicacion[]> {
 
     return this.http.get<Ubicacion[]>(this.uri + this.url + '?estado=' + estado);
+
+   }
+
+   getDocumentos(id: number): Observable <Documento[]> {
+
+    return this.http.get<Documento[]>(this.uri + this.url + '/' + id + '/documentos');
 
    }
 

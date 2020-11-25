@@ -1,7 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CargaImagenService } from 'src/app/core/services/subir-archivo.service';
 import Swal from 'sweetalert2';
+import { InstructivoComponent } from '../instructivo/instructivo.component';
 
 @Component({
   selector: 'app-publicacion-modal',
@@ -14,6 +15,8 @@ export class PublicacionModalComponent implements OnInit {
   public resultadoCarga;
   BanderaDatos = true;
   uri = 'instructivo';
+ 
+
   constructor(private enviandoImagen: CargaImagenService,
               public dialogRef: MatDialogRef<PublicacionModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any){}

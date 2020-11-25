@@ -5,9 +5,11 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {EstanteService} from 'src/app/core/services/estante.service';
 import { Estante } from 'src/app/shared/models/estante.model';
+import { Ubicacion } from 'src/app/shared/models/ubicacion.model';
 import Swal from 'sweetalert2';
 import { ModalComponent } from '../modal/modal.component';
 import {ReporteDetallesComponent} from '../reporte-detalles/reporte-detalles.component';
+import {UbicacionModalComponent} from '../ubicacion-modal/ubicacion-modal.component';
 
 @Component({
   selector: 'app-estante',
@@ -33,6 +35,7 @@ export class EstanteComponent implements OnInit, OnDestroy {
               {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
               {nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open'},
               {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
+              {nombre: 'ubicaciones', boton: 'accent', icono: 'fas fa-folder'},
               {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
 
@@ -99,6 +102,9 @@ export class EstanteComponent implements OnInit, OnDestroy {
         break;
       case 'habilitar':
         this.habilitarDocumento(data.identificador);
+        break;
+      case 'ubicaciones':
+        this.verUbicaciones(data.informacion.ubicaciones);
         break;
       default:
         this.desabilitarDocumento(data.identificador);
@@ -192,9 +198,10 @@ export class EstanteComponent implements OnInit, OnDestroy {
     this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
   }
 
-/*   abrirReporteReferencia(): void  {
-    this.dialog.open(ReporteReferenciaComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
-  } */
+  verUbicaciones(ubicaciones: Ubicacion[]): void {
+    this.dialog.open(UbicacionModalComponent, {width:  '50vw', maxHeight: '90vh', data:  ubicaciones});
+  }
+
 
   ngOnDestroy(): void {
     this.estante$.unsubscribe();

@@ -1,0 +1,82 @@
+<div class="row justify-content-center">
+    <div class="col-12">
+        <h5 class="text-center">CARRERAS TECNICAS</h5>
+        <mat-card  class="example-card">
+            
+            <mat-card-content>
+                <form [formGroup]="myForm">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-3">
+                            <mat-form-field class="ancho-completo">
+                                <mat-label>Nivel*</mat-label>
+                                <mat-select formControlName="nivel" name="nivel">
+                                    <mat-option *ngFor="let item of niveles" [value]="item">
+                                        {{item}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-9">
+                            <mat-form-field class="ancho-completo">
+                                <input (keyup)="imprimir(nombre.value)" type="text"
+                                       placeholder="Carrera"
+                                       aria-label="Number"
+                                       matInput
+                                       [(ngModel)]="nameLiteral"
+                                       [ngModelOptions]="{standalone: true}"
+                                       [matAutocomplete]="auto"
+                                       #nombre>
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                  <mat-option (click)="selectOpt(option)" *ngFor="let option of filteredProducts" [value]="option.id">
+                                    {{option.nombre}} 
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-4">
+                            <button class="ancho-completo" mat-raised-button color="primary" [disabled]="!BanderaBoton" (click)="enviar()">Adicionar Carrera</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="ancho-completo" mat-raised-button color="warn" (click)="onNoClick()"> Cerrar </button>
+                        </div>
+                    </div>
+                </form>
+            </mat-card-content>
+           
+        </mat-card>
+       
+            <mat-card *ngIf="BanderaDatos" class="lista">
+                <mat-card-content>
+                    <table style="width:100%">
+                        <tr>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Descripcion</th>
+                            <th class="text-center">Nivel</th>
+                            <th class="text-center">Eliminar</th>
+                        </tr>
+                        <tr class="body" *ngFor="let item of carreras">
+                            <td class="text-center ">{{item.nombre}}</td>
+                            <td class="text-justify ">{{item.descripcion}}</td>
+                            <td class="text-center ">{{item.pivot.nivel}} </td>
+                            <td class="text-center "> <button (click)="eliminar(item.id)"  mat-mini-fab color="warn" > <i class="fas fa-trash-alt"></i>
+                              </button></td>
+                        </tr>
+                    </table>
+                </mat-card-content>
+            </mat-card>
+             <mat-card *ngIf="!BanderaDatos">
+               
+                    <div class="row justify-content-center" >
+                      <div class="col-12">
+                       <h1 mat-dialog-title> ESTE CENTRO AUN NO TIENE CARRERAS  <i class="fas fa-exclamation-triangle"></i></h1>
+                      </div>
+                   
+                    </div>
+                 
+             </mat-card>
+
+            </div>
+        </div>
+    

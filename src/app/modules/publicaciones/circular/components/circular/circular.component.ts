@@ -38,7 +38,7 @@ export class CircularComponent implements OnInit, OnDestroy {
               {nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open'},
               {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
               {nombre: 'funcionario', boton: 'warn', icono: 'fas fa-user-alt'},
-              {nombre: 'publicar', boton: 'primary', icono: 'fas fa-upload'},
+              {nombre: 'publicar', boton: 'primary', icono: 'fas fa-file-upload'},
               {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
 
@@ -184,7 +184,10 @@ export class CircularComponent implements OnInit, OnDestroy {
   }
 
   publicar(id): void {
-    this.dialog.open(PublicacionModalComponent, {width: '40vw', data:  id });
+    const dialogRef = this.dialog.open(PublicacionModalComponent, {width: '40vw', data:  id });
+    dialogRef.afterClosed().subscribe(result => {
+     this.cargarTabla(5, 1);
+    });
   }
 
    // evento de paginacion

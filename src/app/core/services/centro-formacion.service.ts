@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConstantesService } from 'src/app/config/constantes.service';
+import { Carrera } from 'src/app/shared/models/carrera.model';
 import {CentroFormacion, ListaCentroFormacion} from 'src/app/shared/models/centro_formacion.model';
 
 @Injectable({
@@ -45,6 +46,11 @@ export class CentroFormacionService {
 
    }
 
+   getCarreras(id: number, body): Observable <Carrera[]> {
+
+    return this.http.post<Carrera[]>(this.uri + this.url + '/' + id + '/carreras', body);
+
+   }
 
    send(body: CentroFormacion): Observable <CentroFormacion> {
 
@@ -58,7 +64,7 @@ export class CentroFormacionService {
 
    }
 
-   update(body: CentroFormacion, id: number): Observable <CentroFormacion> {
+   update(body: any, id: number): Observable <CentroFormacion> {
 
     return this.http.put<CentroFormacion>(this.uri + this.url + '/' + id , body);
 
@@ -75,6 +81,12 @@ export class CentroFormacionService {
   return this.http.delete<CentroFormacion>(this.uri + this.url + '/' + id );
 
   }
+
+  deleteCarrera(id: number, body): Observable <Carrera[]> {
+
+    return this.http.post<Carrera[]>(this.uri + this.url + '/' + id + '/eliminar', body);
+
+   }
 
   generateReportPdf( body): any {
     return this.http.post(this.uri + this.url + '/reporte' , body , {

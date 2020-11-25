@@ -4,8 +4,12 @@ import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CentroFormacionService } from 'src/app/core/services/centro-formacion.service';
+import { Carrera } from 'src/app/shared/models/carrera.model';
 import { CentroFormacion } from 'src/app/shared/models/centro_formacion.model';
 import Swal from 'sweetalert2';
+import { CarreraModalComponent } from '../carrera-modal/carrera-modal.component';
+import { FotoModalComponent } from '../foto-modal/foto-modal.component';
+import { MapaModalComponent } from '../mapa-modal/mapa-modal.component';
 import { ModalComponent } from '../modal/modal.component';
 import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.component';
 
@@ -26,13 +30,16 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['nombre', 'sie', 'direccion', 'estado'];
+  displayedColumns: string[] = ['nombre', 'sie', 'estado'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
               {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
               {nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open'},
               {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
+              {nombre: 'mapa', boton: 'accent', icono: 'fas fa-map-marked-alt'},
+              {nombre: 'foto', boton: 'primary', icono: 'fas fa-image'},
+              {nombre: 'carreras', boton: 'accent', icono: 'fas fa-university'},
               {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
 
@@ -86,6 +93,28 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
     this.dialog.open(ModalComponent, {width: '40vw', data:  centro });
   }
 
+  verMapa(centro: CentroFormacion): void {
+    const dialogRef = this.dialog.open(MapaModalComponent, {width: '80vw', height: '93vh',  data:  centro });
+    dialogRef.afterClosed().subscribe(result => {
+      this.cargarTabla(5, 1);
+     });
+  }
+
+  verFoto(centro: CentroFormacion): void {
+    const dialogRef = this.dialog.open(FotoModalComponent, {width: '40vw', height: '80vh', data:  centro });
+    dialogRef.afterClosed().subscribe(result => {
+      this.cargarTabla(5, 1);
+     });
+  }
+
+  verCarreras(centro: CentroFormacion): void {
+    const dialogRef = this.dialog.open(CarreraModalComponent, {width: '40vw', maxHeight: '80vh', data:  centro });
+    dialogRef.afterClosed().subscribe(result => {
+      this.cargarTabla(5, 1);
+     });
+  }
+
+
   cargar(data): void {
     switch (data.tipoAccion) {
       case 'ver':
@@ -99,6 +128,15 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
         break;
       case 'habilitar':
         this.habilitarDocumento(data.identificador);
+        break;
+      case 'mapa':
+        this.verMapa(data.informacion);
+        break;
+      case 'foto':
+        this.verFoto(data.informacion);
+        break;
+      case 'carreras':
+        this.verCarreras(data.informacion);
         break;
       default:
         this.desabilitarDocumento(data.identificador);

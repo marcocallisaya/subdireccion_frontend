@@ -4,6 +4,9 @@ import { CentroFormacionComponent } from './components/centro-formacion/centro-f
 import { CentroFormacionFormComponent } from './components/centro-formacion-form/centro-formacion-form.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { MapaModalComponent } from './components/mapa-modal/mapa-modal.component';
+import { FotoModalComponent } from './components/foto-modal/foto-modal.component';
+import { CarreraModalComponent } from './components/carrera-modal/carrera-modal.component';
 
 const routes: Routes = [
   {path: '', component: CentroFormacionComponent},
@@ -17,4 +20,4 @@ const routes: Routes = [
 })
 export class CentroFormacionRoutingModule { }
 
-export const componentes = [CentroFormacionComponent, CentroFormacionFormComponent, ModalComponent, ReporteDetallesComponent];
+export const componentes = [CentroFormacionComponent, CentroFormacionFormComponent, ModalComponent, ReporteDetallesComponent, MapaModalComponent, FotoModalComponent, CarreraModalComponent];

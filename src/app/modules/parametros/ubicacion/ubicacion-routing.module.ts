@@ -4,6 +4,7 @@ import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { UbicacionFormComponent } from './components/ubicacion-form/ubicacion-form.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { DocumentoModalComponent } from './components/documento-modal/documento-modal.component';
 
 const routes: Routes = [
   {path: '', component: UbicacionComponent},
@@ -17,4 +18,4 @@ const routes: Routes = [
 })
 export class UbicacionRoutingModule { }
 
-export const componentes = [UbicacionComponent, ModalComponent, UbicacionFormComponent, ReporteDetallesComponent];
+export const componentes = [UbicacionComponent, ModalComponent, UbicacionFormComponent, ReporteDetallesComponent, DocumentoModalComponent];
