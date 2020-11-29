@@ -1,0 +1,85 @@
+<div class="row mt-5 justify-content-center">
+    <div class="col-6">
+        <mat-card>
+            <mat-card-title> Centros de Educacion Permanente</mat-card-title>
+            <mat-card-content>
+                <form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <mat-form-field class="ancho-completo">
+                                <mat-label>Nombre</mat-label>
+                                <input #nombre matInput placeholder="Ingresa un nombre">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <mat-form-field class="ancho-completo">
+                                <mat-label>Distrito</mat-label>
+                                <mat-select #distrito [(value)]="distritoBandera" required>
+                                    <mat-option selected value=""> Todos </mat-option>
+                                    <mat-option *ngFor="let item of distritos" [value]="item.id">
+                                        {{item.nombre}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="ancho-completo">
+                                <mat-label>Sie</mat-label>
+                                <input #sie matInput placeholder="Ingresa un sie">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="ancho-completo">
+                                <mat-label>Turno</mat-label>
+                                <mat-select #turno required [(value)]="turnoBandera">
+                                    <mat-option value=""> Todos </mat-option>
+                                    <mat-option *ngFor="let item of turnos" [value]="item">
+                                        {{item}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value, sie.value, distrito.value, turno.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
+                        </div>
+                    </div>  
+                </form>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<div *ngIf="BanderaDatos" class="row mt-3 justify-content-center">
+<div class="col-9 row justify-content-center">
+    <div *ngFor="let item of centros" class="col-4 mt-2">
+        <mat-card  class="centro">
+            <mat-card-title> {{item.nombre}}</mat-card-title>
+            <img mat-card-image [src]="verificarImagen(item.url)" alt="Imagen del centro">
+            <mat-card-content>
+               <h6> <b>Sie : </b> {{item.sie}}</h6>
+               <h6> <b>Turno : </b> {{item.turno}}</h6>
+               <h6> <b>Tipo de centro : </b> {{item.tipo}}</h6>
+               <h6> <b>Direccion : </b> {{item.direccion}}</h6>
+               <h6> <b>Telefono : </b> {{item.telefono}}</h6>
+               <h6> <b>Distrito : </b> {{item.distrito.nombre}}</h6>
+            </mat-card-content>
+            <mat-card-actions>
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <button class="ancho-completo" (click)="verCarreras(item)"  mat-raised-button color="primary">Carreras <i class="fas fa-building"></i></button>
+                    </div>
+                    <div class="col-6">
+                        <button class="ancho-completo" (click)="verMapa(item)"  mat-raised-button color="accent">Mapa <i class="fas fa-map-marked-alt"></i></button>
+                    </div>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+</div>
+<div *ngIf="spiner">
+    <app-spinner></app-spinner>
+</div>

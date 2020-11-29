@@ -6,11 +6,12 @@ import { SolicitanteComponent } from './components/solicitante/solicitante.compo
 import {ModalComponent} from './components/modal/modal.component';
 import { TramiteModalComponent } from './components/tramite-modal/tramite-modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '',  component: SolicitanteComponent},
-  {path: 'form', component: SolicitanteFormComponent},
-  {path: 'form/:id', component: SolicitanteFormComponent}
+  {path: '',  component: SolicitanteComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_solicitante' }},
+  {path: 'form', component: SolicitanteFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_solicitante' }},
+  {path: 'form/:id', component: SolicitanteFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_solicitante' }}
 ];
 
 @NgModule({

@@ -20,7 +20,12 @@ import {ReporteDetallesComponent} from '../reporte-detalles/reporte-detalles.com
 })
 export class DerivacionComponent implements OnInit, OnDestroy {
 
-  BanderaNombre;;
+  // permisos locales
+  consultarPermiso = 'consultar_derivacion';
+  reportePermiso = 'reporte_derivacion';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
+  BanderaNombre;
 
   tipo$: Subscription = new Subscription();
 
@@ -35,7 +40,7 @@ export class DerivacionComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['id'];
+  displayedColumns: string[] = ['id', 'referencia'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
@@ -65,7 +70,7 @@ export class DerivacionComponent implements OnInit, OnDestroy {
     this.tipo$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
       {
        this.dataSource = res.data; console.log(res);
-       this.length = res.total;
+       this.length = res.meta.pagination.total;
        this.BanderaDatos = true;
       });
     }
@@ -91,21 +96,27 @@ export class DerivacionComponent implements OnInit, OnDestroy {
     this.tipo$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
-     this.length = res.total;
+     this.length = res.meta.pagination.total;
     });
   }
 
    // ver modelo
    ver(derivacion: Derivacion): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  derivacion });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  derivacion });
+    }
   }
 
   verFuncionario(funcionario: Funcionario): void {
-    this.dialog.open(FuncionarioModalComponent, {width: '40vw', data:  funcionario });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(FuncionarioModalComponent, {width: '40vw', data:  funcionario });
+    }
   }
 
   verTramite(tramite: Tramite): void {
-    this.dialog.open(TramiteModalComponent, {width: '40vw', data:  tramite });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(TramiteModalComponent, {width: '40vw', data:  tramite });
+    }
   }
 
   imprimir(name): void {
@@ -169,7 +180,13 @@ export class DerivacionComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {width:  '60vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {width:  '60vw', maxHeight: '90vh'});
+    }
+  }
+
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
   }
 
   ngOnDestroy(): void {

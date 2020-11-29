@@ -16,6 +16,13 @@ import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.c
 })
 export class UsuarioComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  eliminarPermiso = 'eliminar_usuario';
+  consultarPermiso = 'consultar_usuario';
+  editarPermiso = 'editar_usuario';
+  reportePermiso = 'reporte_usuario';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos ;
 
   usuario$: Subscription = new Subscription();
@@ -26,7 +33,7 @@ export class UsuarioComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['usuario', 'estado'];
+  displayedColumns: string[] = ['usuario', 'rol' , 'estado'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
@@ -55,8 +62,9 @@ export class UsuarioComponent implements OnInit, OnDestroy {
   cargarTabla(size: number, current: number): void {
     this.usuario$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
       {
+       console.log(res);
        this.dataSource = res.data; console.log(res);
-       this.length = res.total;
+       this.length = res.meta.pagination.total;
        this.BanderaDatos = true;
       });
     }
@@ -78,12 +86,14 @@ export class UsuarioComponent implements OnInit, OnDestroy {
     this.usuario$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
-     this.length = res.total;
+     this.length = res.meta.pagination.total;
     });
   }
 
   ver(usuario: Usuario): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  usuario });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  usuario });
+    }
   }
 
   cargar(data): void {
@@ -106,27 +116,29 @@ export class UsuarioComponent implements OnInit, OnDestroy {
   }
 
   eliminar(data: any): void {
-    const estado = this.verificarEstado(data.informacion.estado);
-    if (!estado) {
-      Swal.fire({
-        title: 'Estas Seguro?',
-        text: 'Una vez eliminado no se puede recuperar',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, eliminalo!'
-      }).then((result) => {
-        this.confirmarEliminacion(result, data.identificador);
-      });
-    }
-    else {
-      Swal.fire(
-        'Error',
-        `Debes deshabilitar el usuario antes de eliminarlo`,
-        'error'
-      );
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const estado = this.verificarEstado(data.informacion.estado);
+      if (!estado) {
+        Swal.fire({
+          title: 'Estas Seguro?',
+          text: 'Una vez eliminado no se puede recuperar',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+          this.confirmarEliminacion(result, data.identificador);
+        });
+      }
+      else {
+        Swal.fire(
+          'Error',
+          `Debes deshabilitar el usuario antes de eliminarlo`,
+          'error'
+        );
+      }
     }
   }
 
@@ -146,20 +158,23 @@ export class UsuarioComponent implements OnInit, OnDestroy {
   }
 
   habilitarDocumento(id: number): void {
-    const data = {estado: 'HABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
-
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'HABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   desabilitarDocumento(id: number): void {
-    const data = {estado: 'DESHABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'DESHABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   verificarEstado(estado: string): boolean {
@@ -189,12 +204,14 @@ export class UsuarioComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '75vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '75vw', maxHeight: '90vh'});
+    }
   }
 
-/*   abrirReporteReferencia(): void  {
-    this.dialog.open(ReporteReferenciaComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
-  } */
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
+  }
 
   ngOnDestroy(): void {
     this.usuario$.unsubscribe();

@@ -20,6 +20,13 @@ import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.c
 })
 export class CentroFormacionComponent implements OnInit, OnDestroy {
 
+// permisos locales
+  eliminarPermiso = 'eliminar_centro_formacion';
+  consultarPermiso = 'consultar_centro_formacion';
+  editarPermiso = 'editar_centro_formacion';
+  reportePermiso = 'reporte_centro_formacion';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos ;
 
   centro$: Subscription = new Subscription();
@@ -30,7 +37,7 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['nombre', 'sie', 'estado'];
+  displayedColumns: string[] = ['nombre', 'sie', 'tipo', 'estado'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
@@ -90,28 +97,36 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
   }
 
   ver(centro: CentroFormacion): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  centro });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  centro });
+    }
   }
 
   verMapa(centro: CentroFormacion): void {
-    const dialogRef = this.dialog.open(MapaModalComponent, {width: '80vw', height: '93vh',  data:  centro });
-    dialogRef.afterClosed().subscribe(result => {
-      this.cargarTabla(5, 1);
-     });
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const dialogRef = this.dialog.open(MapaModalComponent, {width: '80vw', height: '93vh',  data:  centro });
+      dialogRef.afterClosed().subscribe(result => {
+        this.cargarTabla(5, 1);
+       });
+    }
   }
 
   verFoto(centro: CentroFormacion): void {
-    const dialogRef = this.dialog.open(FotoModalComponent, {width: '40vw', height: '80vh', data:  centro });
-    dialogRef.afterClosed().subscribe(result => {
-      this.cargarTabla(5, 1);
-     });
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const dialogRef = this.dialog.open(FotoModalComponent, {width: '40vw', height: '80vh', data:  centro });
+      dialogRef.afterClosed().subscribe(result => {
+        this.cargarTabla(5, 1);
+       });
+    }
   }
 
   verCarreras(centro: CentroFormacion): void {
-    const dialogRef = this.dialog.open(CarreraModalComponent, {width: '40vw', maxHeight: '80vh', data:  centro });
-    dialogRef.afterClosed().subscribe(result => {
-      this.cargarTabla(5, 1);
-     });
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const dialogRef = this.dialog.open(CarreraModalComponent, {width: '40vw', maxHeight: '80vh', data:  centro });
+      dialogRef.afterClosed().subscribe(result => {
+        this.cargarTabla(5, 1);
+       });
+    }
   }
 
 
@@ -144,27 +159,29 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
   }
 
   eliminar(data: any): void {
-    const estado = this.verificarEstado(data.informacion.estado);
-    if (!estado) {
-      Swal.fire({
-        title: 'Estas Seguro?',
-        text: 'Una vez eliminado no se puede recuperar',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, eliminalo!'
-      }).then((result) => {
-        this.confirmarEliminacion(result, data.identificador);
-      });
-    }
-    else {
-      Swal.fire(
-        'Error',
-        `Debes deshabilitar el centro antes de eliminarlo`,
-        'error'
-      );
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const estado = this.verificarEstado(data.informacion.estado);
+      if (!estado) {
+        Swal.fire({
+          title: 'Estas Seguro?',
+          text: 'Una vez eliminado no se puede recuperar',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+          this.confirmarEliminacion(result, data.identificador);
+        });
+      }
+      else {
+        Swal.fire(
+          'Error',
+          `Debes deshabilitar el centro antes de eliminarlo`,
+          'error'
+        );
+      }
     }
   }
 
@@ -184,20 +201,23 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
   }
 
   habilitarDocumento(id: number): void {
-    const data = {estado: 'HABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
-
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'HABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   desabilitarDocumento(id: number): void {
-    const data = {estado: 'DESHABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'DESHABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   verificarEstado(estado: string): boolean {
@@ -227,12 +247,14 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    }
   }
 
-/*   abrirReporteReferencia(): void  {
-    this.dialog.open(ReporteReferenciaComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
-  } */
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
+  }
 
   ngOnDestroy(): void {
     this.centro$.unsubscribe();

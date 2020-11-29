@@ -50,8 +50,8 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.cargarDatos();
     this.cargarDatosAdicionales();
+    this.cargarDatos();
   }
 
   cargarDatos(): void {

@@ -69,7 +69,7 @@ export class CarreraModalComponent implements OnInit {
     });
   }
 
-  enviar(id): void {
+  enviar(): void {
     this.myForm.controls.carrera_id.setValue(this.codigo);
     console.log(this.myForm.value);
     this.servicio.getCarreras(this.data.id, this.myForm.value).subscribe(res => {

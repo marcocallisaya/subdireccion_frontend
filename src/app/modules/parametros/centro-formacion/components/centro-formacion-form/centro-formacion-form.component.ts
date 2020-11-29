@@ -40,7 +40,7 @@ export class CentroFormacionFormComponent implements OnInit, OnDestroy {
 
   turnos = ['MAÑANA', 'TARDE', 'NOCHE'];
 
-
+  tipos = ['CEA', 'CEE', 'CEP'];
 
   constructor(private fb: FormBuilder,
               private servicio: CentroFormacionService,
@@ -91,8 +91,7 @@ export class CentroFormacionFormComponent implements OnInit, OnDestroy {
       nombre: [this.centro?.nombre || '', Validators.required],
       sie: [this.centro?.sie || '', Validators.required],
       turno: [this.centro?.turno || '', Validators.required],
-      latitud: [this.centro?.latitud || ''],
-      longitud: [this.centro?.longitud || ''],
+      tipo: [this.centro?.tipo || '', Validators.required],
       direccion: [this.centro?.direccion || '', Validators.required],
       telefono: [this.centro?.telefono || '', Validators.required],
       distrito_id: [this.centro?.distrito_id || '', Validators.required]

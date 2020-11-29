@@ -16,6 +16,13 @@ import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.c
 })
 export class TipoTramiteComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  eliminarPermiso = 'eliminar_tipo_tramite';
+  consultarPermiso = 'consultar_tipo_tramite';
+  editarPermiso = 'editar_tipo_tramite';
+  reportePermiso = 'reporte_tipo_tramite';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos ;
 
   tipo$: Subscription = new Subscription();
@@ -83,7 +90,9 @@ export class TipoTramiteComponent implements OnInit, OnDestroy {
   }
 
   ver(tipo: TipoTramiteService): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  tipo });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  tipo });
+    }
   }
 
   cargar(data): void {
@@ -106,27 +115,29 @@ export class TipoTramiteComponent implements OnInit, OnDestroy {
   }
 
   eliminar(data: any): void {
-    const estado = this.verificarEstado(data.informacion.estado);
-    if (!estado) {
-      Swal.fire({
-        title: 'Estas Seguro?',
-        text: 'Una vez eliminado no se puede recuperar',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, eliminalo!'
-      }).then((result) => {
-        this.confirmarEliminacion(result, data.identificador);
-      });
-    }
-    else {
-      Swal.fire(
-        'Error',
-        `Debes deshabilitar el tipo de tramite antes de eliminarlo`,
-        'error'
-      );
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const estado = this.verificarEstado(data.informacion.estado);
+      if (!estado) {
+        Swal.fire({
+          title: 'Estas Seguro?',
+          text: 'Una vez eliminado no se puede recuperar',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+          this.confirmarEliminacion(result, data.identificador);
+        });
+      }
+      else {
+        Swal.fire(
+          'Error',
+          `Debes deshabilitar el tipo de tramite antes de eliminarlo`,
+          'error'
+        );
+      }
     }
   }
 
@@ -146,20 +157,23 @@ export class TipoTramiteComponent implements OnInit, OnDestroy {
   }
 
   habilitarDocumento(id: number): void {
-    const data = {estado: 'HABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
-
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'HABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   desabilitarDocumento(id: number): void {
-    const data = {estado: 'DESAHABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'DESAHABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   verificarEstado(estado: string): boolean {
@@ -189,12 +203,14 @@ export class TipoTramiteComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    }
   }
 
-/*   abrirReporteReferencia(): void  {
-    this.dialog.open(ReporteReferenciaComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
-  } */
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
+  }
 
   ngOnDestroy(): void {
     this.tipo$.unsubscribe();

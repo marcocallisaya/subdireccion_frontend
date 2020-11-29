@@ -46,6 +46,16 @@ export class CentroFormacionService {
 
    }
 
+   getQuery(nombre, sie, turno, distrito, tipo): Observable <CentroFormacion[]> {
+
+    return this.http.get<CentroFormacion[]>(this.uri + this.url + '?nombre=' + nombre
+                                                                + '&sie=' + sie
+                                                                + '&turno=' + turno
+                                                                + '&distrito=' + distrito
+                                                                + '&tipo=' + tipo);
+
+   }
+
    getCarreras(id: number, body): Observable <Carrera[]> {
 
     return this.http.post<Carrera[]>(this.uri + this.url + '/' + id + '/carreras', body);

@@ -22,6 +22,11 @@ import { SolicitanteService } from 'src/app/core/services/solicitante.service';
 })
 export class SolicitudComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  consultarPermiso = 'consultar_documento';
+  reportePermiso = 'reporte_documento';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   tipo$: Subscription = new Subscription();
 
   solicitantes: Solicitante[];
@@ -35,7 +40,7 @@ export class SolicitudComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['id'];
+  displayedColumns: string[] = ['id', 'referencia'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
@@ -66,7 +71,7 @@ export class SolicitudComponent implements OnInit, OnDestroy {
     this.tipo$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
       {
        this.dataSource = res.data; console.log(res);
-       this.length = res.total;
+       this.length = res.meta.pagination.total;
        this.BanderaDatos = true;
       });
     }
@@ -84,24 +89,32 @@ export class SolicitudComponent implements OnInit, OnDestroy {
     this.tipo$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
-     this.length = res.total;
+     this.length = res.meta.pagination.total;
     });
   }
 
   ver(solicitud: Solicitud): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  solicitud });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  solicitud });
+    }
   }
 
   verSolicitante(solicitante: Solicitante): void {
-    this.dialog.open(SolicitanteModalComponent, {width: '40vw', data:  solicitante });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(SolicitanteModalComponent, {width: '40vw', data:  solicitante });
+    }
   }
 
   verCentro(centro: CentroFormacion): void {
-    this.dialog.open(CentroFormacionModalComponent, {width: '40vw', data:  centro });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(CentroFormacionModalComponent, {width: '40vw', data:  centro });
+    }
   }
 
   verTramite(tramite: Tramite): void {
-    this.dialog.open(TramiteModalComponent, {width: '40vw', data:  tramite });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(TramiteModalComponent, {width: '40vw', data:  tramite });
+    }
   }
 
   imprimir(name): void {
@@ -167,8 +180,15 @@ export class SolicitudComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
+  if (this.verificarPermisos(this.reportePermiso)) {
     this.dialog.open(ReporteDetallesComponent, {width:  '60vw', maxHeight: '90vh'});
   }
+  }
+
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
+  }
+
 
   ngOnDestroy(): void {
     this.tipo$.unsubscribe();

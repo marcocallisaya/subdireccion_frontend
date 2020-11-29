@@ -5,12 +5,12 @@ import { DocumentoComponent } from './components/documento/documento.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 import { ReporteReferenciaComponent } from './components/reporte-referencia/reporte-referencia.component';
-
+import {AfterLoginService} from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: DocumentoComponent},
-  {path: 'form', component: DocumentoFormComponent},
-  {path: 'form/:id', component: DocumentoFormComponent},
+  {path: '', component: DocumentoComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_documento' }},
+  {path: 'form', component: DocumentoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_documento' }},
+  {path: 'form/:id', component: DocumentoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_documento' }},
 ];
 
 @NgModule({

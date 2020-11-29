@@ -5,11 +5,12 @@ import { ConvocatoriaFormComponent } from './components/convocatoria-form/convoc
 import { ModalComponent } from './components/modal/modal.component';
 import { PublicacionModalComponent } from './components/publicacion-modal/publicacion-modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: ConvocatoriaComponent},
-  {path: 'form', component: ConvocatoriaFormComponent},
-  {path: 'form/:id', component: ConvocatoriaFormComponent}
+  {path: '', component: ConvocatoriaComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_convocatoria' }},
+  {path: 'form', component: ConvocatoriaFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_convocatoria' }},
+  {path: 'form/:id', component: ConvocatoriaFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_convocatoria' }}
 ];
 
 @NgModule({

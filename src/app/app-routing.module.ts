@@ -5,7 +5,7 @@ const routes: Routes = [
   {path: '', loadChildren: () => import(`./modules/publico/publico.module`).then(m => m.PublicoModule) },
   {path: 'publico', loadChildren: () => import(`./modules/publico/publico.module`).then(m => m.PublicoModule) },
   {path: 'sistema', loadChildren: () => import(`./modules/sistema/sistema.module`).then(m => m.SistemaModule) },
-  {path: '**', redirectTo: '', pathMatch: 'full'}
+  {path: '**', redirectTo: 'publico', pathMatch: 'full'}
 ];
 
 @NgModule({

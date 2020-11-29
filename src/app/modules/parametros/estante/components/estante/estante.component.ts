@@ -18,6 +18,13 @@ import {UbicacionModalComponent} from '../ubicacion-modal/ubicacion-modal.compon
 })
 export class EstanteComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  eliminarPermiso = 'eliminar_estante';
+  consultarPermiso = 'consultar_estante';
+  editarPermiso = 'editar_estante';
+  reportePermiso = 'reporte_estante';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos ;
 
   estante$: Subscription = new Subscription();
@@ -86,7 +93,9 @@ export class EstanteComponent implements OnInit, OnDestroy {
   }
 
   ver(estante: Estante): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  estante });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  estante });
+    }
   }
 
   cargar(data): void {
@@ -112,27 +121,29 @@ export class EstanteComponent implements OnInit, OnDestroy {
   }
 
   eliminar(data: any): void {
-    const estado = this.verificarEstado(data.informacion.estado);
-    if (!estado) {
-      Swal.fire({
-        title: 'Estas Seguro?',
-        text: 'Una vez eliminado no se puede recuperar',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, eliminalo!'
-      }).then((result) => {
-        this.confirmarEliminacion(result, data.identificador);
-      });
-    }
-    else {
-      Swal.fire(
-        'Error',
-        `Debes deshabilitar el estante antes de eliminarlo`,
-        'error'
-      );
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const estado = this.verificarEstado(data.informacion.estado);
+      if (!estado) {
+        Swal.fire({
+          title: 'Estas Seguro?',
+          text: 'Una vez eliminado no se puede recuperar',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+          this.confirmarEliminacion(result, data.identificador);
+        });
+      }
+      else {
+        Swal.fire(
+          'Error',
+          `Debes deshabilitar el estante antes de eliminarlo`,
+          'error'
+        );
+      }
     }
   }
 
@@ -152,20 +163,23 @@ export class EstanteComponent implements OnInit, OnDestroy {
   }
 
   habilitarDocumento(id: number): void {
-    const data = {estado: 'HABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'HABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
       console.log(res);
       this.currentPage = 1;
       this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
-
+    }
   }
 
   desabilitarDocumento(id: number): void {
-    const data = {estado: 'DESAHABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'DESAHABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
       console.log(res);
       this.currentPage = 1;
       this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   verificarEstado(estado: string): boolean {
@@ -195,13 +209,20 @@ export class EstanteComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    }
   }
 
   verUbicaciones(ubicaciones: Ubicacion[]): void {
-    this.dialog.open(UbicacionModalComponent, {width:  '50vw', maxHeight: '90vh', data:  ubicaciones});
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(UbicacionModalComponent, {width:  '50vw', maxHeight: '90vh', data:  ubicaciones});
+    }
   }
 
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
+  }
 
   ngOnDestroy(): void {
     this.estante$.unsubscribe();

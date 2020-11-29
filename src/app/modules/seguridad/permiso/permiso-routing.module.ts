@@ -4,10 +4,11 @@ import { PermisoComponent } from './components/permiso/permiso.component';
 import { PermisoFormComponent } from './components/permiso-form/permiso-form.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: PermisoComponent},
-  {path: 'form', component: PermisoFormComponent},
+  {path: '', component: PermisoComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_permiso' }},
+  {path: 'form', component: PermisoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_permiso' }},
   {path: 'form/:id', component: PermisoFormComponent}
 ];
 

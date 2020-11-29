@@ -5,11 +5,12 @@ import { InstructivoFormComponent } from './components/instructivo-form/instruct
 import { ModalComponent } from './components/modal/modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 import { PublicacionModalComponent } from './components/publicacion-modal/publicacion-modal.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: InstructivoComponent},
-  {path: 'form', component: InstructivoFormComponent},
-  {path: 'form/:id', component: InstructivoFormComponent}
+  {path: '', component: InstructivoComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_instructivo' }},
+  {path: 'form', component: InstructivoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_instructivo' }},
+  {path: 'form/:id', component: InstructivoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_instructivo' }}
 ];
 
 @NgModule({

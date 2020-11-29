@@ -4,11 +4,12 @@ import { CarreraComponent } from './components/carrera/carrera.component';
 import { CarreraFormComponent } from './components/carrera-form/carrera-form.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: CarreraComponent},
-  {path: 'form', component: CarreraFormComponent},
-  {path: 'form/:id', component: CarreraFormComponent}
+  {path: '', component: CarreraComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_carrera' }},
+  {path: 'form', component: CarreraFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_carrera' }},
+  {path: 'form/:id', component: CarreraFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_carrera' }}
 ];
 
 @NgModule({

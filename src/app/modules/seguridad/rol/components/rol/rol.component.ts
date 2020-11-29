@@ -16,6 +16,13 @@ import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.c
 })
 export class RolComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  eliminarPermiso = 'eliminar_rol';
+  consultarPermiso = 'consultar_rol';
+  editarPermiso = 'editar_rol';
+  reportePermiso = 'reporte_rol';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos ;
 
   rol$: Subscription = new Subscription();
@@ -33,6 +40,7 @@ export class RolComponent implements OnInit, OnDestroy {
               {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
               {nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open'},
               {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
+              {nombre: 'permisos', boton: 'accent', icono: 'fas fa-clipboard-check'},
               {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
 
@@ -83,8 +91,11 @@ export class RolComponent implements OnInit, OnDestroy {
   }
 
   ver(rol: Rol): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  rol });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  rol });
+    }
   }
+
 
   cargar(data): void {
     switch (data.tipoAccion) {
@@ -93,6 +104,9 @@ export class RolComponent implements OnInit, OnDestroy {
         break;
       case 'editar':
         this.router.navigate(['/sistema/rol/form/' + data.identificador]);
+        break;
+      case 'permisos':
+        this.router.navigate(['/sistema/rol/permiso/' + data.identificador]);
         break;
       case 'eliminar':
         this.eliminar(data);
@@ -106,6 +120,7 @@ export class RolComponent implements OnInit, OnDestroy {
   }
 
   eliminar(data: any): void {
+    if (this.verificarPermisos(this.eliminarPermiso)) {
     const estado = this.verificarEstado(data.informacion.estado);
     if (!estado) {
       Swal.fire({
@@ -129,6 +144,7 @@ export class RolComponent implements OnInit, OnDestroy {
       );
     }
   }
+  }
 
   confirmarEliminacion(result, id: number): void {
     if (result.value) {
@@ -146,20 +162,23 @@ export class RolComponent implements OnInit, OnDestroy {
   }
 
   habilitarDocumento(id: number): void {
+    if (this.verificarPermisos(this.editarPermiso)) {
     const data = {estado: 'HABILITADO'};
     this.servicio.changeState(data, id).subscribe(res => {
       console.log(res);
       this.currentPage = 1;
       this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
-
+    }
   }
 
   desabilitarDocumento(id: number): void {
+    if (this.verificarPermisos(this.editarPermiso)) {
     const data = {estado: 'DESHABILITADO'};
     this.servicio.changeState(data, id).subscribe(res => {
       console.log(res);
       this.currentPage = 1;
       this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   verificarEstado(estado: string): boolean {
@@ -189,12 +208,14 @@ export class RolComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
+    if (this.verificarPermisos(this.reportePermiso)) {
     this.dialog.open(ReporteDetallesComponent, {maxWidth:  '75vw', maxHeight: '90vh'});
+    }
   }
 
-/*   abrirReporteReferencia(): void  {
-    this.dialog.open(ReporteReferenciaComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
-  } */
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
+  }
 
   ngOnDestroy(): void {
     this.rol$.unsubscribe();

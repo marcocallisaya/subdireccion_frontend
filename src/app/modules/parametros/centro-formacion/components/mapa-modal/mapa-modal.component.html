@@ -8,10 +8,10 @@
     <div class="col-3 ">
         <button class="ancho-completo" mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
     </div>
-    <div class="col-3">
+    <div class="col-3" *ngIf="!BanderaBoton">
         <button class="ancho-completo" mat-raised-button color="accent" (click)="editar()">Actualizar Ubicacion</button>
     </div>
-    <div class="col-3">
-        <button class="ancho-completo" mat-raised-button color="primary" (click)="actualizar()">Confirmar Ubicacion</button>
+    <div class="col-3" *ngIf="BanderaBoton">
+        <button  class="ancho-completo" mat-raised-button color="primary" (click)="actualizar()">Confirmar Ubicacion</button>
     </div>
   </div>

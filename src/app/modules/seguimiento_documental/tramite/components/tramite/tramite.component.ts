@@ -25,6 +25,11 @@ import {ReporteDetallesComponent} from '../reporte-detalles/reporte-detalles.com
 })
 export class TramiteComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  consultarPermiso = 'consultar_tramite';
+  reportePermiso = 'reporte_tramite';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos: string ;
 
   tramite$: Subscription = new Subscription();
@@ -101,32 +106,45 @@ export class TramiteComponent implements OnInit, OnDestroy {
 
    // ver modelo
    ver(tramite: Tramite): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  tramite });
+     if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  tramite });
+     }
   }
 
   verSolicitante(solicitante: Solicitante): void {
-     this.dialog.open(SolicitanteModalComponent, {width: '40vw', data:  solicitante });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(SolicitanteModalComponent, {width: '40vw', data:  solicitante });
+    }
   }
 
   verSolicitud(solicitud: any): void {
-
-     this.dialog.open(SolicitudModalComponent, {width: '40vw', data:  solicitud });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(SolicitudModalComponent, {width: '40vw', data:  solicitud });
+    }
   }
 
   verDerivacion(derivacion: any): void {
-     this.dialog.open(DerivacionModalComponent, {width: '40vw', data:  derivacion });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(DerivacionModalComponent, {width: '40vw', data:  derivacion });
+    }
   }
 
   verEvaluacion(evaluacion: any): void {
-     this.dialog.open(EvaluacionModalComponent, {width: '40vw', data:  evaluacion });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(EvaluacionModalComponent, {width: '40vw', data:  evaluacion });
+    }
   }
 
   verDevolucion(devolucion: any): void {
-     this.dialog.open(DevolucionModalComponent, {width: '40vw', data:  devolucion });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(DevolucionModalComponent, {width: '40vw', data:  devolucion });
+    } 
   }
 
   verDocumentos(documentos: any): void {
-    this.dialog.open(DocumentoModalComponent, {width: '40vw', maxHeight: '80vh',  data:  documentos });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(DocumentoModalComponent, {width: '40vw', maxHeight: '80vh',  data:  documentos });
+    }
  }
 
  cargar(data): void {
@@ -174,7 +192,13 @@ export class TramiteComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    }
+  }
+
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
   }
 
   ngOnDestroy(): void {

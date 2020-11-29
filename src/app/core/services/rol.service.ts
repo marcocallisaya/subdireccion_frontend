@@ -63,6 +63,12 @@ export class RolService {
 
   }
 
+  updatePermisos(body: number[], id: number): Observable <Rol> {
+
+    return this.http.post<Rol>(this.uri + this.url + '/' + id + '/permisos', body);
+
+  }
+
   changeState(body: any, id: number): Observable <any> {
 
     return this.http.put<any>(this.uri + this.url + '/' + id , body);

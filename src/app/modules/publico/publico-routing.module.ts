@@ -2,9 +2,27 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PublicoComponent } from '../../core/publico/publico.component';
+import { InicioComponent } from './components/inicio/inicio.component';
+import { LoginComponent } from './components/login/login.component';
+import { DocumentoComponent } from './components/documento/documento.component';
+import { ServicioComponent } from './components/servicio/servicio.component';
+import { CeaComponent } from './components/cea/cea.component';
+import { CeeComponent } from './components/cee/cee.component';
+import { CepComponent } from './components/cep/cep.component';
+import { MapaComponent } from './components/mapa/mapa.component';
+import { CarreraComponent } from './components/carrera/carrera.component';
 
 const routes: Routes = [
-  {path: '', component: PublicoComponent}
+  {path: '', component: PublicoComponent, children: [
+    {path: 'inicio', component: InicioComponent},
+    {path: 'login', component: LoginComponent},
+    {path: 'documento', component: DocumentoComponent},
+    {path: 'servicio', component: ServicioComponent},
+    {path: 'cea', component: CeaComponent},
+    {path: 'cee', component: CeeComponent},
+    {path: 'cep', component: CepComponent}
+  ]},
+  
 ];
 
 @NgModule({
@@ -13,4 +31,5 @@ const routes: Routes = [
 })
 export class PublicoRoutingModule { }
 
-export const components = [PublicoComponent];
+export const components = [PublicoComponent, InicioComponent, LoginComponent, DocumentoComponent,
+                           ServicioComponent, CeaComponent, CeeComponent, CepComponent, MapaComponent, CarreraComponent];

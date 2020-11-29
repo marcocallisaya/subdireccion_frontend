@@ -4,11 +4,12 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
 import { UsuarioFormComponent } from './components/usuario-form/usuario-form.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: UsuarioComponent},
-  {path: 'form', component: UsuarioFormComponent},
-  {path: 'form/:id', component: UsuarioFormComponent}
+  {path: '', component: UsuarioComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_usuario' }},
+  {path: 'form', component: UsuarioFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_usuario' }},
+  {path: 'form/:id', component: UsuarioFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_usuario' }}
 ];
 
 @NgModule({

@@ -17,6 +17,11 @@ import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.c
 })
 export class EvaluacionComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  consultarPermiso = 'consultar_documento';
+  reportePermiso = 'reporte_documento';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos: string ;
 
   evaluacion$: Subscription = new Subscription();
@@ -83,11 +88,15 @@ export class EvaluacionComponent implements OnInit, OnDestroy {
 
   // ver modelo
   ver(evaluacion: Evaluacion): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  evaluacion });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {width: '40vw', data:  evaluacion });
+    }
   }
 
   verTramite(tramite: Tramite): void {
-   this.dialog.open(TramiteModalComponent, {width: '40vw', data:  tramite });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(TramiteModalComponent, {width: '40vw', data:  tramite });
+    }
   }
 
   cargar(data): void {
@@ -127,7 +136,13 @@ export class EvaluacionComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    }
+  }
+
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
   }
 
   ngOnDestroy(): void {

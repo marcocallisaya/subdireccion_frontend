@@ -3,12 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import {DistritoService} from 'src/app/core/services/distrito.service';
+import { DistritoService } from 'src/app/core/services/distrito.service';
 import { Distrito } from 'src/app/shared/models/distrito.model';
 import Swal from 'sweetalert2';
 import { ModalComponent } from '../modal/modal.component';
 import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.component';
-import {CentroFormacion} from 'src/app/shared/models/centro_formacion.model';
+import { CentroFormacion } from 'src/app/shared/models/centro_formacion.model';
 import { CentroModalComponent } from '../centro-modal/centro-modal.component';
 
 @Component({
@@ -18,25 +18,32 @@ import { CentroModalComponent } from '../centro-modal/centro-modal.component';
 })
 export class DistritoComponent implements OnInit, OnDestroy {
 
-  banderaDatos ;
+  // permisos locales
+  eliminarPermiso = 'eliminar_distrito';
+  consultarPermiso = 'consultar_distrito';
+  editarPermiso = 'editar_distrito';
+  reportePermiso = 'reporte_distrito';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
+  banderaDatos;
 
   distrito$: Subscription = new Subscription();
 
   constructor(private router: Router,
-              private servicio: DistritoService,
-              public dialog: MatDialog,
-              private paginator: MatPaginatorIntl) { }
+    private servicio: DistritoService,
+    public dialog: MatDialog,
+    private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
   displayedColumns: string[] = ['nombre', 'direccion', 'estado'];
 
   // objeto con los atributos de las opciones de la tabla
-  opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
-              {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
-              {nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open'},
-              {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
-              {nombre: 'centros', boton: 'accent', icono: 'fas fa-school'},
-              {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
+  opciones = [{ nombre: 'ver', boton: 'accent', icono: 'fas fa-eye' },
+  { nombre: 'editar', boton: 'primary', icono: 'fas fa-pen' },
+  { nombre: 'habilitar', boton: 'accent', icono: 'fas fa-lock-open' },
+  { nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock' },
+  { nombre: 'centros', boton: 'accent', icono: 'fas fa-school' },
+  { nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt' }];
 
 
   dataSource; // fuente de datos para la tabla
@@ -56,41 +63,43 @@ export class DistritoComponent implements OnInit, OnDestroy {
   }
 
   cargarTabla(size: number, current: number): void {
-    this.distrito$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
-      {
-       this.dataSource = res.data; console.log(res);
-       this.length = res.total;
-       this.BanderaDatos = true;
-      });
-    }
+    this.distrito$ = this.servicio.getPaginated(size, current).subscribe((res: any) => {
+      this.dataSource = res.data; console.log(res);
+      this.length = res.total;
+      this.BanderaDatos = true;
+    });
+  }
 
   cargarDatosBusqueda(nombre: string): void {
-      this.comprobarBuscadorVacio(nombre);
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
-      this.banderaDatos = nombre;
+    this.comprobarBuscadorVacio(nombre);
+    this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+    this.banderaDatos = nombre;
   }
 
   comprobarBuscadorVacio(nombre: string): void {
     if (this.banderaDatos !== nombre) {
       this.pageSize = 5;
-      this.currentPage =  1;
+      this.currentPage = 1;
     }
   }
 
   cargarTablaFiltrada(size: number, current: number, nombre: string): void {
-    this.distrito$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
-    {
-     this.dataSource = res.data; console.log(res);
-     this.length = res.total;
+    this.distrito$ = this.servicio.getFiltered(size, current, nombre).subscribe((res: any) => {
+      this.dataSource = res.data; console.log(res);
+      this.length = res.total;
     });
   }
 
   ver(distrito: Distrito): void {
-    this.dialog.open(ModalComponent, {width: '40vw', data:  distrito });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, { width: '40vw', data: distrito });
+    }
   }
 
   verCentros(centros: CentroFormacion[]): void {
-    this.dialog.open(CentroModalComponent, {width: '35vw', maxHeight: '80vh', data:  centros });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(CentroModalComponent, { width: '35vw', maxHeight: '80vh', data: centros });
+    }
   }
 
   cargar(data): void {
@@ -116,27 +125,29 @@ export class DistritoComponent implements OnInit, OnDestroy {
   }
 
   eliminar(data: any): void {
-    const estado = this.verificarEstado(data.informacion.estado);
-    if (!estado) {
-      Swal.fire({
-        title: 'Estas Seguro?',
-        text: 'Una vez eliminado no se puede recuperar',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, eliminalo!'
-      }).then((result) => {
-        this.confirmarEliminacion(result, data.identificador);
-      });
-    }
-    else {
-      Swal.fire(
-        'Error',
-        `Debes deshabilitar el distrito antes de eliminarlo`,
-        'error'
-      );
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const estado = this.verificarEstado(data.informacion.estado);
+      if (!estado) {
+        Swal.fire({
+          title: 'Estas Seguro?',
+          text: 'Una vez eliminado no se puede recuperar',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+          this.confirmarEliminacion(result, data.identificador);
+        });
+      }
+      else {
+        Swal.fire(
+          'Error',
+          `Debes deshabilitar el distrito antes de eliminarlo`,
+          'error'
+        );
+      }
     }
   }
 
@@ -150,34 +161,39 @@ export class DistritoComponent implements OnInit, OnDestroy {
             'error'
           );
           this.cargarTabla(this.pageSize, this.currentPage);
-          }
+        }
       );
     }
   }
 
   habilitarDocumento(id: number): void {
-    const data = {estado: 'HABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
-
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const data = { estado: 'HABILITADO' };
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage);
+      }, err => console.log(err));
+    }
   }
 
   desabilitarDocumento(id: number): void {
-    const data = {estado: 'DESHABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const data = { estado: 'DESHABILITADO' };
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage);
+      }, err => console.log(err));
+    }
   }
 
   verificarEstado(estado: string): boolean {
-    return (estado === 'HABILITADO') ? true : false ;
+    return (estado === 'HABILITADO') ? true : false;
   }
 
-   // evento de paginacion
-   pagination(event: PageEvent, nombre: string): void {
+  // evento de paginacion
+  pagination(event: PageEvent, nombre: string): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex + 1;
     this.verificarTipoTabla(nombre);
@@ -198,13 +214,15 @@ export class DistritoComponent implements OnInit, OnDestroy {
     this.paginator.nextPageLabel = 'Pagina Siguiente';
   }
 
-  abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+  abrirReporteDetalles(): void {
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      this.dialog.open(ReporteDetallesComponent, { maxWidth: '60vw', maxHeight: '90vh' });
+    }
   }
 
-/*   abrirReporteReferencia(): void  {
-    this.dialog.open(ReporteReferenciaComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
-  } */
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
+  }
 
   ngOnDestroy(): void {
     this.distrito$.unsubscribe();

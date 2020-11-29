@@ -10,10 +10,11 @@ import { EvaluacionModalComponent } from './components/evaluacion-modal/evaluaci
 import { DevolucionModalComponent } from './components/devolucion-modal/devolucion-modal.component';
 import { DocumentoModalComponent } from './components/documento-modal/documento-modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: TramiteComponent},
-  {path: 'form', component: TramiteFormComponent},
+  {path: '', component: TramiteComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_tramite' }},
+  {path: 'form', component: TramiteFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_tramite' }},
   {path: 'form/:id', component: TramiteFormComponent}
 ];
 

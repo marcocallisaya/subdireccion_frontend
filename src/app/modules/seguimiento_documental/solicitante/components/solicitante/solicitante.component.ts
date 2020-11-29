@@ -18,6 +18,13 @@ import { TramiteModalComponent } from '../tramite-modal/tramite-modal.component'
 })
 export class SolicitanteComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  eliminarPermiso = 'eliminar_solicitante';
+  consultarPermiso = 'consultar_solicitante';
+  editarPermiso = 'editar_solicitante';
+  reportePermiso = 'reporte_solicitante';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos ;
 
   solicitante$: Subscription = new Subscription();
@@ -87,7 +94,9 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
   }
 
   ver(solicitante: Solicitante): void {
-    this.dialog.open(ModalComponent, {maxWidth: '50vw', data:  solicitante });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {maxWidth: '50vw', data:  solicitante });
+    }
   }
 
   cargar(data): void {
@@ -113,31 +122,35 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
   }
 
   verTramites(id: number): void {
-    this.dialog.open(TramiteModalComponent, {width: '40vw', maxHeight: '80vh', data:  id });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(TramiteModalComponent, {width: '40vw', maxHeight: '80vh', data:  id });
+    }
   }
 
   eliminar(data: any): void {
-    const estado = this.verificarEstado(data.informacion.estado);
-    if (!estado) {
-      Swal.fire({
-        title: 'Estas Seguro?',
-        text: 'Una vez eliminado no se puede recuperar',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, eliminalo!'
-      }).then((result) => {
-        this.confirmarEliminacion(result, data.identificador);
-      });
-    }
-    else {
-      Swal.fire(
-        'Error',
-        `Debes deshabilitar el solicitante antes de eliminarlo`,
-        'error'
-      );
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const estado = this.verificarEstado(data.informacion.estado);
+      if (!estado) {
+        Swal.fire({
+          title: 'Estas Seguro?',
+          text: 'Una vez eliminado no se puede recuperar',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+          this.confirmarEliminacion(result, data.identificador);
+        });
+      }
+      else {
+        Swal.fire(
+          'Error',
+          `Debes deshabilitar el solicitante antes de eliminarlo`,
+          'error'
+        );
+      }
     }
   }
 
@@ -157,20 +170,25 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
   }
 
   habilitarDocumento(id: number): void {
-    const data = {estado: 'HABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'HABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
+    
 
   }
 
   desabilitarDocumento(id: number): void {
-    const data = {estado: 'DESHABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'DESHABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   verificarEstado(estado: string): boolean {
@@ -200,7 +218,13 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    }
+  }
+
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
   }
 
   ngOnDestroy(): void {

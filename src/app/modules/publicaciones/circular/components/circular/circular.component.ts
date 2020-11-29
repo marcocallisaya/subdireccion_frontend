@@ -19,6 +19,14 @@ import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.c
 })
 export class CircularComponent implements OnInit, OnDestroy {
 
+  // permisos locales
+  eliminarPermiso = 'eliminar_circular';
+  consultarPermiso = 'consultar_circular';
+  editarPermiso = 'editar_circular';
+  reportePermiso = 'reporte_circular';
+  publicarPermiso = 'publicar_circular';
+  permisos = JSON.parse(localStorage.getItem('permisos'));
+
   banderaDatos ;
 
   circular$: Subscription = new Subscription();
@@ -89,7 +97,9 @@ export class CircularComponent implements OnInit, OnDestroy {
   }
 
   ver(circular: Circular): void {
-    this.dialog.open(ModalComponent, {maxWidth: '50vw', data:  circular });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(ModalComponent, {maxWidth: '50vw', data:  circular });
+    }
   }
 
   cargar(data): void {
@@ -119,27 +129,29 @@ export class CircularComponent implements OnInit, OnDestroy {
 
 
   eliminar(data: any): void {
-    const estado = this.verificarEstado(data.informacion.estado);
-    if (!estado) {
-      Swal.fire({
-        title: 'Estas Seguro?',
-        text: 'Una vez eliminado no se puede recuperar',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, eliminalo!'
-      }).then((result) => {
-        this.confirmarEliminacion(result, data.identificador);
-      });
-    }
-    else {
-      Swal.fire(
-        'Error',
-        `Debes deshabilitar la circular antes de eliminarla`,
-        'error'
-      );
+    if (this.verificarPermisos(this.eliminarPermiso)) {
+      const estado = this.verificarEstado(data.informacion.estado);
+      if (!estado) {
+        Swal.fire({
+          title: 'Estas Seguro?',
+          text: 'Una vez eliminado no se puede recuperar',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+          this.confirmarEliminacion(result, data.identificador);
+        });
+      }
+      else {
+        Swal.fire(
+          'Error',
+          `Debes deshabilitar la circular antes de eliminarla`,
+          'error'
+        );
+      }
     }
   }
 
@@ -159,20 +171,23 @@ export class CircularComponent implements OnInit, OnDestroy {
   }
 
   habilitarDocumento(id: number): void {
-    const data = {estado: 'HABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
-
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'HABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   desabilitarDocumento(id: number): void {
-    const data = {estado: 'DESHABILITADO'};
-    this.servicio.changeState(data, id).subscribe(res => {
-      console.log(res);
-      this.currentPage = 1;
-      this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    if (this.verificarPermisos(this.editarPermiso)) {
+      const data = {estado: 'DESHABILITADO'};
+      this.servicio.changeState(data, id).subscribe(res => {
+        console.log(res);
+        this.currentPage = 1;
+        this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
+    }
   }
 
   verificarEstado(estado: string): boolean {
@@ -180,14 +195,18 @@ export class CircularComponent implements OnInit, OnDestroy {
   }
 
   verFuncionario(funcionario: Funcionario): void {
-    this.dialog.open(FuncionarioModalComponent, {width: '40vw', data:  funcionario });
+    if (this.verificarPermisos(this.consultarPermiso)) {
+      this.dialog.open(FuncionarioModalComponent, {width: '40vw', data:  funcionario });
+    }
   }
 
   publicar(id): void {
-    const dialogRef = this.dialog.open(PublicacionModalComponent, {width: '40vw', data:  id });
-    dialogRef.afterClosed().subscribe(result => {
-     this.cargarTabla(5, 1);
-    });
+    if (this.verificarPermisos(this.publicarPermiso)) {
+      const dialogRef = this.dialog.open(PublicacionModalComponent, {width: '40vw', data:  id });
+      dialogRef.afterClosed().subscribe(result => {
+       this.cargarTabla(5, 1);
+      });
+    }
   }
 
    // evento de paginacion
@@ -213,7 +232,13 @@ export class CircularComponent implements OnInit, OnDestroy {
   }
 
   abrirReporteDetalles(): void  {
-    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    if (this.verificarPermisos(this.reportePermiso)) {
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+    }
+  }
+
+  verificarPermisos(permiso): boolean {
+    return (this.permisos.includes(permiso)) ? true : false;
   }
 
   ngOnDestroy(): void {

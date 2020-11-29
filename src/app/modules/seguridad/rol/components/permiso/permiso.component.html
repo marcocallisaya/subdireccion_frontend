@@ -1,0 +1,55 @@
+<div class="row mt-5 justify-content-center">
+    <div class="col-10">
+        <mat-card>
+            <mat-card-header>
+              <mat-card-title>Permisos del Rol</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div *ngIf="formBoolean" class="row">
+          
+                    <div class="col-sm-12" *ngFor="let type of dataTypes">
+                      <h6 class="text-center">{{type}}</h6>
+                      <div class="row justify-content-center">
+                        <div *ngFor="let permission of dataPermissions">
+                          <div class="col-3" *ngIf="ver(permission.tipo,type)">
+                            
+                           <!--   <input type="checkbox" [id]="permission.alias" [value]="permission.alias"
+                              class="filled-in chk-col-indigo" (change)="onCheckboxChange($event)"
+                              [checked]="verify(permission.alias)" /> -->
+                              <mat-checkbox color="primary" (change)="onCheckboxChange($event)" class="example-margin" [id]="permission.alias" [value]="permission.id" [checked]="verify(permission.id)">{{permission.nombre}}</mat-checkbox>
+                          <!--    <label [for]="permission.alias">{{permission.nombre}}</label> -->
+        
+                          </div>
+        
+        
+        
+                        </div>
+                      </div>
+        
+                    </div>
+        
+        
+        
+                  </div>
+                <div *ngIf="!formBoolean" class="spiner">
+                    <app-spinner></app-spinner>
+                </div>
+            </mat-card-content>
+            <mat-card-actions *ngIf="formBoolean">
+                <div class="row justify-content-center">
+          
+                    <div class="col-xs-6 col-md-4" *ngIf="isUpdated">
+                        <button class="ancho-completo" (click)="update()"  mat-raised-button color="primary">Actualizar</button>
+                    </div>
+                    <div class="col-xs-6 col-md-4">
+                        <button class="ancho-completo" (click)="back()"  mat-raised-button color="warn">Cancelar</button>
+                    </div>
+                  </div>
+            </mat-card-actions>
+          </mat-card>
+    </div>
+</div>
+
+  
+  
+  

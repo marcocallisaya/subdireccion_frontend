@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+    <div class="col-12">
+        <h5 class="text-center">CARRERAS TECNICAS</h5>
+        
+            <mat-card *ngIf="BanderaDatos" class="lista">
+                <mat-card-content>
+                    <table style="width:100%">
+                        <tr>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Descripcion</th>
+                            <th class="text-center">Nivel</th>
+                        </tr>
+                        <tr class="body" *ngFor="let item of carreras">
+                            <td class="text-center ">{{item.nombre}}</td>
+                            <td class="text-justify ">{{item.descripcion}}</td>
+                            <td class="text-center ">{{item.pivot.nivel}} </td>
+                        </tr>
+                    </table>
+                </mat-card-content>
+            </mat-card>
+             <mat-card *ngIf="!BanderaDatos">
+               
+                    <div class="row justify-content-center" >
+                      <div class="col-12">
+                       <h1 mat-dialog-title> ESTE CENTRO AUN NO TIENE CARRERAS  <i class="fas fa-exclamation-triangle"></i></h1>
+                      </div>
+                   
+                    </div>
+                 
+             </mat-card>
+             <div class=" mt-3 row justify-content-center">
+                <div class="col-6">
+                    <button class="ancho-completo" mat-raised-button color="warn" (click)="onNoClick()"> Cerrar </button>
+                </div>
+            </div>
+            </div>
+        </div>
+    

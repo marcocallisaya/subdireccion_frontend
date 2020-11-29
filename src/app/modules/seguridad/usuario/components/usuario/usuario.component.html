@@ -27,7 +27,9 @@
                    <app-table (envio)="cargar($event)" 
                               [dataSource]="dataSource" 
                               [headers]="displayedColumns" 
-                              [opciones]="opciones">
+                              [opciones]="opciones"
+                              width="98%">
+                             
                    </app-table>
                    <mat-paginator 
                    [length]="length"

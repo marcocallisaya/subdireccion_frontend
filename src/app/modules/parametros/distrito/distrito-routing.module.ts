@@ -5,11 +5,12 @@ import { DistritoFormComponent } from './components/distrito-form/distrito-form.
 import { ModalComponent } from './components/modal/modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 import { CentroModalComponent } from './components/centro-modal/centro-modal.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: DistritoComponent},
-  {path: 'form', component: DistritoFormComponent},
-  {path: 'form/:id', component: DistritoFormComponent}
+  {path: '', component: DistritoComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_distrito' }},
+  {path: 'form', component: DistritoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_distrito' }},
+  {path: 'form/:id', component: DistritoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_distrito' }}
 ];
 
 @NgModule({

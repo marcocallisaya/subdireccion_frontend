@@ -4,11 +4,12 @@ import { TipoDocumentoComponent } from './components/tipo-documento/tipo-documen
 import { TipoDocumentoFormComponent } from './components/tipo-documento-form/tipo-documento-form.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: TipoDocumentoComponent},
-  {path: 'form', component: TipoDocumentoFormComponent},
-  {path: 'form/:id', component: TipoDocumentoFormComponent},
+  {path: '', component: TipoDocumentoComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_tipo_documento' }},
+  {path: 'form', component: TipoDocumentoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_tipo_documento' }},
+  {path: 'form/:id', component: TipoDocumentoFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_tipo_documento' }},
 ];
 
 @NgModule({

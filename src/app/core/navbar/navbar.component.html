@@ -3,8 +3,9 @@
         <!-- menu -->
         <div id="MainMenu">
           <div class="list-group panel">
-            <a href="#SeguimientoDocumental" class="list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu">Seguimiento Documental <i class="fa fa-caret-down"></i></a>
-            <div class="collapse" id="SeguimientoDocumental">
+            <a class=" list-group-item list-group-item-success text-center" > Bienvenido {{usuario.usuario}}</a>
+            <a href="#SeguimientoDocumental" class=" list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu" aria-expanded="true">Seguimiento Documental <i class="fa fa-caret-down"></i></a>
+            <div class="collapse show" id="SeguimientoDocumental">
               <app-link [nombre]="'Documento'" [link]="'documento'"></app-link>
               <app-link [nombre]="'Tipo de Solicitante'" [link]="'tipo_solicitante'"></app-link>
               <app-link [nombre]="'Solicitante'" [link]="'solicitante'"></app-link>
@@ -47,5 +48,6 @@
               <app-link [nombre]="'Usuario'" [link]="'usuario'"></app-link>
               <app-link [nombre]="'Rol'" [link]="'rol'"></app-link>
             </div>
+            <button (click)="cerrarSesion()" class="list-group-item list-group-item-success text-center" >Cerrar Sesion  <i class="fa fa-sign-out-alt"></i></button>
           </div>
         </div>

@@ -10,6 +10,8 @@ export interface CentroFormacion {
     direccion: string;
     telefono: string;
     estado: string;
+    url: string;
+    tipo: string;
     created_at: Date;
     distrito_id: number;
     distrito: Distrito;

@@ -82,13 +82,9 @@ export class RolFormComponent implements OnInit, OnDestroy {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'El rol ha sido registrado con exito',
-          showConfirmButton: false,
-          timer: 1500
-        });
+        Swal.fire('Felicidades',
+        'El rol ha sido registrado con exito',
+        'success');
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {

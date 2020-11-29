@@ -5,11 +5,12 @@ import { CircularComponent } from './components/circular/circular.component';
 import { CircularFormComponent } from './components/circular-form/circular-form.component';
 import { ReporteDetallesComponent } from './components/reporte-detalles/reporte-detalles.component';
 import { PublicacionModalComponent } from './components/publicacion-modal/publicacion-modal.component';
+import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 
 const routes: Routes = [
-  {path: '', component: CircularComponent},
-  {path: 'form', component: CircularFormComponent},
-  {path: 'form/:id', component: CircularFormComponent}
+  {path: '', component: CircularComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_circular' }},
+  {path: 'form', component: CircularFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_circular' }},
+  {path: 'form/:id', component: CircularFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_circular' }}
 ];
 
 @NgModule({
