@@ -4,16 +4,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { FuncionarioService } from 'src/app/core/services/funcionario.service';
 import { Funcionario } from 'src/app/shared/models/funcionario.model';
 import Swal from 'sweetalert2';
+import { LoginService } from '../authentication/login.service';
+import { TokenService } from '../authentication/token.service';
+import { FuncionarioService } from '../services/funcionario.service';
 
 @Component({
-  selector: 'app-funcionario-form',
-  templateUrl: './funcionario-form.component.html',
-  styleUrls: ['./funcionario-form.component.scss']
+  selector: 'app-datos-personales',
+  templateUrl: './datos-personales.component.html',
+  styleUrls: ['./datos-personales.component.scss']
 })
-export class FuncionarioFormComponent implements OnInit, OnDestroy {
+export class DatosPersonalesComponent implements OnInit, OnDestroy {
 
   BanderaDatos: boolean;
 
@@ -21,17 +23,9 @@ export class FuncionarioFormComponent implements OnInit, OnDestroy {
 
   myForm: FormGroup; // formulario reactivo
 
-  BanderaBoton; // bandera para el boton
-
-  BanderaTitulo;
-
-  codigo; // id del modelo
-
-  funcionario: Funcionario; // datos del modelo
+  funcionario: Funcionario;
 
   uri = 'funcionario';
-
-  cargos = ['SUBDIRECTOR/A', 'TECNICO/A', 'SECRETARIO/A'];
 
   generos = ['MASCULINO', 'FEMENINO'];
 
@@ -39,46 +33,29 @@ export class FuncionarioFormComponent implements OnInit, OnDestroy {
               private servicio: FuncionarioService,
               private route: ActivatedRoute,
               private router: Router,
+              private token: LoginService,
               private location: Location) { }
 
-
+  codigo = this.token.getDatosPersonales().id; // id del modelo
 
   ngOnInit(): void {
     this.cargarDatos();
   }
 
   cargarDatos(): void {
-    this.funcionario$.add(
-    this.route.paramMap.pipe(
-          switchMap((params) => {
-            const id = params.get('id');
-            if (id != null) {
-            this.codigo = id;
-            return this.servicio.getOne(parseInt(id, 10));
-            }
-            return of(null);
-      })
-    ).subscribe( (res) => {
-      if (res === null) {
-        // crear
-        this.BanderaBoton = false;
-        this.BanderaTitulo = 'REGISTRO';
-      } else {
-        // actualizar
+    this.servicio.getOne(this.codigo).subscribe(
+      (res: any) => {
         this.funcionario = res.data;
-        this.BanderaBoton = true;
-        this.BanderaTitulo = 'ACTUALIZACION';
+        this.cargarFormulario();
+        this.BanderaDatos = true;
       }
-      this.cargarFormulario();
-      this.BanderaDatos = true;
-    }));
+    );
   }
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       nombre: [this.funcionario?.nombre || '', Validators.required],
       apellido: [this.funcionario?.apellido || '', Validators.required],
-      cargo: [this.funcionario?.cargo || '', Validators.required],
       fecha_nacimiento: [this.funcionario?.fecha_nacimiento || '', Validators.required],
       genero: [this.funcionario?.genero || '', Validators.required],
       telefono: [this.funcionario?.telefono || '', Validators.required]
@@ -86,36 +63,10 @@ export class FuncionarioFormComponent implements OnInit, OnDestroy {
   }
 
 
-
-  enviar(myForm): void {
-    console.log(myForm.value);
-    this.servicio.send(myForm.value).subscribe(
-      res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'El funcionario ha sido registrado con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
-        this.router.navigate(['/sistema/' + this.uri]);
-      },
-      error => {
-        console.log(error);
-        const errores =  this.tratarErrores(error.error.errors);
-        this.mostrarError(errores);
-      }
-    );
-  }
-
   tratarErrores(errores): string {
     let datos = '';
     if (errores.nombre !=  null) {
       const error = '<div>' + errores.nombre[0] + '</div> <br>';
-      datos = datos.concat(error);
-    }
-    if (errores.apellido !=  null) {
-      const error = '<div>' + errores.apellido[0] + '</div> <br>';
       datos = datos.concat(error);
     }
     if (errores.telefono !=  null) {
@@ -130,10 +81,10 @@ export class FuncionarioFormComponent implements OnInit, OnDestroy {
     this.servicio.update(this.myForm.value, this.codigo).subscribe(res => {
       Swal.fire(
         'Felicidades',
-        'Se ha actualizado Exitosamente',
+        'Datos personales actualizado Exitosamente',
         'success'
       );
-      this.router.navigate(['/sistema/' + this.uri]);
+      this.router.navigate(['/sistema']);
     },
     error => {
       console.log(error);

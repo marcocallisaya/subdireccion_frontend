@@ -150,12 +150,20 @@ export class CentroFormacionFormComponent implements OnInit, OnDestroy {
 
   tratarErrores(errores): string {
     let datos = '';
+    if (errores.nombre !=  null) {
+      const error = '<div>' + errores.nombre[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
     if (errores.sie !=  null) {
       const error = '<div>' + errores.sie[0] + '</div> <br>';
       datos = datos.concat(error);
     }
     if (errores.direccion !=  null) {
       const error = '<div>' + errores.direccion[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.telefono !=  null) {
+      const error = '<div>' + errores.telefono[0] + '</div> <br>';
       datos = datos.concat(error);
     }
 

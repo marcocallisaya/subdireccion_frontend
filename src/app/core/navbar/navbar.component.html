@@ -4,6 +4,11 @@
         <div id="MainMenu">
           <div class="list-group panel">
             <a class=" list-group-item list-group-item-success text-center" > Bienvenido {{usuario.usuario}}</a>
+            <a href="#informacionPersonal" class=" list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu" aria-expanded="true">Informacion Personal <i class="fa fa-caret-down"></i></a>
+            <div class="collapse" id="informacionPersonal">
+              <app-link [nombre]="'Datos Personales'" [link]="'datos_personales'"></app-link>
+              <app-link [nombre]="'Cambio de contraseña'" [link]="'datos_usuario'"></app-link>
+            </div>
             <a href="#SeguimientoDocumental" class=" list-group-item list-group-item-success text-center" data-toggle="collapse" data-parent="#MainMenu" aria-expanded="true">Seguimiento Documental <i class="fa fa-caret-down"></i></a>
             <div class="collapse show" id="SeguimientoDocumental">
               <app-link [nombre]="'Documento'" [link]="'documento'"></app-link>

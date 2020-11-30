@@ -137,7 +137,8 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {
-        console.log(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarError(errores);
       }
     );
   }
@@ -154,12 +155,31 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
       this.router.navigate(['/sistema/' + this.uri]);
     },
     error => {
-     console.log(error);
+      const errores =  this.tratarErrores(error.error.errors);
+      this.mostrarError(errores);
     });
   }
 
   atras(): void {
     this.location.back();
+  }
+
+  tratarErrores(errores): string {
+    let datos = '';
+    if (errores.referencia !=  null) {
+      const error = '<div>' + errores.referencia[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    return datos;
+  }
+
+  mostrarError(errores): void {
+    console.log(errores);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      html: errores
+    });
   }
 
   ngOnDestroy(): void {

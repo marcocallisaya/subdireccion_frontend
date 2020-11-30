@@ -121,6 +121,10 @@ export class SolicitanteFormComponent implements OnInit, OnDestroy {
       const error = '<div>' + errores.ci[0] + '</div> <br>';
       datos = datos.concat(error);
     }
+    if (errores.apellido !=  null) {
+      const error = '<div>' + errores.apellido[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
     if (errores.nombre !=  null) {
       const error = '<div>' + errores.nombre[0] + '</div> <br>';
       datos = datos.concat(error);

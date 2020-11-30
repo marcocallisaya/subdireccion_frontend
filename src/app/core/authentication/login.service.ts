@@ -33,7 +33,7 @@ export class LoginService {
     return JSON.parse(localStorage.getItem('authToken'));
   }
 
-  getDatosPersonales(): string {
+  getDatosPersonales(): any {
     return JSON.parse(localStorage.getItem('datos'));
   }
 }

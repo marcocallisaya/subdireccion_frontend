@@ -93,7 +93,8 @@ export class DistritoFormComponent implements OnInit, OnDestroy {
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {
-        this.mostrarErrores(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarErrores(errores);
       }
     );
   }
@@ -109,8 +110,26 @@ export class DistritoFormComponent implements OnInit, OnDestroy {
       this.router.navigate(['/sistema/' + this.uri]);
     },
       error => {
-        this.mostrarErrores(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarErrores(errores);
       });
+  }
+
+  tratarErrores(errores): string {
+    let datos = '';
+    if (errores.nombre !=  null) {
+      const error = '<div>' + errores.nombre[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.ciudad !=  null) {
+      const error = '<div>' + errores.ciudad[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.direccion !=  null) {
+      const error = '<div>' + errores.direccion[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    return datos;
   }
 
   mostrarErrores(error): void {
@@ -118,7 +137,7 @@ export class DistritoFormComponent implements OnInit, OnDestroy {
     Swal.fire({
       icon: 'error',
       title: 'Error...',
-      html: error.error.errors.descripcion[0]
+      html: error
     });
   }
 

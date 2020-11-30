@@ -100,7 +100,7 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
       const [resp1, resp2, resp3] = resp;
       this.tiposDocumento = resp1;
       this.ubicaciones = resp2;
-      this.tramites = resp3;
+      this.tramites = resp3.data;
     });
 
   }
@@ -129,6 +129,10 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
     let datos = '';
     if (errores.descripcion !=  null) {
       const error = '<div>' + errores.descripcion[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.nombre !=  null) {
+      const error = '<div>' + errores.nombre[0] + '</div> <br>';
       datos = datos.concat(error);
     }
     if (errores.numero_paginas !=  null) {

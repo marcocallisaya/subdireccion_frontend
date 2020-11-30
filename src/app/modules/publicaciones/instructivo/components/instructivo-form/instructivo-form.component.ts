@@ -116,6 +116,10 @@ export class InstructivoFormComponent implements OnInit, OnDestroy {
 
   tratarErrores(errores): string {
     let datos = '';
+    if (errores.destinatario !=  null) {
+      const error = '<div>' + errores.destinatario[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
     if (errores.referencia !=  null) {
       const error = '<div>' + errores.referencia[0] + '</div> <br>';
       datos = datos.concat(error);
@@ -136,7 +140,7 @@ export class InstructivoFormComponent implements OnInit, OnDestroy {
     error => {
       console.log(error);
       const errores =  this.tratarErrores(error.error.errors);
-      this.mostrarError(errores);
+        this.mostrarError(errores);
     });
   }
 

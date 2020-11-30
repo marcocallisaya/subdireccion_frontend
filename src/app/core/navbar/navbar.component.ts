@@ -14,9 +14,13 @@ export class NavbarComponent implements OnInit {
               private router: Router) { }
 
   usuario;
+  funcionario;
 
   ngOnInit(): void {
     this.usuario = this.token.getUsuario();
+    this.funcionario = this.token.getDatosPersonales();
+    console.log(this.usuario);
+    console.log(this.funcionario);
   }
 
   cargarusuario(): void {

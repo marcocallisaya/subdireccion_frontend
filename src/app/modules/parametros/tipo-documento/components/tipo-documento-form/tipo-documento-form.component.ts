@@ -95,7 +95,8 @@ export class TipoDocumentoFormComponent implements OnInit, OnDestroy {
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {
-        this.mostrarErrores(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarErrores(errores);
       }
     );
   }
@@ -111,7 +112,8 @@ export class TipoDocumentoFormComponent implements OnInit, OnDestroy {
       this.router.navigate(['/sistema/' + this.uri]);
     },
       error => {
-        this.mostrarErrores(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarErrores(errores);
       });
   }
 
@@ -126,6 +128,28 @@ export class TipoDocumentoFormComponent implements OnInit, OnDestroy {
 
   atras(): void {
     this.location.back();
+  }
+
+  tratarErrores(errores): string {
+    let datos = '';
+    if (errores.descripcion !=  null) {
+      const error = '<div>' + errores.descripcion[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.nombre !=  null) {
+      const error = '<div>' + errores.nombre[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    return datos;
+  }
+
+  mostrarError(errores): void {
+    console.log(errores);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      html: errores
+    });
   }
 
   ngOnDestroy(): void {

@@ -104,7 +104,9 @@ export class UbicacionFormComponent implements OnInit, OnDestroy {
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {
-       console.log(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarError(errores);
+
       }
     );
   }
@@ -120,8 +122,28 @@ export class UbicacionFormComponent implements OnInit, OnDestroy {
       this.router.navigate(['/sistema/' + this.uri]);
     },
       error => {
-        console.log(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarError(errores);
+
       });
+  }
+
+  tratarErrores(errores): string {
+    let datos = '';
+    if (errores.color !=  null) {
+      const error = '<div>' + errores.color[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    return datos;
+  }
+
+  mostrarError(errores): void {
+    console.log(errores);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      html: errores
+    });
   }
 
   atras(): void {

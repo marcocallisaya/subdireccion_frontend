@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-xs-12 col-md-6 mt-5">
+
+      <ng-container  *ngIf="BanderaDatos;else spinner">
+        <mat-card class="example-card">
+         
+            <div class="row justify-content-center">
+              <div class="col-10">
+                <mat-card-header>
+                <mat-card-title> ACTUALIZACION DE CONTRASEÑA</mat-card-title>
+              </mat-card-header> 
+              </div>
+            </div>
+           
+          <mat-card-content>
+           <form  [formGroup]="myForm">
+            
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field class="ancho-completo">
+                        <mat-label>Nueva Contraseña*</mat-label>
+                        <input type="password" matInput formControlName="contrasena" name="contrasena">
+                      </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <mat-form-field class="ancho-completo">
+                        <mat-label> Confirmar Contraseña*</mat-label>
+                        <input type="password" matInput formControlName="contrasena_confirmation" name="contrasena_confirmation">
+                      </mat-form-field>
+                  </div>
+            </div>
+           </form>
+          </mat-card-content>
+          <mat-card-actions>
+            <div class="row justify-content-center">
+              
+              <div class="col-4">
+                <button mat-raised-button color="primary" (click)="actualizar()">ACTUALIZAR</button>
+              </div>
+              <div class="col-4">
+                <button mat-raised-button color="warn" (click)="atras()">CANCELAR</button>
+              </div>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+      </ng-container>
+      <ng-template #spinner>
+        <app-spinner></app-spinner>
+      </ng-template>
+
+
+    
+    </div>
+</div>

@@ -97,7 +97,8 @@ export class EstanteFormComponent implements OnInit, OnDestroy {
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {
-        this.mostrarErrores(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarErrores(errores);
       }
     );
   }
@@ -113,7 +114,8 @@ export class EstanteFormComponent implements OnInit, OnDestroy {
       this.router.navigate(['/sistema/' + this.uri]);
     },
       error => {
-        this.mostrarErrores(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarErrores(errores);
       });
   }
 
@@ -122,8 +124,25 @@ export class EstanteFormComponent implements OnInit, OnDestroy {
     Swal.fire({
       icon: 'error',
       title: 'Error...',
-      html: error.error.errors.descripcion[0]
+      html: error
     });
+  }
+
+  tratarErrores(errores): string {
+    let datos = '';
+    if (errores.codigo !=  null) {
+      const error = '<div>' + errores.codigo[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.material !=  null) {
+      const error = '<div>' + errores.material[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.color !=  null) {
+      const error = '<div>' + errores.color[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    return datos;
   }
 
   atras(): void {
