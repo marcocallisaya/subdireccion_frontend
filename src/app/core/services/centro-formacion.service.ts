@@ -40,9 +40,9 @@ export class CentroFormacionService {
 
    }
 
-   getWithState(estado, distrito): Observable <CentroFormacion[]> {
+   getWithState(estado, distrito, tipo, turno): Observable <CentroFormacion[]> {
 
-    return this.http.get<CentroFormacion[]>(this.uri + this.url + '?estado=' + estado + '&distrito=' + distrito);
+    return this.http.get<CentroFormacion[]>(this.uri + this.url + '?estado=' + estado + '&distrito=' + distrito + '&turno=' + turno + '&tipo=' + tipo);
 
    }
 

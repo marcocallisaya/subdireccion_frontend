@@ -1,4 +1,46 @@
-
+<ng-container *ngIf="BanderaDatos else vista">
+    <div class="row">
+        <div class="col-12">
+            <h5 class="text-center">Ingresa los filtros</h5>
+        </div>
+    </div>
+    <form [formGroup]="myForm">
+        <div class="row mt-12">
+            <div class="col-sm-6">
+                <mat-form-field class="ancho-completo">
+                    <mat-label>Solicitante*</mat-label>
+                    <mat-select formControlName="solicitante" name="solicitante">
+                        <mat-option value=""> TODOS </mat-option>
+                        <mat-option *ngFor="let item of solicitantes"  [value]="item.id">
+                          {{item.nombre}} {{item.apellido}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field class="ancho-completo">
+                    <mat-label>Centro de formacion*</mat-label>
+                    <mat-select formControlName="centro" name="centro">
+                        <mat-option value=""> TODOS </mat-option>
+                        <mat-option *ngFor="let item of centros"  [value]="item.id">
+                          {{item.nombre}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+    <div class="row mt-3 justify-content-around">
+        <div class="col-6">
+            <button mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="mostrarReporte()">Filtrar
+                Datos</button>
+        </div>
+        <div class="col-6">
+            <button mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+        </div>
+    </div>
+</ng-container>
+<ng-template #vista>
     <div *ngIf="BanderaVista" class="reporte">
         <div class="row">
             <div class="col-12">
@@ -10,7 +52,7 @@
                  <button mat-raised-button color="primary" (click)="generatePDF()">Generar PDF</button>
             </div>
             <div class="col-4 mb-3">
-                <button mat-raised-button color="accent" (click)=" onNoClick()">Cancelar</button>
+                <button mat-raised-button color="accent" (click)=" atras()">Cancelar</button>
         </div>       
         </div>
         <div class="row">
@@ -42,4 +84,4 @@
             </div>
         </div>
     </div>
-
+</ng-template>

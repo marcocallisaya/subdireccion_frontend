@@ -39,9 +39,9 @@ export class InstructivoService {
 
    }
 
-   getWithState(estado): Observable <Instructivo[]> {
+   getWithState(estado, funcionario): Observable <Instructivo[]> {
 
-    return this.http.get<Instructivo[]>(this.uri + this.url + '?estado=' + estado);
+    return this.http.get<Instructivo[]>(this.uri + this.url + '?estado=' + estado + '&funcionario=' + funcionario);
 
    }
 

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginatorIntl, PageEvent} from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { LoginService } from 'src/app/core/authentication/login.service';
 import Swal from 'sweetalert2';
 import {DocumentoService} from '../../../../../core/services/documento.service';
 import {Documento} from '../../../../../shared/models/documento.model';
@@ -31,6 +32,7 @@ export class DocumentoComponent implements OnInit, OnDestroy{
   constructor(private router: Router,
               private servicio: DocumentoService,
               public dialog: MatDialog,
+              private token: LoginService,
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla

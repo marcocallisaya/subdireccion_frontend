@@ -39,9 +39,9 @@ export class ConvocatoriaService {
 
    }
 
-   getWithState(estado): Observable <Convocatoria[]> {
+   getWithState(estado, funcionario): Observable <Convocatoria[]> {
 
-    return this.http.get<Convocatoria[]>(this.uri + this.url + '?estado=' + estado);
+    return this.http.get<Convocatoria[]>(this.uri + this.url + '?estado=' + estado + '&funcionario=' + funcionario);
 
    }
 

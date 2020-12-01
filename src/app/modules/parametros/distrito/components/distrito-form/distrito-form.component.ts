@@ -83,13 +83,9 @@ export class DistritoFormComponent implements OnInit, OnDestroy {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'El tipo de documento ha sido registrado con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
+        Swal.fire('Felicidades',
+        'El distrito ha sido registrado con exito',
+        'success');
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {

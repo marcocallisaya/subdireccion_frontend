@@ -22,6 +22,10 @@ export class ReporteDetallesComponent implements OnInit {
 
   estado = ['HABILITADO', 'DESAHABILITADO'];
 
+  turnos = ['MAÑANA', 'TARDE', 'NOCHE'];
+
+  tipos = ['CEA', 'CEE', 'CEP'];
+
   constructor(public dialogRef: MatDialogRef<ReporteDetallesComponent>,
               private servicio: CentroFormacionService,
               private distrito: DistritoService,
@@ -36,6 +40,8 @@ export class ReporteDetallesComponent implements OnInit {
   generatePDF(): void {
     this.BanderaVista = false;
     const data = {data: this.centros, estado: this.myForm.get('estado').value,
+                  tipo: this.myForm.get('tipo').value,
+                  turno: this.myForm.get('turno').value,
                   distrito: this.myForm.get('distrito').value };
     this.servicio.generateReportPdf(data).subscribe(res => {
       console.log(res);
@@ -53,7 +59,9 @@ export class ReporteDetallesComponent implements OnInit {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       estado:  [''],
-      distrito:  ['']
+      distrito:  [''],
+      tipo: [''],
+      turno: ['']
     });
   }
 
@@ -61,7 +69,9 @@ export class ReporteDetallesComponent implements OnInit {
   mostrarReporte(): void {
     const estado = this.myForm.get('estado').value;
     const distrito = this.myForm.get('distrito').value;
-    this.servicio.getWithState(estado, distrito).subscribe(res => {
+    const tipo = this.myForm.get('tipo').value;
+    const turno = this.myForm.get('turno').value;
+    this.servicio.getWithState(estado, distrito, tipo, turno).subscribe(res => {
       this.centros = res; console.log(res);
       this.BanderaDatos = false;
       this.BanderaVista = true; }, err => {

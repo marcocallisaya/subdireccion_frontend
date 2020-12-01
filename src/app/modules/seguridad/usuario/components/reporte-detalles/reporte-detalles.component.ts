@@ -47,8 +47,8 @@ export class ReporteDetallesComponent implements OnInit {
 
   mostrarReporte(): void {
     const estado = this.myForm.get('estado').value;
-    this.servicio.getWithState(estado).subscribe(res => {
-      this.usuarios = res;
+    this.servicio.getWithState(estado).subscribe((res: any) => {
+      this.usuarios = res.data;
       console.log(res);
       this.BanderaDatos = false;
       this.BanderaVista = true; }, err => {

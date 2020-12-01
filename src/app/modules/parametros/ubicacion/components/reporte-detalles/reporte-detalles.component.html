@@ -6,13 +6,35 @@
     </div>
     <form [formGroup]="myForm">
         <div class="row mt-12">
-            <div class="col-sm-12">
+            <div class="col-sm-4">
                 <mat-form-field class="ancho-completo">
                     <mat-label>Estado*</mat-label>
                     <mat-select formControlName="estado" name="estado">
                         <mat-option value=""> TODOS </mat-option>
                         <mat-option *ngFor="let item of estados"  [value]="item">
                           {{item}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field class="ancho-completo">
+                    <mat-label>Disponibilidad*</mat-label>
+                    <mat-select formControlName="disponibilidad" name="disponibilidad">
+                        <mat-option value=""> TODOS </mat-option>
+                        <mat-option *ngFor="let item of estadosDisponibilidad"  [value]="item">
+                          {{item}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field class="ancho-completo">
+                    <mat-label>Estante*</mat-label>
+                    <mat-select formControlName="estante" name="estante">
+                        <mat-option value=""> TODOS </mat-option>
+                        <mat-option *ngFor="let item of estantes"  [value]="item.id">
+                            {{item.codigo}} - {{item.color}} - {{item.material}}
                         </mat-option>
                       </mat-select>
                 </mat-form-field>

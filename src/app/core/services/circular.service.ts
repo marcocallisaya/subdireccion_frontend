@@ -39,9 +39,9 @@ export class CircularService {
 
    }
 
-   getWithState(estado): Observable <Circular[]> {
+   getWithState(estado, funcionario): Observable <Circular[]> {
 
-    return this.http.get<Circular[]>(this.uri + this.url + '?estado=' + estado);
+    return this.http.get<Circular[]>(this.uri + this.url + '?estado=' + estado + '&funcionario=' + funcionario);
 
    }
 

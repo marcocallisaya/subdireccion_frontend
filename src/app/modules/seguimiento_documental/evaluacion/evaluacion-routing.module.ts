@@ -9,7 +9,7 @@ import { AfterLoginService } from 'src/app/core/guards/after-login.service';
 const routes: Routes = [
   {path: '', component: EvaluacionComponent, canActivate: [AfterLoginService], data: {permiso: 'listar_evaluacion' }},
   {path: 'form', component: EvaluacionFormComponent, canActivate: [AfterLoginService], data: {permiso: 'crear_evaluacion' }},
-  {path: 'form/:id', component: EvaluacionFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_evalaucion' }}
+  {path: 'form/:id', component: EvaluacionFormComponent, canActivate: [AfterLoginService], data: {permiso: 'editar_evaluacion' }}
 ];
 
 @NgModule({

@@ -39,9 +39,9 @@ export class SolicitudService {
 
    }
 
-   getWithState(estado): Observable <Solicitud[]> {
+   getWithState(solicitante, centro): Observable <Solicitud[]> {
 
-    return this.http.get<Solicitud[]>(this.uri + this.url + '?estado=' + estado);
+    return this.http.get<Solicitud[]>(this.uri + this.url + '?solicitante=' + solicitante + '&centro=' + centro);
 
    }
 

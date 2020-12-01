@@ -66,7 +66,6 @@
                         <th class="text-center">N° Paginas</th>
                         <th class="text-center">Estado</th>
                         <th class="text-center">Tipo</th>
-                        <th class="text-center">Ubicacion</th>
                     </tr>
                     <tr *ngFor="let item of documentos">
                         <td class="text-justify ">{{item.nombre}}</td>
@@ -74,7 +73,6 @@
                         <td class="text-center">{{item.numero_paginas}} </td>
                         <td class="text-center">{{item.estado}} </td>
                         <td class="text-center">{{item.tipo_documento.nombre}} </td>
-                        <td class="text-center">{{item.ubicacion.codigo}} </td>
                     </tr>
                 </table>
             </div>

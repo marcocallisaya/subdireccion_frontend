@@ -20,7 +20,7 @@ export class ReporteDetallesComponent implements OnInit {
 
   ngOnInit(): void {
     this.BanderaVista = true;
-    this.servicio.get().subscribe(res => this.permisos = res);
+    this.servicio.get().subscribe((res: any) => {this.permisos = res.permisos;  console.log(res); this.BanderaDatos = true; });
   }
 
   generatePDF(): void {
@@ -29,7 +29,6 @@ export class ReporteDetallesComponent implements OnInit {
     this.servicio.generateReportPdf(data).subscribe(res => {
       console.log(res);
       this.onNoClick();
-      this.BanderaDatos = true;
       const fileURL = URL.createObjectURL(res);
       window.open(fileURL, '_blank');
     }, err => console.log(err));

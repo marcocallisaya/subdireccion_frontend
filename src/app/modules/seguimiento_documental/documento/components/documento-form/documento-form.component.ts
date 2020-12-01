@@ -10,6 +10,7 @@ import { switchMap } from 'rxjs/operators';
 import { Documento } from 'src/app/shared/models/documento.model';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
+import { LoginService } from 'src/app/core/authentication/login.service';
 
 @Component({
   selector: 'app-documento-form',
@@ -41,6 +42,7 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
               private servicio: DocumentoService,
               private route: ActivatedRoute,
               private router: Router,
+              private token: LoginService,
               private tipoDocumento: TipoDocumentoService,
               private ubicacion: UbicacionService,
               private tramite: TramiteService,

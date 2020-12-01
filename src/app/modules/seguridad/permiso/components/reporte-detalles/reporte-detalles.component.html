@@ -1,6 +1,6 @@
 
     <div *ngIf="BanderaVista" class="reporte">
-        <div class="row">
+        <div class="row" >
             <div class="col-12">
                 <h4 class="text-center">LISTADO DE PERMISOS</h4>
             </div>
@@ -13,7 +13,7 @@
                 <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
         </div>       
         </div>
-        <div class="row">
+        <div class="row" *ngIf="BanderaDatos">
             <div class="col-12">
                 <table style="width:100%">
                     <tr>
@@ -28,6 +28,9 @@
                     </tr>
                 </table>
             </div>
+        </div>
+        <div class="spiner" *ngIf="!BanderaDatos">
+            <app-spinner></app-spinner>
         </div>
     </div>
     <div *ngIf="!BanderaVista">

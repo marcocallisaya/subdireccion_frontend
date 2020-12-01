@@ -94,13 +94,9 @@ export class UbicacionFormComponent implements OnInit, OnDestroy {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
       res => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'La ubicacion ha sido registrada con exito',
-          showConfirmButton: false,
-          timer: 3000
-        });
+        Swal.fire('Felicidades',
+        'La ubicacion ha sido registrada con exito',
+        'success');
         this.router.navigate(['/sistema/' + this.uri]);
       },
       error => {

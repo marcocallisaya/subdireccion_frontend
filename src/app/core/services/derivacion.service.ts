@@ -39,6 +39,13 @@ export class DerivacionService {
 
    }
 
+   getWithState(funcionario): Observable <Derivacion[]> {
+
+    return this.http.get<Derivacion[]>(this.uri + this.url + '?funcionario=' + funcionario);
+
+   }
+
+
    send(body: Derivacion): Observable <Derivacion> {
 
      return this.http.post<Derivacion>(this.uri + this.url, body);

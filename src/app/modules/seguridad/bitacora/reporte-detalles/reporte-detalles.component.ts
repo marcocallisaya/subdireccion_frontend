@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { EstanteService } from 'src/app/core/services/estante.service';
-import { UbicacionService } from 'src/app/core/services/ubicacion.service';
-import { Estante } from 'src/app/shared/models/estante.model';
-import { Ubicacion } from 'src/app/shared/models/ubicacion.model';
+import { BitacoraService } from 'src/app/core/services/bitacora.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { Bitacora } from 'src/app/shared/models/bitacora.model';
+import { Usuario } from 'src/app/shared/models/usuario.model';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,16 +16,14 @@ export class ReporteDetallesComponent implements OnInit {
 
   BanderaDatos: boolean;
   BanderaVista: boolean;
-  ubicaciones: Ubicacion[];
+  bitacoras: Bitacora[];
   myForm: FormGroup; // formulario reactivo
-  estados = ['HABILITADO', 'DESHABILITADO'];
-  estadosDisponibilidad = ['DISPONIBLE', 'NO DISPONIBLE'];
-  estantes: Estante[];
+  usuarios: Usuario[];
 
   constructor(public dialogRef: MatDialogRef<ReporteDetallesComponent>,
-              private servicio: UbicacionService,
-              private estante: EstanteService,
-              private fb: FormBuilder) { }
+              private servicio: BitacoraService,
+              private fb: FormBuilder,
+              private usuario: UsuarioService) { }
 
   ngOnInit(): void {
     this.cargarDatosAdicionales();
@@ -34,14 +32,14 @@ export class ReporteDetallesComponent implements OnInit {
   }
 
   cargarDatosAdicionales(): void {
-    this.estante.get().subscribe(res => this.estantes = res);
+    this.usuario.get().subscribe((res: any) => this.usuarios = res.data);
   }
 
   generatePDF(): void {
     this.BanderaVista = false;
-    const data = {data: this.ubicaciones, estado: this.myForm.get('estado').value ,
-                 disponibilidad: this.myForm.get('disponibilidad').value,
-                 estante: this.myForm.get('estante').value };
+    const data = {data: this.bitacoras, fechaInicial: this.myForm.get('fecha_inicial').value,
+                                        fechaFinal: this.myForm.get('fecha_final').value,
+                                        usuario: this.myForm.get('usuario').value,  };
     this.servicio.generateReportPdf(data).subscribe(res => {
       console.log(res);
       this.onNoClick();
@@ -53,22 +51,27 @@ export class ReporteDetallesComponent implements OnInit {
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      estado: [''],
-      disponibilidad: [''],
-      estante: ['']
+      fecha_inicial: ['', Validators.required],
+      fecha_final: ['', Validators.required],
+      usuario: ['']
     });
   }
 
   mostrarReporte(): void {
-    const estado = this.myForm.get('estado').value;
-    const disponibilidad = this.myForm.get('disponibilidad').value;
-    const estante = this.myForm.get('estante').value;
-    this.servicio.getWithState(estado, disponibilidad, estante).subscribe(res => {
-      this.ubicaciones = res;
+    const fechaInicial = this.myForm.get('fecha_inicial').value;
+    const fechaFinal = this.myForm.get('fecha_final').value;
+    const usuario = this.myForm.get('usuario').value;
+    this.servicio.getAmongDates(fechaInicial, fechaFinal, usuario).subscribe((res: any) => {
+      this.bitacoras = res;
       console.log(res);
       this.BanderaDatos = false;
       this.BanderaVista = true; }, err => {
         console.log(err);
+        Swal.fire(
+          'Error',
+          err.error.errors.fechaFinal[0],
+          'error'
+        );
        });
   }
 
@@ -80,4 +83,5 @@ export class ReporteDetallesComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
 }

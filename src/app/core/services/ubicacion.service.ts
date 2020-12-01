@@ -40,9 +40,10 @@ export class UbicacionService {
 
    }
 
-   getWithState(estado): Observable <Ubicacion[]> {
+   getWithState(estado, disponibilidad, estante): Observable <Ubicacion[]> {
 
-    return this.http.get<Ubicacion[]>(this.uri + this.url + '?estado=' + estado);
+    return this.http.get<Ubicacion[]>(this.uri + this.url + '?estado=' + estado + '&disponibilidad=' +
+                                      disponibilidad + '&estante=' + estante);
 
    }
 

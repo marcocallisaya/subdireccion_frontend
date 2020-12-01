@@ -40,9 +40,10 @@ export class SolicitanteService {
 
    }
 
-   getWithState(estado): Observable <Solicitante[]> {
+   getWithState(estado, tipo): Observable <Solicitante[]> {
 
-    return this.http.get<Solicitante[]>(this.uri + this.url + '?estado=' + estado);
+    return this.http.get<Solicitante[]>(this.uri + this.url + '?estado=' + estado
+                                                            + '&tipo=' + tipo);
 
    }
 

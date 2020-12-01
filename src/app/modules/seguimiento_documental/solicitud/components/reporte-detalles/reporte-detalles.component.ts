@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { CentroFormacionService } from 'src/app/core/services/centro-formacion.service';
+import { SolicitanteService } from 'src/app/core/services/solicitante.service';
 import { SolicitudService } from 'src/app/core/services/solicitud.service';
+import { CentroFormacion } from 'src/app/shared/models/centro_formacion.model';
+import { Solicitante } from 'src/app/shared/models/solicitante.model';
 import { Solicitud } from 'src/app/shared/models/solicitud.model';
 
 @Component({
@@ -13,35 +18,61 @@ export class ReporteDetallesComponent implements OnInit {
   BanderaDatos: boolean;
   BanderaVista: boolean;
   solicitudes: Solicitud[];
+  myForm: FormGroup;
+  solicitantes: Solicitante[];
+  centros: CentroFormacion[];
 
 
   constructor(public dialogRef: MatDialogRef<ReporteDetallesComponent>,
-              private servicio: SolicitudService) { }
+              private servicio: SolicitudService,
+              private fb: FormBuilder,
+              private solicitante: SolicitanteService,
+              private centro: CentroFormacionService) { }
 
   ngOnInit(): void {
-    this.BanderaDatos = false;
-    this.mostrarReporte();
+    this.cargarDatosAdicionales();
+    this.cargarFormulario();
+    this.BanderaDatos = true;
+  }
+
+  cargarDatosAdicionales(): void {
+    this.solicitante.get().subscribe(res => this.solicitantes = res);
+    this.centro.get().subscribe(res => this.centros = res);
   }
 
   generatePDF(): void {
     this.BanderaVista = false;
-    this.BanderaDatos = true;
-    const data = {data: this.solicitudes};
+    const data = {data: this.solicitudes, centro: this.myForm.get('centro').value, solicitante: this.myForm.get('solicitante').value};
     this.servicio.generateReportPdf(data).subscribe(res => {
       console.log(res);
       this.onNoClick();
+      this.BanderaDatos = true;
       const fileURL = URL.createObjectURL(res);
       window.open(fileURL, '_blank');
     }, err => console.log(err));
   }
 
+  cargarFormulario(): void {
+    this.myForm = this.fb.group({
+      solicitante: [''],
+      centro: ['']
+    });
+  }
 
   mostrarReporte(): void {
-    this.servicio.get().subscribe(res => {
-      this.solicitudes = res;
-      this.BanderaVista = true; }, err => {
+    const solicitante = this.myForm.get('solicitante').value;
+    const centro = this.myForm.get('centro').value;
+    this.servicio.getWithState(solicitante, centro).subscribe((res: any) => {
+      this.solicitudes = res.data;
+      this.BanderaVista = true;
+      this.BanderaDatos = false; }, err => {
         console.log(err);
        });
+  }
+
+  atras(): void {
+    this.BanderaDatos = true;
+    this.BanderaVista = false;
   }
 
 
