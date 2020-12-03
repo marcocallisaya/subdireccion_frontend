@@ -11,6 +11,7 @@ import { Funcionario } from 'src/app/shared/models/funcionario.model';
 import { Tramite } from 'src/app/shared/models/tramite.model';
 import { switchMap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { LoginService } from 'src/app/core/authentication/login.service';
 
 @Component({
   selector: 'app-derivacion-form',
@@ -38,6 +39,7 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
   uri = 'derivacion';
 
   constructor(private fb: FormBuilder,
+              private token: LoginService,
               private servicio: DerivacionService,
               private route: ActivatedRoute,
               private router: Router,
@@ -82,7 +84,7 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       tramite_id: [ {value: this.derivacion?.tramite_id || '', disabled: this.BanderaBoton }, Validators.required],
-      funcionario_id: [this.derivacion?.funcionario_id || '', Validators.required],
+      funcionario_id: [this.derivacion?.funcionario_id || this.token.getDatosPersonales().id],
       fecha_limite: [{value: this.derivacion?.tramite.fecha_limite || '', disabled: this.BanderaBoton }, Validators.required]
     });
   }

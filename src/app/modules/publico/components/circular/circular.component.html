@@ -1,0 +1,30 @@
+<div class="container">
+    <h4 class="mt-4 text-center">CIRCULARES PUBLICADAS</h4>
+    <div *ngIf="BanderaDatos" class="row mt- justify-content-center">
+        <div class="col-9 row justify-content-center">
+            <div *ngFor="let item of circulares" class="col-4 mt-2 item">
+                <mat-card style="height: 400px;">
+                    <h5 class="text-center"> Circular N° {{item.id}}</h5>
+                    <mat-card-content>
+                       <h6> <b>Funcionario que lo publico : </b> {{item.funcionario.nombre}} {{item.funcionario.apellido}}</h6>
+                       <h6> <b>Referencia : </b> {{item.referencia}}</h6>
+                       <h6> <b>Fecha de la Publicacion : </b> {{item.updated_at | date : 'dd/MM/yyyy'}}</h6>
+                       <h6> <b>Hora de la publicacion : </b> {{item.updated_at | date: 'shortTime'}}</h6>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <a [href]="'http://127.0.0.1:8000/storage/public/' + item.url"  target="_blank" class="ancho-completo" mat-raised-button color="primary">Abrir PDF <i class="fas fa-file-pdf"></i></a>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+        </div>
+        
+        <div *ngIf="!BanderaDatos">
+            <app-spinner></app-spinner>
+        </div>
+</div>
+

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription, zip } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { LoginService } from 'src/app/core/authentication/login.service';
 import { FuncionarioService } from 'src/app/core/services/funcionario.service';
 import { InstructivoService } from 'src/app/core/services/instructivo.service';
 import { Funcionario } from 'src/app/shared/models/funcionario.model';
@@ -39,6 +40,7 @@ export class InstructivoFormComponent implements OnInit, OnDestroy {
               private servicio: InstructivoService,
               private route: ActivatedRoute,
               private router: Router,
+              private token: LoginService,
               private funcionario: FuncionarioService,
               private location: Location) { }
 
@@ -80,7 +82,7 @@ export class InstructivoFormComponent implements OnInit, OnDestroy {
     this.myForm = this.fb.group({
       destinatario: [this.instructivo?.destinatario || '', Validators.required],
       referencia: [this.instructivo?.referencia || '', Validators.required],
-      funcionario_id: [this.instructivo?.funcionario_id || '', Validators.required]
+      funcionario_id: [this.instructivo?.funcionario_id || this.token.getDatosPersonales().id]
     });
   }
 
@@ -140,7 +142,7 @@ export class InstructivoFormComponent implements OnInit, OnDestroy {
     error => {
       console.log(error);
       const errores =  this.tratarErrores(error.error.errors);
-        this.mostrarError(errores);
+      this.mostrarError(errores);
     });
   }
 

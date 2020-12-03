@@ -17,7 +17,7 @@ export class FotoModalComponent implements OnInit {
   BanderaDatos = true;
   uri ;
   codigo;
-  link = 'http://localhost:8000/storage/';
+  link = 'http://localhost:8000/storage/public/';
   defaultPhotoUrl = 'https://i1.wp.com/www.musicapopular.cult.cu/wp-content/uploads/2017/12/imagen-no-disponible.png?fit=600%2C450';
   constructor(public dialogRef: MatDialogRef<FotoModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: CentroFormacion,

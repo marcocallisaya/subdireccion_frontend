@@ -1,0 +1,197 @@
+<div class="row justify-content-center" >
+    <div class="col-8">
+     <h1 mat-dialog-title class="text-center"> REPORTE GENERAL DE TRAMITE </h1>
+    </div>
+ 
+  </div>
+  
+  <div mat-dialog-content class="mat-typography">
+      <mat-card>
+        <h3> <b>Datos del tramite</b> </h3>
+        <div class="row clearfix">
+          <div class="col-sm-12 col-md-4">
+            <h4> <b>Estado del Tramite :</b>  {{data.tramite_estado}}</h4>
+           
+          </div>
+          <div class="col-sm-12 col-md-4">
+              <h4> <b>Codigo :</b>  {{data.codigo}}</h4>
+             
+            </div>
+            <div class="col-sm-4">
+                <h4 > <b>Fecha Limite :</b>   {{ data.fecha_limite | date: 'dd/MM/yyyy' }}</h4>
+              </div>
+        </div>
+        <div class="row clearfix">
+    
+           <div class="col-sm-12">
+             <h4> <b>Referencia :</b>  {{data.referencia}}</h4>
+            
+           </div>
+           <div class="col-12">
+            <h4> <b>Evaluacion :</b>  {{data.evaluacion?.descripcion || 'Sin Evaluacion'}}</h4>
+           </div>
+           <div class="col-12">
+            <h4> <b>Devolucion :</b>  {{data.devolucion?.recomendacion || 'Sin Devolucion'}}</h4>
+           </div>
+         </div>
+      </mat-card>
+      
+
+  </div>
+  <div mat-dialog-content class="mat-typography">
+      <mat-card>
+        <h3> <b>Informacion del tipo de tramite</b> </h3>
+        <div class="row clearfix">
+          <div class="col-sm-12 col-md-4">
+            <h4> <b>Nombre :</b>  {{data.tipo_tramite.nombre}}</h4>
+           
+          </div>
+          <div class="col-sm-12 col-md-4">
+           <h4 > <b>Estado :</b>   {{data.tipo_tramite.estado}}</h4>
+             
+            </div>
+            <div class="col-sm-4">
+             <h4 > <b>Codigo : </b> {{data.tipo_tramite.codigo}}</h4>
+           </div>
+          
+        </div>
+      <div class="row">
+      
+        <div class="col-sm-12">
+          <h4 > <b>Descripción : </b> {{data.tipo_tramite.descripcion}}</h4>
+        </div>
+      </div>
+      </mat-card>
+
+
+  </div>
+
+   <div mat-dialog-content class="mat-typography solicitante">
+       
+       <mat-card>
+        <h3>  <b>Solicitante </b> </h3>
+        <div class="row clearfix">
+            <div class="col-sm-12 col-md-3">
+              <h4> <b>Nombre :</b>  {{data.solicitud.solicitante.nombre}}</h4>
+             
+            </div>
+            <div class="col-sm-12 col-md-3">
+                <h4> <b>Apellido :</b>  {{data.solicitud.solicitante.apellido}}</h4>
+               
+              </div>
+              <div class="col-sm-12 col-md-3">
+                <h4> <b>Telefono :</b>  {{data.solicitud.solicitante.telefono}}</h4>
+               
+              </div>
+              <div class="col-sm-12 col-md-3">
+                  <h4> <b>Ci :</b>  {{data.solicitud.solicitante.ci}}</h4>
+                 
+                </div>
+          </div>
+       </mat-card>
+   
+    
+   </div>
+   <div mat-dialog-content class="mat-typography solicitud">
+       
+    <mat-card>
+    
+     <h3>  <b>Funcinario que lo administra </b> </h3>
+     <div class="row clearfix">
+         <div class="col-sm-12 col-md-3">
+           <h4> <b>Nombre :</b>  {{data.derivacion?.funcionario.nombre || '-'}}</h4>
+          
+         </div>
+         <div class="col-sm-12 col-md-3">
+             <h4> <b>Apellido :</b>  {{data.derivacion?.funcionario.apellido || '-'}}</h4>
+            
+           </div>
+           <div class="col-sm-12 col-md-3">
+             <h4> <b>Telefono :</b>  {{data.derivacion?.funcionario.telefono || '-'}}</h4>
+            
+           </div>
+           <div class="col-sm-12 col-md-3">
+               <h4> <b>Cargo :</b>  {{data.derivacion?.funcionario.cargo || '-'}}</h4>
+              
+             </div>
+       </div>
+    </mat-card>
+
+ 
+</div>
+<div mat-dialog-content class="mat-typography">
+    <mat-card>
+        <h3>  <b>Centro de formacion al que pertenece el tramite </b> </h3>
+        <div class="row clearfix">
+          <div class="col-sm-12 col-md-3">
+            <h4> <b>Nombre :</b>  {{data.solicitud.centro_formacion.nombre}}</h4>
+           
+          </div>
+          <div class="col-sm-12 col-md-3">
+           <h4 > <b>Sie :</b>   {{data.solicitud.centro_formacion.sie}}</h4>
+             
+            </div>
+            <div class="col-sm-3">
+                <h4 > <b>Tipo de centro : </b> {{data.solicitud.centro_formacion.tipo}}</h4>
+              </div>
+              <div class="col-sm-3">
+                 <h4 > <b>Telefono : </b> {{data.solicitud.centro_formacion.telefono}}</h4>
+               </div> 
+        </div>
+    
+     <div class="row">
+        <div class="col-sm-12 col-md-3">
+            <h4 > <b>Turno :</b>   {{data.solicitud.centro_formacion.turno}}</h4>
+              
+             </div>
+     
+       <div class="col-sm-9">
+         <h4 > <b>Direccion : </b> {{data.solicitud.centro_formacion.direccion}}</h4>
+       </div>
+     </div> 
+    </mat-card>
+  
+</div>
+<div class="row justify-content-center" >
+    <div class="col-6">
+     <h1 mat-dialog-title class="text-center"> Lista de documentos </h1>
+    </div>
+ 
+  </div>
+   <div *ngFor="let data of data.documentos" mat-dialog-content class="mat-typography">
+       <mat-card>
+        <div class="row">
+            <div class="col-sm-12 col-md-3">
+              <h4> <b>Nombre :</b>  {{data.nombre}}</h4>
+             
+            </div>
+            <div class="col-sm-12 col-md-9">
+                <h4> <b>Descripcion :</b>  {{data.descripcion}}</h4>
+               
+              </div>
+            
+          </div>
+          <div class="row clearfix">
+             <div class="col-sm-12 col-md-6">
+               <h4> <b>Codigo :</b>  {{data.codigo}}</h4>
+              
+             </div>
+             <div class="col-sm-12 col-md-6">
+                 <h4> <b>Numero de Paginas :</b>  {{data.numero_paginas}}</h4>
+                
+               </div>
+             
+           </div>
+           <h6>*********************************************************************************************************************************************************************************</h6>
+           
+       </mat-card>
+    
+   </div>
+     <div class="row justify-content-center">
+        <div class="col-4">
+            <button class="ancho-completo" mat-raised-button color="primary" (click)="generatePDF()">Generar Reporte</button>
+        </div>
+       <div class="col-4">
+           <button class="ancho-completo" mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+       </div>
+     </div>

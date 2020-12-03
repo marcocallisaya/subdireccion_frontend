@@ -1,1 +1,258 @@
-<p>reporte-tramite works!</p>
+<div class="busqueda" *ngIf="BanderaDatos">
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="text-center">Ingresa los filtros</h4>
+        </div>
+    </div>
+    <form [formGroup]="myForm">
+        <div class="row justify-content-center mt-3">
+            <div class="col-sm-12 col-md-4">
+                <mat-form-field class="ancho-completo">
+                    <mat-label>Fecha Inicial*</mat-label>
+                    <input type="date" matInput formControlName="fecha_inicial" name="fecha_inicial">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <mat-form-field class="ancho-completo">
+                    <mat-label>Fecha Final*</mat-label>
+                    <input type="date" matInput formControlName="fecha_final" name="fecha_final">
+                </mat-form-field>
+            </div>
+    
+        </div>
+    </form>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-3">
+            <button class="ancho-completo" mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="mostrarReporte()">Filtrar
+                Datos</button>
+        </div>
+        <div class="col-3">
+            <button class="ancho-completo" mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
+        </div>
+    </div>
+
+    <div class="individual " style="margin-top: 5rem;">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="text-center">Selecciona un tramite</h4>
+            </div>
+        </div>
+        <div class="row justify-content-center ">
+            <div class="col-sm-12 col-md-7">
+                <mat-form-field class="ancho-completo">
+                  <mat-label>Tramite*</mat-label>
+                  <mat-select #tramite>
+                    <mat-option (click)="changeState(item)" *ngFor="let item of tramites"  [value]="item.id">
+                      {{item.referencia}} -    {{item.created_at | date: 'dd/MM/yyyy'}} 
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            <div class="col-3">
+                <button [disabled]="!BanderaBoton" class="ancho-completo" mat-raised-button color="primary" (click)="abrir()">Visualizar reporte de tramite</button>
+            </div>
+        </div>
+         
+    </div>
+</div>
+
+<div *ngIf="!BanderaDatos" class="reporte">
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="text-center">REPORTE DE DOCUMENTOS</h4>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3 mb-3">
+            <button  class="ancho-completo" mat-raised-button color="primary" (click)="generatePDF()">Generar PDF</button>
+        </div>
+        <div class="col-3 mb-3">
+            <button  class="ancho-completo" mat-raised-button color="accent" (click)="atras()">Cancelar</button>
+        </div>
+    </div>
+   <div class="row mt-2 justify-content-center">
+        <div class="col-10">
+            <mat-card>
+                <div class="row">
+                    <div class="col-9">
+                        <h5>Tipo de Tramite mas registrado</h5>
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-6">
+                              <p> <b>Nombre :</b>  {{tipo.nombre}}</p>
+                             
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                             <p > <b>Estado :</b>   {{tipo.estado}}</p>
+                               
+                              </div>
+                            
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <p > <b>Codigo :</b>   {{tipo.codigo}}</p>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <p > <b>Cantidad de tramites registrados:</b>   {{tipos[0].cantidad}}</p>
+                            </div>
+                          </div>
+                        <div class="row">
+                         
+                          <div class="col-sm-12">
+                            <p > <b>Descripción : </b> {{tipo.descripcion}}</p>
+                          </div>
+                        </div>
+                        </div>
+                        <div class="col-3">
+                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <table class="mt-3">
+                                <tr>
+                                    <th> Nombre </th>  <th> Cantidad </th>
+                                </tr>
+                                <tr *ngFor="let item of tipos">
+                                    <td> {{item.nombre}}</td>
+                                    <td> {{item.cantidad}}</td>
+                                </tr>
+                              
+                            </table>
+                        </div>
+                </div>
+            </mat-card>
+        </div>  
+    </div>
+    <div class="row mt-2 justify-content-center">
+        <div class="col-10">
+            <mat-card>
+                <div class="row">
+                    <div class="col-9">
+                        <h5>Solicitante que registro mas tramites</h5>
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-6">
+                              <p> <b>Nombre :</b>  {{solicitante.nombre}}</p>
+                             
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <p> <b>Apellido :</b>  {{solicitante.apellido}}</p>
+                               
+                              </div>
+                            
+                          </div>
+                          <div class="row clearfix">
+                             <div class="col-sm-12 col-md-6">
+                               <p> <b>Telefono :</b>  {{solicitante.telefono}}</p>
+                              
+                             </div>
+                             <div class="col-sm-12 col-md-6">
+                                 <p> <b>Ci :</b>  {{solicitante.ci}}</p>
+                                
+                               </div>
+                             
+                           </div>
+                           <div class="row clearfix">
+                            <div class="col-sm-12 col-md-6">
+                              <p> <b>Estado :</b>  {{solicitante.estado}}</p>
+                             
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <p> <b>Cantidad de tramites registrados :</b>  {{solicitantes[0].cantidad}}</p>
+                               
+                              </div>
+                            
+                          </div>
+                        </div>
+                        <div class="col-3">
+                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <table class="mt-3">
+                                <tr>
+                                    <th> Nombre </th>  <th> Cantidad </th>
+                                </tr>
+                                <tr *ngFor="let item of solicitantes">
+                                    <td> {{item.nombre}} {{item.apellido}}</td>
+                                    <td> {{item.cantidad}}</td>
+                                </tr>
+                              
+                            </table>
+                        </div>
+                </div>
+            </mat-card>
+        </div>  
+    </div>
+
+    <div class="row  mt-2 justify-content-center">
+        <div class="col-10">
+            <mat-card>
+                <div class="row">
+                    <div class="col-9">
+                        <h5>Funcionario que gestiono mas tramites</h5>
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-6">
+                              <p> <b>Nombre :</b>  {{funcionario.nombre}}</p>
+                             
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <p> <b>Apellido :</b>  {{funcionario.apellido}}</p>
+                               
+                              </div>
+                            
+                          </div>
+                          <div class="row clearfix">
+                             <div class="col-sm-12 col-md-6">
+                               <p> <b>Fecha de Nacimiento :</b>  {{funcionario.fecha_nacimiento | date: 'dd/MM/yyyy'}}</p>
+                              
+                             </div>
+                             <div class="col-sm-12 col-md-6">
+                                 <p> <b>Cargo :</b>  {{funcionario.cargo}}</p>
+                                
+                               </div>
+                             
+                           </div>
+                           <div class="row clearfix">
+                            <div class="col-sm-12 col-md-6">
+                              <p> <b>Telefono :</b>  {{funcionario.telefono}}</p>
+                             
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <p> <b>Cantidad de tramites registrados :</b>  {{funcionarios[0].cantidad}}</p>
+                               
+                              </div>
+                            
+                          </div>
+                        </div>
+                        <div class="col-3">
+                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <table class="mt-3">
+                                <tr>
+                                    <th> Nombre </th>  <th> Cantidad </th>
+                                </tr>
+                                <tr *ngFor="let item of funcionarios">
+                                    <td> {{item.nombre}} {{item.apellido}}</td>
+                                    <td> {{item.cantidad}}</td>
+                                </tr>
+                              
+                            </table>
+                        </div>
+                </div>
+            </mat-card>
+        </div>  
+    </div>
+  
+            <mat-card class="mt-4">
+                <div class="row justify-content-center">
+                        <div class="col-12">
+                            <h5 style="text-align: center;">Total de tramites segun su estado </h5>
+                            <table style="margin: auto;" class="mt-3">
+                                <tr>
+                                    <th> Estado de Tramite </th>  <th> Cantidad </th>
+                                </tr>
+                                <tr *ngFor="let item of lista">
+                                    <td> {{item.tramite_estado}}</td>
+                                    <td> {{item.cantidad}}</td>
+                                </tr>
+                              
+                            </table>
+                        </div>
+                </div>
+            </mat-card>
+
+
+   
+</div>

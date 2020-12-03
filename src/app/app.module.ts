@@ -10,12 +10,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {TokenInterceptorService} from './core/interceptor/token-interceptor.service';
 import { SharedModule } from './shared/shared.module';
 
-
-
-
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

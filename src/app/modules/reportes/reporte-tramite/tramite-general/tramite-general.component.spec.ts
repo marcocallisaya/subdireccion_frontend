@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReporteTramiteComponent } from './reporte-tramite.component';
+import { TramiteGeneralComponent } from './tramite-general.component';
 
-describe('ReporteTramiteComponent', () => {
-  let component: ReporteTramiteComponent;
-  let fixture: ComponentFixture<ReporteTramiteComponent>;
+describe('TramiteGeneralComponent', () => {
+  let component: TramiteGeneralComponent;
+  let fixture: ComponentFixture<TramiteGeneralComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReporteTramiteComponent ]
+      declarations: [ TramiteGeneralComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReporteTramiteComponent);
+    fixture = TestBed.createComponent(TramiteGeneralComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

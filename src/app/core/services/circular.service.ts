@@ -45,6 +45,12 @@ export class CircularService {
 
    }
 
+   getPublicated(estadoPublicacion): Observable <Circular[]> {
+
+    return this.http.get<Circular[]>(this.uri + this.url + '?estadoPublicacion=' + estadoPublicacion);
+
+   }
+
    send(body: Circular): Observable <Circular> {
 
      return this.http.post<Circular>(this.uri + this.url, body);

@@ -73,6 +73,7 @@ export class DistritoFormComponent implements OnInit, OnDestroy {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       nombre: [this.distrito?.nombre || '', Validators.required],
+      telefono: [this.distrito?.telefono || '', Validators.required],
       direccion: [this.distrito?.direccion || '', Validators.required],
       ciudad: [this.distrito?.ciudad || '', Validators.required]
     });

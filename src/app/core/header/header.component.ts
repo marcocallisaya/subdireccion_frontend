@@ -8,9 +8,11 @@ import { LoginService } from '../authentication/login.service';
 })
 export class HeaderComponent implements OnInit {
 
-
-
+  constructor(private token: LoginService){}
+  usuario;
   ngOnInit(): void {
+    this.usuario = this.token.getUsuario().usuario;
+
   }
 
 }

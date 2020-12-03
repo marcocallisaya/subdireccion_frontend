@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription, zip } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { LoginService } from 'src/app/core/authentication/login.service';
 import { CircularService } from 'src/app/core/services/circular.service';
 import { FuncionarioService } from 'src/app/core/services/funcionario.service';
 import { Circular } from 'src/app/shared/models/circular.model';
@@ -39,6 +40,7 @@ export class CircularFormComponent implements OnInit, OnDestroy {
               private servicio: CircularService,
               private route: ActivatedRoute,
               private router: Router,
+              private token: LoginService,
               private funcionario: FuncionarioService,
               private location: Location) { }
 
@@ -80,7 +82,7 @@ export class CircularFormComponent implements OnInit, OnDestroy {
     this.myForm = this.fb.group({
       codigo: [this.circular?.codigo || '', Validators.required],
       referencia: [this.circular?.referencia || '', Validators.required],
-      funcionario_id: [this.circular?.funcionario_id || '', Validators.required]
+      funcionario_id: [this.circular?.funcionario_id || this.token.getDatosPersonales().id]
     });
   }
 

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription, zip } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { LoginService } from 'src/app/core/authentication/login.service';
 import { ConvocatoriaService } from 'src/app/core/services/convocatoria.service';
 import { FuncionarioService } from 'src/app/core/services/funcionario.service';
 import { Convocatoria } from 'src/app/shared/models/convocatoria.model';
@@ -39,6 +40,7 @@ export class ConvocatoriaFormComponent implements OnInit, OnDestroy {
               private servicio: ConvocatoriaService,
               private route: ActivatedRoute,
               private router: Router,
+              private token: LoginService,
               private funcionario: FuncionarioService,
               private location: Location) { }
 
@@ -80,7 +82,7 @@ export class ConvocatoriaFormComponent implements OnInit, OnDestroy {
     this.myForm = this.fb.group({
       fecha_limite: [this.convocatoria?.fecha_limite || '', Validators.required],
       referencia: [this.convocatoria?.referencia || '', Validators.required],
-      funcionario_id: [this.convocatoria?.funcionario_id || '', Validators.required]
+      funcionario_id: [this.convocatoria?.funcionario_id || this.token.getDatosPersonales().id]
     });
   }
 

@@ -53,9 +53,9 @@
 </div>
 
 <div *ngIf="BanderaDatos" class="row mt-3 justify-content-center">
-<div class="col-9 row justify-content-center">
-    <div *ngFor="let item of centros" class="col-4 mt-2">
-        <mat-card  class="centro">
+<div class="col-10 row justify-content-center">
+    <div *ngFor="let item of centros" class="col-3 mt-2">
+        <mat-card style="height: 550px;"  class="centro">
             <mat-card-title> {{item.nombre}}</mat-card-title>
             <img mat-card-image [src]="verificarImagen(item.url)" alt="Imagen del centro">
             <mat-card-content>
@@ -68,7 +68,7 @@
             </mat-card-content>
             <mat-card-actions>
                 <div class="row justify-content-center">
-                    <div class="col-6">
+                    <div class="col-9">
                         <button class="ancho-completo" (click)="verMapa(item)"  mat-raised-button color="accent">Mapa <i class="fas fa-map-marked-alt"></i></button>
                     </div>
                 </div>

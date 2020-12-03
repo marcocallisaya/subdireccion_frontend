@@ -1,11 +1,20 @@
 img {
-    max-height: '60vh';
     width: 100%;
 }
 p {
     text-align: justify;
 }
 
-.banner {
-    margin-top: 5rem;
+li {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+}
+.container {
+    max-width: '60vw';
+}
+
+.organigrama img {
+    width: 100%;
+    margin: auto;
 }

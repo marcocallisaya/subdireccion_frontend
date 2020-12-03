@@ -181,7 +181,7 @@ export class SolicitudComponent implements OnInit, OnDestroy {
 
   abrirReporteDetalles(): void  {
   if (this.verificarPermisos(this.reportePermiso)) {
-    this.dialog.open(ReporteDetallesComponent, {width:  '60vw', maxHeight: '90vh'});
+    this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
   }
   }
 

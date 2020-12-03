@@ -44,6 +44,12 @@ export class TramiteService {
 
    }
 
+   getAmongDates(fechaInicial, fechaFinal): Observable <Tramite[]> {
+
+    return this.http.get<Tramite[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+
+   }
+
    send(body: Tramite): Observable <Tramite> {
 
      return this.http.post<Tramite>(this.uri + this.url, body);

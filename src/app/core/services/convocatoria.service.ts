@@ -45,6 +45,12 @@ export class ConvocatoriaService {
 
    }
 
+   getPublicated(estadoPublicacion): Observable <Convocatoria[]> {
+
+    return this.http.get<Convocatoria[]>(this.uri + this.url + '?estadoPublicacion=' + estadoPublicacion);
+
+   }
+
    send(body: Convocatoria): Observable <Convocatoria> {
 
      return this.http.post<Convocatoria>(this.uri + this.url, body);

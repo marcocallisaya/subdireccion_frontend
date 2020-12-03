@@ -45,6 +45,12 @@ export class InstructivoService {
 
    }
 
+   getPublicated(estadoPublicacion): Observable <Instructivo[]> {
+
+    return this.http.get<Instructivo[]>(this.uri + this.url + '?estadoPublicacion=' + estadoPublicacion);
+
+   }
+
    send(body: Instructivo): Observable <Instructivo> {
 
      return this.http.post<Instructivo>(this.uri + this.url, body);

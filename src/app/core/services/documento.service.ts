@@ -36,6 +36,12 @@ export class DocumentoService {
 
    }
 
+   getAmongDates(fechaInicial, fechaFinal): Observable <Documento[]> {
+
+    return this.http.get<Documento[]>(this.uri + this.url + '?fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+
+   }
+
    getFiltered(perPage: number, currentPage: number, nombre: string): Observable <ListaDocumento> {
 
     return this.http.get<ListaDocumento>(this.uri + this.url +

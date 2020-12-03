@@ -1,13 +1,21 @@
-h6  {
-    color: white;
+.navbar{
+    justify-content: space-between;
+  }
+  span{
+    padding-right: 1rem;
+  }
+
+  a:hover { 
+    text-decoration: none;
 }
 
-.titulo{
-    padding-left: 2rem;
-    padding-top: 0.75rem;
+a {
+  color: white;
 }
 
-.header {
-    height: 7vh;
-    background: indigo;
+mat-toolbar {
+  height: 3rem;
+}
+span {
+  font-size: 1rem;
 }

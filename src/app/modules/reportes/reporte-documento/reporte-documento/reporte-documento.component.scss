@@ -13,3 +13,30 @@ td {
     padding-right: 0.5rem;
     padding-left: 0.5rem;
 }
+
+.ancho-completo {
+    width: 100%;
+}
+
+mat-card {
+    width: 100%;
+}
+
+h5 {
+    font-size: 1rem;
+    text-align: center;
+}
+p {
+    font-size: 0.9rem;
+    text-align: justify;
+}
+h4 {
+    font-size: 1.3rem;
+}
+
+td, th {
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+}

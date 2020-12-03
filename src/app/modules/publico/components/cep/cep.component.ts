@@ -20,7 +20,7 @@ export class CepComponent implements OnInit {
   BanderaDatos = false;
   distritoBandera = '';
   turnoBandera = '';
-  link = 'http://localhost:8000/storage/';
+  link = 'http://localhost:8000/storage/public/';
   tipo = 'CEP';
   spiner = false;
 

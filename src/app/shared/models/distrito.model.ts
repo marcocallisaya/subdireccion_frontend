@@ -3,6 +3,7 @@ export interface Distrito {
     nombre: string;
     direccion: string;
     ciudad: string;
+    telefono: string;
     estado: string;
     created_at: Date;
 }

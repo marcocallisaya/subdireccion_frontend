@@ -11,12 +11,17 @@ import { CeeComponent } from './components/cee/cee.component';
 import { CepComponent } from './components/cep/cep.component';
 import { MapaComponent } from './components/mapa/mapa.component';
 import { CarreraComponent } from './components/carrera/carrera.component';
+import { CircularComponent } from './components/circular/circular.component';
+import { ConvocatoriaComponent } from './components/convocatoria/convocatoria.component';
+import { InstructivoComponent } from './components/instructivo/instructivo.component';
 
 const routes: Routes = [
   {path: '', component: PublicoComponent, children: [
     {path: 'inicio', component: InicioComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'documento', component: DocumentoComponent},
+    {path: 'circular', component: CircularComponent},
+    {path: 'convocatoria', component: ConvocatoriaComponent},
+    {path: 'instructivo', component: InstructivoComponent},
     {path: 'servicio', component: ServicioComponent},
     {path: 'cea', component: CeaComponent},
     {path: 'cee', component: CeeComponent},
@@ -32,4 +37,5 @@ const routes: Routes = [
 export class PublicoRoutingModule { }
 
 export const components = [PublicoComponent, InicioComponent, LoginComponent, DocumentoComponent,
-                           ServicioComponent, CeaComponent, CeeComponent, CepComponent, MapaComponent, CarreraComponent];
+                           ServicioComponent, CeaComponent, CeeComponent, CepComponent, MapaComponent,
+                           CarreraComponent, CircularComponent, ConvocatoriaComponent, InstructivoComponent];

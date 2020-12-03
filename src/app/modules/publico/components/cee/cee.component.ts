@@ -20,7 +20,7 @@ export class CeeComponent implements OnInit {
   BanderaDatos = false;
   distritoBandera = '';
   turnoBandera = '';
-  link = 'http://localhost:8000/storage/';
+  link = 'http://localhost:8000/storage/public/';
   tipo = 'CEE';
   spiner = false;
 

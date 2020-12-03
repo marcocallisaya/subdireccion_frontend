@@ -8,6 +8,7 @@ export interface Convocatoria {
     estado: string;
     estado_publicacion: string;
     created_at: Date;
+    updated_at: Date;
     funcionario_id: number;
     funcionario: Funcionario;
 
