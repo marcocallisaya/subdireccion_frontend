@@ -20,6 +20,7 @@ export class CeeComponent implements OnInit {
   BanderaDatos = false;
   distritoBandera = '';
   turnoBandera = '';
+  linkUrlImagen = 'https://i1.wp.com/www.musicapopular.cult.cu/wp-content/uploads/2017/12/imagen-no-disponible.png?fit=600%2C450';
   link = 'http://localhost:8000/storage/public/';
   tipo = 'CEE';
   spiner = false;
@@ -57,8 +58,8 @@ export class CeeComponent implements OnInit {
  }
 
  verificarImagen(url): string {
-  if (url === null) {
-    return 'https://i1.wp.com/www.musicapopular.cult.cu/wp-content/uploads/2017/12/imagen-no-disponible.png?fit=600%2C450';
+  if (url === this.linkUrlImagen) {
+    return url;
   }
   else {
     return this.link + url ;

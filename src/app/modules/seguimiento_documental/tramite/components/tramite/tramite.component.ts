@@ -78,7 +78,7 @@ export class TramiteComponent implements OnInit, OnDestroy {
   this.tramite$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
-     this.length = res.meta.pagination.total;
+     this.length = res.meta?.pagination.total;
      this.BanderaDatos = true;
     });
   }
@@ -100,7 +100,7 @@ export class TramiteComponent implements OnInit, OnDestroy {
     this.tramite$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
-     this.length = res.meta.pagination.total;
+     this.length = res.meta?.pagination.total;
     });
   }
 

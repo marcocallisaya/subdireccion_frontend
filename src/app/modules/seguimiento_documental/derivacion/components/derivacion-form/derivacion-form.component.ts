@@ -84,14 +84,14 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       tramite_id: [ {value: this.derivacion?.tramite_id || '', disabled: this.BanderaBoton }, Validators.required],
-      funcionario_id: [this.derivacion?.funcionario_id || this.token.getDatosPersonales().id],
+      funcionario_id: [this.derivacion?.funcionario_id || '', Validators.required],
       fecha_limite: [{value: this.derivacion?.tramite.fecha_limite || '', disabled: this.BanderaBoton }, Validators.required]
     });
   }
 
   cargarDatosAdicionales(): void {
     zip(
-      this.tramite.get(),
+      this.tramite.getOnly('SOLICITUD'),
       this.funcionario.get()
     ).subscribe( resp => {
       const [resp1, resp2] = resp;

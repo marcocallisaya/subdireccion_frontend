@@ -6,7 +6,8 @@ export interface Usuario {
     created_at: Date;
     rol_id: number;
     funcionario_id: number;
-    rol: any;
+    data_rol: any;
+    rol: string;
     funcionario: any;
 }
 

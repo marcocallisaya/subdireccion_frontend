@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { CentroFormacionService } from 'src/app/core/services/centro-formacion.service';
 import { CargaImagenService } from 'src/app/core/services/subir-archivo.service';
 import { CentroFormacion } from 'src/app/shared/models/centro_formacion.model';
@@ -10,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './foto-modal.component.html',
   styleUrls: ['./foto-modal.component.scss']
 })
-export class FotoModalComponent implements OnInit {
+export class FotoModalComponent implements OnInit, OnDestroy {
 
   public respuestaImagenEnviada;
   public resultadoCarga;
@@ -24,6 +25,7 @@ export class FotoModalComponent implements OnInit {
               private enviandoImagen: CargaImagenService,
               private servicio: CentroFormacionService) { }
 
+  foto$: Subscription = new Subscription();
 
 onNoClick(): void {
 this.dialogRef.close();
@@ -40,17 +42,18 @@ editar(): void {
 }
 
 verificarUrl(centro): void {
-  if (centro.url === null) {
+  if (centro.url === this.defaultPhotoUrl) {
     this.uri = this.defaultPhotoUrl;
   } else {
     this.uri = this.link + centro.url;
   }
 }
 
+
 public cargandoImagen(files: FileList): any{
   this.BanderaDatos = false;
 
-  this.enviandoImagen.postImagen(files[0], this.data.id).subscribe(
+  this.foto$ =  this.enviandoImagen.postImagen(files[0], this.data.id).subscribe(
 
     response => {
       this.BanderaDatos = true;
@@ -65,10 +68,21 @@ public cargandoImagen(files: FileList): any{
     },
     error => {
       console.log(error);
+      Swal.fire(
+        'Error',
+         error.error.errors.imagen[0],
+        'error'
+      );
+      this.BanderaDatos = true;
     }
 
   );
 
+
 }
+
+  ngOnDestroy(): void {
+    this.foto$.unsubscribe();
+  }
 
 }

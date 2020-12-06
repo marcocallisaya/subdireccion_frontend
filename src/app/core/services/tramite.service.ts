@@ -29,6 +29,10 @@ export class TramiteService {
      return this.http.get<any>(this.uri + this.url);
    }
 
+   getOnly(tipo: string): Observable <any> {
+    return this.http.get<any>(this.uri + this.url + '?tipo=' + tipo);
+  }
+
    getFiltered(perPage: number, currentPage: number, nombre: string): Observable <ListaTramite> {
 
     return this.http.get<ListaTramite>(this.uri + this.url +

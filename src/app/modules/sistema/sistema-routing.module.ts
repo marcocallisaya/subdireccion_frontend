@@ -3,10 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { SistemaComponent } from '../../core/sistema/sistema.component';
 import {DatosUsuarioComponent} from '../../core/datos-usuario/datos-usuario.component';
 import { DatosPersonalesComponent } from 'src/app/core/datos-personales/datos-personales.component';
+import { LogueoService } from 'src/app/core/guards/logueo.service';
 
 
 const routes: Routes = [
-  {path: '', component: SistemaComponent, children: [
+  {path: '', component: SistemaComponent,  children: [
     {path: 'datos_personales', component: DatosPersonalesComponent},
     {path: 'datos_usuario', component: DatosUsuarioComponent},
     {path: 'documento', loadChildren: () => import('../seguimiento_documental/documento/documento.module').then(m => m.DocumentoModule)},

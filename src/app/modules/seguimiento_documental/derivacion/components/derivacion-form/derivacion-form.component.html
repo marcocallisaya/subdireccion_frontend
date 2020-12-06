@@ -18,12 +18,25 @@
 
             
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-6">
                 <mat-form-field class="ancho-completo">
                   <mat-label>Fecha limite para el tramite*</mat-label>
                   <input type="date" matInput formControlName="fecha_limite" name="fecha_limite">
                 </mat-form-field>
               </div> 
+              <div class="col-sm-6">
+                <mat-form-field class="ancho-completo">
+                  <mat-label>Funcionario a asignar*</mat-label>
+                  <mat-select formControlName="funcionario_id" name="funcionario_id">
+                    <mat-option *ngIf="BanderaBoton" [value]="derivacion.funcionario_id">
+                      {{derivacion.funcionario.nombre}}  {{derivacion.funcionario.apellido}}
+                    </mat-option>
+                    <mat-option *ngFor="let item of funcionarios" [value]="item.id">
+                      {{item.nombre}} {{item.apellido}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
             </div>
             <div class="row">
              

@@ -121,7 +121,7 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
   }
 
   verCarreras(centro: CentroFormacion): void {
-    if (this.verificarPermisos(this.editarPermiso)) {
+    if (this.verificarPermisos(this.editarPermiso) && (centro.tipo === 'CEA')) {
       const dialogRef = this.dialog.open(CarreraModalComponent, {width: '40vw', maxHeight: '80vh', data:  centro });
       dialogRef.afterClosed().subscribe(result => {
         this.cargarTabla(5, 1);
@@ -188,13 +188,20 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
   confirmarEliminacion(result, id: number): void {
     if (result.value) {
       this.servicio.delete(id).subscribe(
-        async () => {
-          await Swal.fire(
+        res => {
+          Swal.fire(
             'Eliminado ',
             `El centro ha sido eliminado`,
             'error'
           );
           this.cargarTabla(this.pageSize, this.currentPage);
+          }, err => {
+            console.log(err);
+            Swal.fire(
+              'Error',
+               err.error.message,
+              'error'
+            );
           }
       );
     }
@@ -248,7 +255,7 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
 
   abrirReporteDetalles(): void  {
     if (this.verificarPermisos(this.reportePermiso)) {
-      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '60vw', maxHeight: '90vh'});
+      this.dialog.open(ReporteDetallesComponent, {maxWidth:  '80vw', maxHeight: '90vh'});
     }
   }
 

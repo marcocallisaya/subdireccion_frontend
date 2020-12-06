@@ -40,7 +40,7 @@ export class DerivacionComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['id', 'referencia'];
+  displayedColumns: string[] = ['referencia'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
@@ -70,7 +70,7 @@ export class DerivacionComponent implements OnInit, OnDestroy {
     this.tipo$ =  this.servicio.getPaginated(size, current).subscribe((res: any) =>
       {
        this.dataSource = res.data; console.log(res);
-       this.length = res.meta.pagination.total;
+       this.length = res.meta?.pagination.total;
        this.BanderaDatos = true;
       });
     }

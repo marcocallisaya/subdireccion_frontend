@@ -64,7 +64,7 @@ export class UsuarioComponent implements OnInit, OnDestroy {
       {
        console.log(res);
        this.dataSource = res.data; console.log(res);
-       this.length = res.meta.pagination.total;
+       this.length = res.meta?.pagination.total;
        this.BanderaDatos = true;
       });
     }
@@ -86,7 +86,7 @@ export class UsuarioComponent implements OnInit, OnDestroy {
     this.usuario$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
-     this.length = res.meta.pagination.total;
+     this.length = res.meta?.pagination.total;
     });
   }
 
@@ -145,13 +145,20 @@ export class UsuarioComponent implements OnInit, OnDestroy {
   confirmarEliminacion(result, id: number): void {
     if (result.value) {
       this.servicio.delete(id).subscribe(
-        async () => {
-          await Swal.fire(
+        res => {
+          Swal.fire(
             'Eliminado ',
             `El usuario ha sido eliminado`,
             'error'
           );
           this.cargarTabla(this.pageSize, this.currentPage);
+          }, err => {
+            console.log(err);
+            Swal.fire(
+              'Error',
+               err.error.message,
+              'error'
+            );
           }
       );
     }

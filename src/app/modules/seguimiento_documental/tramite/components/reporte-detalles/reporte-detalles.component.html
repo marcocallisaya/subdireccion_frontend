@@ -1,7 +1,7 @@
 <ng-container *ngIf="BanderaDatos else vista">
     <div class="row">
         <div class="col-12">
-            <h5 class="text-center">Ingresa los filtros</h5>
+            <h5 class="text-center">Selecciona el filtro</h5>
         </div>
     </div>
     <form [formGroup]="myForm">
@@ -48,7 +48,7 @@
             <div class="col-12">
                 <table style="width:100%">
                     <tr>
-                        <th class="text-justify">Referencia</th>
+                        <th class="text-center">Referencia</th>
                         <th class="text-center">Estado</th>
                         <th class="text-center">Codigo</th>
                         <th class="text-center">Dias Restante</th>
@@ -59,7 +59,7 @@
                         <td class="text-center ">{{item.tramite_estado}} </td>
                         <td class="text-justify">{{item.codigo}} </td>
                         <td class="text-center ">{{item.dias_Restante}} </td>
-                        <td class="text-justify">{{item.tipo_tramite.nombre}} </td>
+                        <td class="text-center">{{item.tipo_tramite.nombre}} </td>
                     </tr>
                 </table>
             </div>

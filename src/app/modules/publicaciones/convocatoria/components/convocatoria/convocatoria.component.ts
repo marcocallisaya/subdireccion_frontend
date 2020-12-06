@@ -38,7 +38,7 @@ export class ConvocatoriaComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['fecha_limite', 'referencia', 'estado'];
+  displayedColumns: string[] = ['referencia',  'estado'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
@@ -102,6 +102,7 @@ export class ConvocatoriaComponent implements OnInit, OnDestroy {
     }
   }
 
+
   cargar(data): void {
     switch (data.tipoAccion) {
       case 'ver':
@@ -158,13 +159,20 @@ export class ConvocatoriaComponent implements OnInit, OnDestroy {
   confirmarEliminacion(result, id: number): void {
     if (result.value) {
       this.servicio.delete(id).subscribe(
-        async () => {
-          await Swal.fire(
+        res => {
+          Swal.fire(
             'Eliminado ',
             `La convocatoria ha sido eliminada`,
             'error'
           );
           this.cargarTabla(this.pageSize, this.currentPage);
+          }, err => {
+            console.log(err);
+            Swal.fire(
+              'Error',
+               err.error.message,
+              'error'
+            );
           }
       );
     }

@@ -26,6 +26,7 @@ export class CeaComponent implements OnInit {
   link = 'http://localhost:8000/storage/public/';
   tipo = 'CEA';
   spiner = false;
+  linkUrlImagen = 'https://i1.wp.com/www.musicapopular.cult.cu/wp-content/uploads/2017/12/imagen-no-disponible.png?fit=600%2C450';
 
   constructor(private distrito: DistritoService,
               private centro: CentroFormacionService,
@@ -61,8 +62,8 @@ export class CeaComponent implements OnInit {
  }
 
  verificarImagen(url): string {
-  if (url === null) {
-    return 'https://i1.wp.com/www.musicapopular.cult.cu/wp-content/uploads/2017/12/imagen-no-disponible.png?fit=600%2C450';
+  if (url === this.linkUrlImagen) {
+    return url;
   }
   else {
     return this.link + url ;

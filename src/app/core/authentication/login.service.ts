@@ -30,7 +30,7 @@ export class LoginService {
   }
 
   getToken(): string {
-    return JSON.parse(localStorage.getItem('authToken'));
+    return localStorage.getItem('authToken');
   }
 
   getDatosPersonales(): any {

@@ -38,7 +38,7 @@
       </div>
       <div class="row clearfix">
         <div class="col-sm-6">
-          <h4> <b>Tipo de documento :</b>  {{ data.tipo_documento.nombre}}</h4>
+          <h4> <b>Tipo de documento :</b>  {{ data.tipo_documento?.nombre || 'No Disponible'}}</h4>
          
         </div>
         <div class="col-sm-6">

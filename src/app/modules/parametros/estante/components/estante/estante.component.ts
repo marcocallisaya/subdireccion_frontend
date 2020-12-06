@@ -150,13 +150,20 @@ export class EstanteComponent implements OnInit, OnDestroy {
   confirmarEliminacion(result, id: number): void {
     if (result.value) {
       this.servicio.delete(id).subscribe(
-        async () => {
-          await Swal.fire(
+        res => {
+          Swal.fire(
             'Eliminado ',
             `El estante ha sido eliminado`,
             'error'
           );
           this.cargarTabla(this.pageSize, this.currentPage);
+          }, err => {
+            console.log(err);
+            Swal.fire(
+              'Error',
+               err.error.message,
+              'error'
+            );
           }
       );
     }

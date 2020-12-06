@@ -1,44 +1,45 @@
 <div class="busqueda" *ngIf="BanderaDatos">
-    <div class="row mt-5">
-        <div class="col-12">
-            <h4 class="text-center">Ingresa los filtros</h4>
-        </div>
-    </div>
-    <form [formGroup]="myForm">
-        <div class="row justify-content-center mt-3">
-            <div class="col-sm-12 col-md-4">
-                <mat-form-field class="ancho-completo">
-                    <mat-label>Fecha Inicial*</mat-label>
-                    <input type="date" matInput formControlName="fecha_inicial" name="fecha_inicial">
-                </mat-form-field>
-            </div>
-            <div class="col-sm-12 col-md-4">
-                <mat-form-field class="ancho-completo">
-                    <mat-label>Fecha Final*</mat-label>
-                    <input type="date" matInput formControlName="fecha_final" name="fecha_final">
-                </mat-form-field>
-            </div>
-    
-        </div>
-    </form>
-    <div class="row mt-3 justify-content-center">
-        <div class="col-3">
-            <button class="ancho-completo" mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="mostrarReporte()">Filtrar
-                Datos</button>
-        </div>
-        <div class="col-3">
-            <button class="ancho-completo" mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
-        </div>
-    </div>
 
-    <div class="individual " style="margin-top: 5rem;">
-        <div class="row">
-            <div class="col-12">
-                <h4 class="text-center">Selecciona un tramite</h4>
+    <mat-card class="mt-5" style="width: 80%; margin: auto;">
+        <mat-card-title>
+            <h4 class="text-left">Reporte General</h4>
+        </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="myForm">
+                <div class="row justify-content-center mt-3">
+                    <div class="col-sm-12 col-md-4">
+                        <mat-form-field class="ancho-completo">
+                            <mat-label>Fecha Inicial*</mat-label>
+                            <input type="date" matInput formControlName="fecha_inicial" name="fecha_inicial">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <mat-form-field class="ancho-completo">
+                            <mat-label>Fecha Final*</mat-label>
+                            <input type="date" matInput formControlName="fecha_final" name="fecha_final">
+                        </mat-form-field>
+                    </div>
+            
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="row mt-3 justify-content-center">
+                <div class="col-4">
+                    <button class="ancho-completo" mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="mostrarReporte()">Filtrar
+                        Datos</button>
+                </div>
             </div>
-        </div>
-        <div class="row justify-content-center ">
-            <div class="col-sm-12 col-md-7">
+        
+        </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="mt-5" style="width: 80%; margin: auto;">
+        <mat-card-title>
+            <h4 class="text-left">Reporte Individual</h4>
+        </mat-card-title>
+        <mat-card-content>
+            <div class="col-sm-12">
                 <mat-form-field class="ancho-completo">
                   <mat-label>Tramite*</mat-label>
                   <mat-select #tramite>
@@ -48,12 +49,17 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-            <div class="col-3">
-                <button [disabled]="!BanderaBoton" class="ancho-completo" mat-raised-button color="primary" (click)="abrir()">Visualizar reporte de tramite</button>
-            </div>
-        </div>
-         
-    </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="row justify-content-center ">
+           
+                <div class="col-4">
+                    <button [disabled]="!BanderaBoton" class="ancho-completo" mat-raised-button color="primary" (click)="abrir()">Visualizar reporte de tramite</button>
+                </div>
+            </div> 
+        </mat-card-actions>
+    </mat-card>
+   
 </div>
 
 <div *ngIf="!BanderaDatos" class="reporte">

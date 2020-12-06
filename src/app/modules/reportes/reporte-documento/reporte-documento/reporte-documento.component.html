@@ -1,35 +1,38 @@
 <div class="busqueda" *ngIf="BanderaDatos">
-    <div class="row mt-5">
-        <div class="col-12">
-            <h4 class="text-center">Ingresa los filtros</h4>
-        </div>
-    </div>
-    <form [formGroup]="myForm">
-        <div class="row justify-content-center mt-3">
-            <div class="col-sm-12 col-md-4">
-                <mat-form-field class="ancho-completo">
-                    <mat-label>Fecha Inicial*</mat-label>
-                    <input type="date" matInput formControlName="fecha_inicial" name="fecha_inicial">
-                </mat-form-field>
+    <mat-card class="mt-5" style="width: 80%; margin: auto;">
+        <mat-card-title>
+            <h4 class="text-left">Reporte General</h4>
+        </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="myForm">
+                <div class="row justify-content-center mt-3">
+                    <div class="col-sm-12 col-md-4">
+                        <mat-form-field class="ancho-completo">
+                            <mat-label>Fecha Inicial*</mat-label>
+                            <input type="date" matInput formControlName="fecha_inicial" name="fecha_inicial">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <mat-form-field class="ancho-completo">
+                            <mat-label>Fecha Final*</mat-label>
+                            <input type="date" matInput formControlName="fecha_final" name="fecha_final">
+                        </mat-form-field>
+                    </div>
+            
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <button class="ancho-completo" mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="mostrarReporte()">Filtrar
+                        Datos</button>
+                </div>
             </div>
-            <div class="col-sm-12 col-md-4">
-                <mat-form-field class="ancho-completo">
-                    <mat-label>Fecha Final*</mat-label>
-                    <input type="date" matInput formControlName="fecha_final" name="fecha_final">
-                </mat-form-field>
-            </div>
-    
-        </div>
-    </form>
-    <div class="row mt-3 justify-content-center">
-        <div class="col-3">
-            <button class="ancho-completo" mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="mostrarReporte()">Filtrar
-                Datos</button>
-        </div>
-        <div class="col-3">
-            <button class="ancho-completo" mat-raised-button color="warn" (click)="onNoClick()">Cerrar</button>
-        </div>
-    </div>
+        </mat-card-actions>
+    </mat-card>
+  
+  
 </div>
 
 <div *ngIf="!BanderaDatos" class="reporte">
@@ -54,7 +57,7 @@
             <mat-card>
                 <div class="row">
                     <div class="col-9">
-                        <h5>Tipo de Documento mas registrado</h5>
+                        <h5>TIPO DE DOCUMENTO MAS REGISTRADO</h5>
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-6">
                               <p> <b>Nombre :</b>  {{tipo.nombre}}</p>
@@ -82,7 +85,7 @@
                         </div>
                         </div>
                         <div class="col-3">
-                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <h5 class="text-center">Top 3 <i class="fas fa-crown"></i></h5>
                             <table class="mt-3">
                                 <tr>
                                     <th> Nombre </th>  <th> Cantidad </th>
@@ -103,7 +106,7 @@
             <mat-card>
                 <div class="row">
                     <div class="col-9">
-                        <h5>Solicitante que registro mas documentos</h5>
+                        <h5>SOLICITANTE QUE REGISTRO MAS DOCUMENTOS</h5>
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-6">
                               <p> <b>Nombre :</b>  {{solicitante.nombre}}</p>
@@ -139,7 +142,7 @@
                           </div>
                         </div>
                         <div class="col-3">
-                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <h5 class="text-center">Top 3 <i class="fas fa-crown"></i></h5>
                             <table class="mt-3">
                                 <tr>
                                     <th> Nombre </th>  <th> Cantidad </th>
@@ -161,7 +164,7 @@
             <mat-card>
                 <div class="row">
                     <div class="col-9">
-                        <h5>Funcionario que gestiono mas documentos</h5>
+                        <h5>FUNCIONARIO QUE GESTIONO MAS DOCUMENTOS</h5>
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-6">
                               <p> <b>Nombre :</b>  {{funcionario.nombre}}</p>
@@ -197,7 +200,7 @@
                           </div>
                         </div>
                         <div class="col-3">
-                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <h5 class="text-center">Top 3 <i class="fas fa-crown"></i></h5>
                             <table class="mt-3">
                                 <tr>
                                     <th> Nombre </th>  <th> Cantidad </th>
@@ -218,7 +221,7 @@
             <mat-card>
                 <div class="row">
                     <div class="col-9">
-                        <h5>Estante que registro mas documentos</h5>
+                        <h5>ESTANTE QUE REGISTRO MAS DOCUMENTOS</h5>
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-6">
                               <p> <b>Codigo :</b>  {{estante.codigo}}</p>
@@ -258,7 +261,7 @@
                           </div>
                         </div>
                         <div class="col-3">
-                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <h5 class="text-center">Top 3 <i class="fas fa-crown"></i></h5>
                             <table class="mt-3">
                                 <tr>
                                     <th> Codigo </th>  <th> Cantidad </th>
@@ -280,7 +283,7 @@
             <mat-card>
                 <div class="row">
                     <div class="col-9">
-                        <h5>Tramite con mas documentos registrados</h5>
+                        <h5>TRAMITE CON MAS DOCUMENTOS REGISTRADOS</h5>
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-6">
                               <p> <b>Estado del Tramite :</b>  {{tramite.tramite_estado}}</p>
@@ -308,7 +311,7 @@
                         </div>
                         </div>
                         <div class="col-3">
-                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <h5 class="text-center">Top 3 <i class="fas fa-crown"></i></h5>
                             <table class="mt-3">
                                 <tr>
                                     <th> Codigo </th>  <th> Cantidad </th>
@@ -325,15 +328,4 @@
         </div>  
     </div>
 </div>
-</div>
-
-<div *ngIf="!BanderaVista">
-    <app-spinner></app-spinner>
-    <div class="row mt-5 justify-content-center">
-        <div class="col-12">
-            <span class="spiner">En este momento se esta generando el reporte. Espera ........ <i
-                    class="fas fa-file-pdf"></i>
-            </span>
-        </div>
-    </div>
 </div>

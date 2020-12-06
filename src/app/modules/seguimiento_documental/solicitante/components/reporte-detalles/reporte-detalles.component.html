@@ -1,7 +1,7 @@
 <ng-container *ngIf="BanderaDatos else vista">
     <div class="row">
         <div class="col-12">
-            <h5 class="text-center">Ingresa los filtros</h5>
+            <h5 class="text-center">Selecciona los filtros</h5>
         </div>
     </div>
     <form [formGroup]="myForm">
@@ -68,11 +68,11 @@
                     </tr>
                     <tr *ngFor="let item of solicitantes">
                         <td class="text-justify ">{{item.nombre}}</td>
-                        <td class="text-center ">{{item.apellido}} </td>
+                        <td class="text-justify">{{item.apellido}} </td>
                         <td class="text-justify">{{item.ci}} </td>
                         <td class="text-justify ">{{item.telefono}}</td>
                         <td class="text-center ">{{item.estado}} </td>
-                        <td class="text-justify">{{item.tipo_solicitante.nombre}} </td>
+                        <td class="text-center">{{item.tipo_solicitante.nombre}} </td>
                     </tr>
                 </table>
             </div>

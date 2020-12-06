@@ -29,6 +29,7 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
 
   solicitante$: Subscription = new Subscription();
 
+  tipos = [{codigo: 'Nombre', value: 'nombre'}, {codigo: 'Carnet', value: 'ci'}];
 
   constructor(private router: Router,
               private servicio: SolicitanteService,
@@ -72,9 +73,9 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
       });
     }
 
-  cargarDatosBusqueda(nombre: string): void {
+  cargarDatosBusqueda(nombre: string, tipo: string): void {
       this.comprobarBuscadorVacio(nombre);
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre, tipo);
       this.banderaDatos = nombre;
   }
 
@@ -85,8 +86,8 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
     }
   }
 
-  cargarTablaFiltrada(size: number, current: number, nombre: string): void {
-    this.solicitante$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
+  cargarTablaFiltrada(size: number, current: number, nombre: string, tipo: string): void {
+    this.solicitante$ =  this.servicio.getFiltered(size, current, nombre, tipo).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
      this.length = res.total;
@@ -157,13 +158,20 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
   confirmarEliminacion(result, id: number): void {
     if (result.value) {
       this.servicio.delete(id).subscribe(
-        async () => {
-          await Swal.fire(
+          res => {
+           Swal.fire(
             'Eliminado ',
             `El solicitante ha sido eliminado`,
             'error'
           );
-          this.cargarTabla(this.pageSize, this.currentPage);
+           this.cargarTabla(this.pageSize, this.currentPage);
+          }, err => {
+            console.log(err);
+            Swal.fire(
+              'Error',
+               err.error.message,
+              'error'
+            );
           }
       );
     }
@@ -177,7 +185,6 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
         this.currentPage = 1;
         this.cargarTabla(this.pageSize, this.currentPage); }, err => console.log(err));
     }
-    
 
   }
 
@@ -196,18 +203,18 @@ export class SolicitanteComponent implements OnInit, OnDestroy {
   }
 
    // evento de paginacion
-   pagination(event: PageEvent, nombre: string): void {
+   pagination(event: PageEvent, nombre: string, tipo: string): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex + 1;
-    this.verificarTipoTabla(nombre);
+    this.verificarTipoTabla(nombre, tipo);
   }
 
-  verificarTipoTabla(nombre: string): void {
+  verificarTipoTabla(nombre: string, tipo: string): void {
     if (nombre === '') {
       this.cargarTabla(this.pageSize, this.currentPage);
     }
     else {
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre, tipo);
     }
   }
 

@@ -151,6 +151,13 @@ export class TipoDocumentoComponent implements OnInit, OnDestroy {
             'error'
           );
           this.cargarTabla(this.pageSize, this.currentPage);
+          }, err => {
+            console.log(err);
+            Swal.fire(
+              'Error',
+              err.error.message,
+              'error'
+            );
           }
       );
     }

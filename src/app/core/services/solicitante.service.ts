@@ -31,12 +31,13 @@ export class SolicitanteService {
 
    }
 
-   getFiltered(perPage: number, currentPage: number, nombre: string): Observable <ListaSolicitante> {
+   getFiltered(perPage: number, currentPage: number, nombre: string, tipo: string): Observable <ListaSolicitante> {
 
     return this.http.get<ListaSolicitante>(this.uri + this.url +
                                               '?per_page=' + perPage +
                                                '&page=' + currentPage +
-                                               '&consulta=' + nombre);
+                                               '&consulta=' + nombre +
+                                               '&tipo=' + tipo);
 
    }
 

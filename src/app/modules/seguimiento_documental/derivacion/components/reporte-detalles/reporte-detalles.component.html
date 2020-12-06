@@ -1,7 +1,7 @@
 <ng-container *ngIf="BanderaDatos else vista">
     <div class="row">
         <div class="col-12">
-            <h5 class="text-center">Ingresa los filtros</h5>
+            <h5 class="text-center">Selecciona el filtro</h5>
         </div>
     </div>
     <form [formGroup]="myForm">
@@ -63,7 +63,7 @@
     </div>
     <div *ngIf="!BanderaVista">
         <app-spinner></app-spinner>
-        <div *ngIf="BanderaDatos" class="row mt-5 justify-content-center">
+        <div class="row mt-5 justify-content-center">
             <div class="col-12">
                 <span class="spiner">En este momento se esta generando el reporte. Espera ........ <i
                         class="fas fa-file-pdf"></i></span>

@@ -91,7 +91,7 @@ export class DevolucionFormComponent implements OnInit, OnDestroy {
 
   cargarDatosAdicionales(): void {
     zip(
-      this.tramite.get()
+      this.tramite.getOnly('EVALUACION')
     ).subscribe( resp => {
       const [resp1] = resp;
       this.tramites = resp1.data;

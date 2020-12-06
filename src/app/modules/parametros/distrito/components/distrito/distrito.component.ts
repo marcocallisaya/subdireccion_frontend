@@ -30,9 +30,9 @@ export class DistritoComponent implements OnInit, OnDestroy {
   distrito$: Subscription = new Subscription();
 
   constructor(private router: Router,
-    private servicio: DistritoService,
-    public dialog: MatDialog,
-    private paginator: MatPaginatorIntl) { }
+              private servicio: DistritoService,
+              public dialog: MatDialog,
+              private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
   displayedColumns: string[] = ['nombre', 'direccion', 'estado'];
@@ -154,13 +154,20 @@ export class DistritoComponent implements OnInit, OnDestroy {
   confirmarEliminacion(result, id: number): void {
     if (result.value) {
       this.servicio.delete(id).subscribe(
-        async () => {
-          await Swal.fire(
+        res => {
+          Swal.fire(
             'Eliminado ',
             `El distrito ha sido eliminado`,
             'error'
           );
           this.cargarTabla(this.pageSize, this.currentPage);
+        }, err => {
+          console.log(err);
+          Swal.fire(
+            'Error',
+             err.error.message,
+            'error'
+          );
         }
       );
     }

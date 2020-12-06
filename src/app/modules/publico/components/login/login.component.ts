@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 import {LoginService} from 'src/app/core/authentication/login.service';
 import Swal from 'sweetalert2';
 
@@ -12,7 +13,6 @@ import Swal from 'sweetalert2';
 export class LoginComponent implements OnInit {
 
   MyForm: FormGroup;
-  authToken;
   constructor( private fb: FormBuilder,
                private apiService: LoginService,
                private router: Router) { }
@@ -34,8 +34,7 @@ export class LoginComponent implements OnInit {
     .subscribe(
         (result: any) => {
           console.log(result);
-          this.authToken = result.access_token;
-          localStorage.setItem('authToken', this.authToken);
+          localStorage.setItem('authToken', result.access_token);
           localStorage.setItem('usuario', JSON.stringify(result.usuario));
           localStorage.setItem('datos', JSON.stringify(result.funcionario));
           localStorage.setItem('permisos', JSON.stringify(result.permisos));
