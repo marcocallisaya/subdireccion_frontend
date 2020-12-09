@@ -108,7 +108,9 @@ export class CircularComponent implements OnInit, OnDestroy {
         this.ver(data.informacion);
         break;
       case 'editar':
-        this.router.navigate(['/sistema/circular/form/' + data.identificador]);
+        const estado = this.verificarEstado(data.informacion.estado);
+        if (estado) {
+        this.router.navigate(['/sistema/circular/form/' + data.identificador]); }
         break;
       case 'eliminar':
         this.eliminar(data);
@@ -120,7 +122,9 @@ export class CircularComponent implements OnInit, OnDestroy {
         this.verFuncionario(data.informacion.funcionario);
         break;
       case 'publicar':
-        this.publicar(data.identificador);
+        const esta = this.verificarEstado(data.informacion.estado);
+        if (esta) {
+        this.publicar(data.identificador); }
         break;
       default:
         this.desabilitarDocumento(data.identificador);

@@ -109,7 +109,9 @@ export class UbicacionComponent implements OnInit, OnDestroy {
         this.ver(data.informacion);
         break;
       case 'editar':
-        this.router.navigate(['/sistema/ubicacion/form/' + data.identificador]);
+        const estado = this.verificarEstado(data.informacion.estado);
+        if (estado) {
+        this.router.navigate(['/sistema/ubicacion/form/' + data.identificador]); }
         break;
       case 'eliminar':
         this.eliminar(data);

@@ -39,6 +39,12 @@ export class PublicacionModalComponent implements OnInit {
     },
     error => {
       console.log(error);
+      Swal.fire(
+        'Error',
+         error.error.errors.pdf[0],
+        'error'
+      );
+      this.BanderaDatos = true;
     }
 
   );

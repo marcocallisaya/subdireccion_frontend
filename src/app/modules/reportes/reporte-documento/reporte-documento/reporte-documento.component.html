@@ -297,7 +297,7 @@
                           </div>
                           <div class="row">
                             <div class="col-sm-12 col-md-6">
-                                <p > <b>Fecha Limite :</b>   {{tramite.fecha_limite}}</p>
+                                <p > <b>Fecha Limite :</b>   {{tramite.fecha_limite | date: 'dd/MM/yyyy'}}</p>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <p > <b>Cantidad de documentos registrados:</b>   {{tramites[0].cantidad}}</p>

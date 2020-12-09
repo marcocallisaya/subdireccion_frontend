@@ -6,7 +6,7 @@ import { TramiteGeneralComponent } from './tramite-general/tramite-general.compo
 import { TramiteIndividualComponent } from './tramite-individual/tramite-individual.component';
 
 const routes: Routes = [
-  {path: '', component: ReporteTramiteComponent, canActivate: [AfterLoginService], data: {permiso: 'reporte_tramite' }}
+  {path: '', component: ReporteTramiteComponent, canActivate: [AfterLoginService], data: {permiso: 'reporte_general_tramite' }}
 ];
 
 @NgModule({

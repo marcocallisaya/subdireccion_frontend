@@ -103,10 +103,14 @@ export class RolComponent implements OnInit, OnDestroy {
         this.ver(data.informacion);
         break;
       case 'editar':
-        this.router.navigate(['/sistema/rol/form/' + data.identificador]);
+        const estado = this.verificarEstado(data.informacion.estado);
+        if (estado) {
+        this.router.navigate(['/sistema/rol/form/' + data.identificador]); }
         break;
       case 'permisos':
-        this.router.navigate(['/sistema/rol/permiso/' + data.identificador]);
+        const esta = this.verificarEstado(data.informacion.estado);
+        if (esta) {
+        this.router.navigate(['/sistema/rol/permiso/' + data.identificador]); }
         break;
       case 'eliminar':
         this.eliminar(data);

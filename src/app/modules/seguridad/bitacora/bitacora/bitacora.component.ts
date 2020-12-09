@@ -30,7 +30,7 @@ export class BitacoraComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['usuario_id', 'actividad'];
+  displayedColumns: string[] = ['actividad'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'}];

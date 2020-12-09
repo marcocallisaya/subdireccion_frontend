@@ -106,7 +106,8 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
     if (this.verificarPermisos(this.editarPermiso)) {
       const dialogRef = this.dialog.open(MapaModalComponent, {width: '80vw', height: '93vh',  data:  centro });
       dialogRef.afterClosed().subscribe(result => {
-        this.cargarTabla(5, 1);
+        this.currentPage = 1;
+        this.cargarTabla(5,  this.currentPage);
        });
     }
   }
@@ -115,7 +116,8 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
     if (this.verificarPermisos(this.editarPermiso)) {
       const dialogRef = this.dialog.open(FotoModalComponent, {width: '40vw', height: '80vh', data:  centro });
       dialogRef.afterClosed().subscribe(result => {
-        this.cargarTabla(5, 1);
+        this.currentPage = 1;
+        this.cargarTabla(5,  this.currentPage);
        });
     }
   }
@@ -124,7 +126,8 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
     if (this.verificarPermisos(this.editarPermiso) && (centro.tipo === 'CEA')) {
       const dialogRef = this.dialog.open(CarreraModalComponent, {width: '40vw', maxHeight: '80vh', data:  centro });
       dialogRef.afterClosed().subscribe(result => {
-        this.cargarTabla(5, 1);
+        this.currentPage = 1;
+        this.cargarTabla(5,  this.currentPage);
        });
     }
   }
@@ -136,7 +139,9 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
         this.ver(data.informacion);
         break;
       case 'editar':
-        this.router.navigate(['/sistema/centro_formacion/form/' + data.identificador]);
+        const estado = this.verificarEstado(data.informacion.estado);
+        if (estado) {
+        this.router.navigate(['/sistema/centro_formacion/form/' + data.identificador]); }
         break;
       case 'eliminar':
         this.eliminar(data);
@@ -145,13 +150,19 @@ export class CentroFormacionComponent implements OnInit, OnDestroy {
         this.habilitarDocumento(data.identificador);
         break;
       case 'mapa':
-        this.verMapa(data.informacion);
+        const estado1 = this.verificarEstado(data.informacion.estado);
+        if (estado1) {
+        this.verMapa(data.informacion); }
         break;
       case 'foto':
-        this.verFoto(data.informacion);
+        const estado2 = this.verificarEstado(data.informacion.estado);
+        if (estado2) {
+        this.verFoto(data.informacion); }
         break;
       case 'carreras':
-        this.verCarreras(data.informacion);
+        const estado3 = this.verificarEstado(data.informacion.estado);
+        if (estado3) {
+        this.verCarreras(data.informacion); }
         break;
       default:
         this.desabilitarDocumento(data.identificador);

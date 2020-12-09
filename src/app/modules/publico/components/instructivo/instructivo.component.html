@@ -1,9 +1,9 @@
 <div class="container">
     <h4 class="mt-4 text-center">INSTRUCTIVOS PUBLICADOS</h4>
-    <div *ngIf="BanderaDatos" class="row mt- justify-content-center">
-        <div class="col-9 row justify-content-center">
-            <div *ngFor="let item of instructivos" class="col-4 mt-2 item">
-                <mat-card style="height: 420px;">
+    <div  *ngIf="BanderaDatos" class="row mt- justify-content-center">
+        <div style="margin-bottom: 5rem;" class="col-9 row justify-content-center">
+            <div  *ngFor="let item of instructivos" class="col-4  mt-2 item">
+                <mat-card style="height: 450px;">
                     <div class="header">
                         <h5 class="text-center"> Instructivo N° {{item.id}}</h5>
                     </div>
