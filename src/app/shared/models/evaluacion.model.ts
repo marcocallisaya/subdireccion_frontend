@@ -3,6 +3,7 @@ export interface Evaluacion {
     estado_evaluacion: string;
     descripcion: string;
     created_at: Date;
+    ingreso: Date;
     tramite_id: number;
     tramite: any;
 

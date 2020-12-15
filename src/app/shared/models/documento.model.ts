@@ -8,6 +8,7 @@ export interface Documento {
     tipo_documento_id: number;
     ubicacion_id: number;
     tramite_id: number;
+    ingreso: Date;
     created_at: Date;
     tipo_documento: any;
     ubicacion: any;

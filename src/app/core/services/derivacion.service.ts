@@ -39,9 +39,9 @@ export class DerivacionService {
 
    }
 
-   getWithState(funcionario): Observable <Derivacion[]> {
+   getWithState(funcionario, fechaInicial, fechaFinal): Observable <Derivacion[]> {
 
-    return this.http.get<Derivacion[]>(this.uri + this.url + '?funcionario=' + funcionario);
+    return this.http.get<Derivacion[]>(this.uri + this.url + '?funcionario=' + funcionario + '&fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
 
    }
 

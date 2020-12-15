@@ -1,11 +1,11 @@
 <div class="row justify-content-center">
-    <div class="col-xs-12 col-md-6 mt-5">
+    <div class="col-xs-12 col-md-8 mt-5">
 
       <ng-container  *ngIf="BanderaDatos;else spinner">
         <mat-card class="example-card">
          
             <div class="row justify-content-center">
-              <div class="col-10">
+              <div class="col-6">
                 <mat-card-header>
                 <mat-card-title> {{BanderaTitulo}} DE SOLICITUD</mat-card-title>
               </mat-card-header> 
@@ -27,7 +27,7 @@
 
             <div class="row">
              
-              <div class="col-sm-12 col-md-6">
+              <div class="col-sm-12 col-md-4">
                 <mat-form-field class="ancho-completo">
                   <mat-label>Centro de Formacion</mat-label>
                   <mat-select formControlName="centro_formacion_id" name="centro_formacion_id">
@@ -40,7 +40,7 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div class="col-sm-12 col-md-6">
+              <div class="col-sm-12 col-md-4">
                 <mat-form-field  class="ancho-completo">
                   <mat-label>Tipo de Tramite*</mat-label>
                   <mat-select  formControlName="tipo_tramite_id" name="tipo_tramite_id">
@@ -53,29 +53,68 @@
                   </mat-select>
                 </mat-form-field>
               </div>
+              <div class="col-sm-12 col-md-4">
+                <mat-form-field  class="ancho-completo">
+                  <mat-label>Fecha Ingreso*</mat-label>
+                  <input type="date" matInput formControlName="ingreso" name="ingreso">
+                </mat-form-field>
+              </div>
             </div>
-            <div class="row">
-                
-                    <div class="col-sm-12">
-                      <mat-form-field class="ancho-completo">
-                        <input (keyup)="imprimir(nombre.value)" type="text"
-                               placeholder="Selecciona un solicitante"
-                               aria-label="Number"
-                               matInput
-                               [(ngModel)]="nameLiteral"
-                               [ngModelOptions]="{standalone: true}"
-                               [matAutocomplete]="auto"
-                               #nombre>
-                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                          <mat-option (click)="selectOpt(option)" *ngFor="let option of filteredProducts" [value]="option.id">
-                            {{option.nombre}}  {{option.apellido}}
+            <h6 class="text-center"><b>Solicitante</b></h6>
+            <div class="row" *ngIf="!BanderaBusqueda">
+             
+                <div class="col-4 mt-2">
+                  <mat-form-field class="ancho-completo">
+                      <mat-label>Buscar por</mat-label>
+                      <mat-select #tipo>
+                          <mat-option *ngFor="let item of tiposSolicitante"  [value]="item.value">
+                            {{item.codigo}}
                           </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-                      </div>
-                
-            </div>
-         
+                        </mat-select>
+                  </mat-form-field>
+              </div>
+              <div class="col-4 mt-2">
+                  <mat-form-field class="ancho-completo">
+                      <mat-label>Busqueda</mat-label>
+                      <input matInput placeholder="Ingresa un registro" #nombre>
+                  </mat-form-field>
+              </div>
+              <div class="col-4 mt-4 mb-2">
+                  <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  tipo.value)"  mat-raised-button color="primary">Buscar <i class="fas fa-search"></i></button>
+              </div>
+             <div class="col-12"*ngIf="!BanderaBusqueda">
+             
+                <table style="width: 100%;" class="mt-2 ">
+                  <tr>
+                    <th class="text-center">Nombre Completo</th>
+                    <th class="text-center">Carnet</th>
+                    <th class="text-center">Seleccionar</th>
+                  </tr>
+                  <tr *ngFor="let item of solicitantes">
+                    <td class="text-center">{{item.nombre + '  '}}{{item.apellido}}</td>
+                    <td class="text-center">{{item.ci}}</td>
+                    <td class="text-center"> <button (click)="seleccionarSolicitante(item)"  mat-mini-fab color="primary" >
+                      <i class="fas fa-check-circle"></i>
+                    </button></td>
+                  </tr>
+                </table>
+              </div>
+             </div>
+             <div class="row" *ngIf="BanderaBusqueda">
+               <div class="col-7">
+                <mat-form-field  class="ancho-completo">
+                  <mat-label>Solicitante*</mat-label>
+                  <mat-select  formControlName="solicitante_id" name="solicitante_id" [(ngModel)]="solicitanteSeleccionado.id">
+                    <mat-option [value]="solicitanteSeleccionado.id">
+                      {{solicitanteSeleccionado.nombre + '   '}} {{solicitanteSeleccionado.apellido}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+               </div>
+               <div class="col-5">
+                <button class="ancho-completo" (click)="reBusqueda()"  mat-raised-button color="warn"> Volver a Buscar <i class="fas fa-search"></i></button>
+               </div>
+             </div>
            </form>
           </mat-card-content>
           <mat-card-actions>

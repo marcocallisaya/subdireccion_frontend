@@ -21,6 +21,8 @@ export class DevolucionFormComponent implements OnInit, OnDestroy {
 
   evaluacion$: Subscription = new Subscription();
 
+  BanderaBusqueda;
+
   myForm: FormGroup; // formulario reactivo
 
   BanderaBoton; // bandera para el boton
@@ -31,7 +33,11 @@ export class DevolucionFormComponent implements OnInit, OnDestroy {
 
   devolucion: Devolucion; // datos del modelo
 
-  tramites: Tramite[];
+  tramiteSeleccionado;
+
+  tramites;
+
+  tipos = [{value: 'referencia', codigo: 'Referencia'},{value: 'codigo', codigo: 'Codigo'}];
 
   estado = [{nombre: 'PASIVO', valor: 'pasivo'}, {nombre: 'ACTIVO', valor: 'activo'}];
 
@@ -51,6 +57,24 @@ export class DevolucionFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargarDatos();
   }
+
+  cargarDatosBusqueda(nombre, tipo): void {
+    this.tramite.getWithQuery(tipo, nombre, 'EVALUACION').subscribe( (res: any) => {
+      this.tramites = res.data;
+      console.log(res);
+    //  this.BanderaBusqueda = true;
+    });
+  }
+
+  seleccionarSolicitante(solicitante): void {
+    this.tramiteSeleccionado = solicitante;
+    this.BanderaBusqueda = true;
+   }
+
+   reBusqueda(): void {
+    this.BanderaBusqueda = false;
+  }
+
 
   cargarDatos(): void {
     this.evaluacion$.add(
@@ -74,7 +98,6 @@ export class DevolucionFormComponent implements OnInit, OnDestroy {
         this.BanderaBoton = true;
         this.BanderaTitulo = 'ACTUALIZACION';
       }
-      this.cargarDatosAdicionales();
       this.cargarFormulario();
       this.BanderaDatos = true;
     }));
@@ -83,20 +106,17 @@ export class DevolucionFormComponent implements OnInit, OnDestroy {
   // {value: this.devolucion?.tramite_id || '', disabled: this.BanderaBoton }
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      estado_documento: [ this.devolucion?.estado_documento || '', Validators.required],
+      estado_documento: [ this.devolucion?.estado_documento || 'EN ESPERA'],
       tramite_id: [ {value: this.devolucion?.tramite_id || '', disabled: this.BanderaBoton }, Validators.required],
-      recomendacion: [this.devolucion?.recomendacion || '', Validators.required]
+      recomendacion: [this.devolucion?.recomendacion || '', Validators.required],
+      ingreso: [this.devolucion?.ingreso || this.obtenerFechaActual()]
     });
   }
 
-  cargarDatosAdicionales(): void {
-    zip(
-      this.tramite.getOnly('EVALUACION')
-    ).subscribe( resp => {
-      const [resp1] = resp;
-      this.tramites = resp1.data;
-    });
-
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
   }
 
 

@@ -3,6 +3,7 @@ export interface Bitacora {
     actividad: string;
     usuario_id: number;
     created_at: Date;
+    updated_at: Date;
     usuario: any;
 }
 

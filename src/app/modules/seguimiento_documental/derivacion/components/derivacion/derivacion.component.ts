@@ -8,6 +8,7 @@ import { FuncionarioService } from 'src/app/core/services/funcionario.service';
 import { Derivacion } from 'src/app/shared/models/derivacion.model';
 import { Funcionario } from 'src/app/shared/models/funcionario.model';
 import { Tramite } from 'src/app/shared/models/tramite.model';
+import Swal from 'sweetalert2';
 import { TramiteModalComponent } from '../../../solicitud/components/tramite-modal/tramite-modal.component';
 import { FuncionarioModalComponent } from '../funcionario-modal/funcionario-modal.component';
 import { ModalComponent } from '../modal/modal.component';
@@ -40,13 +41,14 @@ export class DerivacionComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['referencia'];
+  displayedColumns: string[] = ['referencia','ingreso'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
               {nombre: 'editar', boton: 'primary', icono: 'fas fa-pen'},
               {nombre: 'funcionario', boton: 'warn', icono: 'fas fa-user-alt'},
-              {nombre: 'tramite', boton: 'primary', icono: 'fas fa-file-alt'}];
+              {nombre: 'tramite', boton: 'primary', icono: 'fas fa-file-alt'},
+              {nombre: 'anular', boton: 'warn', icono: 'fas fa-times-circle'}];
 
 
   dataSource; // fuente de datos para la tabla
@@ -96,7 +98,7 @@ export class DerivacionComponent implements OnInit, OnDestroy {
     this.tipo$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
-     this.length = res.meta.pagination.total;
+     this.length = res.meta?.pagination.total;
     });
   }
 
@@ -148,6 +150,9 @@ export class DerivacionComponent implements OnInit, OnDestroy {
       case 'funcionario':
         this.verFuncionario(data.informacion.funcionario);
         break;
+      case 'anular':
+        this.eliminar(data.informacion);
+        break;
       default:
         this.verTramite(data.informacion.tramite);
     }
@@ -187,6 +192,41 @@ export class DerivacionComponent implements OnInit, OnDestroy {
 
   verificarPermisos(permiso): boolean {
     return (this.permisos.includes(permiso)) ? true : false;
+  }
+
+  eliminar(data: any): void {
+    console.log(data);
+        Swal.fire({
+          title: 'Estas Seguro de anular la derivacion',
+          text: 'Una vez anulado no se puede recuperar',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+          this.confirmarEliminacion(result, data.id);
+        });
+      
+    }
+  
+
+  confirmarEliminacion(result, id: number): void {
+    if (result.value) {
+      this.servicio.delete(id).subscribe(
+        res => {
+          Swal.fire(
+            'Eliminado ',
+            `La derivacion ha sido anulada`,
+            'error'
+          );
+          this.cargarTabla(this.pageSize, this.currentPage);
+          }, err => {
+            console.log(err);
+          }
+      );
+    }
   }
 
   ngOnDestroy(): void {

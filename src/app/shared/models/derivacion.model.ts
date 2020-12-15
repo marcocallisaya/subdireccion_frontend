@@ -4,6 +4,7 @@ export interface Derivacion {
     tramite_id: number;
     funcionario_id: number;
     tramite: any;
+    ingreso: Date;
     funcionario: any;
 
 }

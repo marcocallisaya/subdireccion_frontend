@@ -39,9 +39,9 @@ export class EvaluacionService {
 
    }
 
-   getWithState(estado): Observable <Evaluacion[]> {
+   getWithState(estado, fechaInicial, fechaFinal): Observable <Evaluacion[]> {
 
-    return this.http.get<Evaluacion[]>(this.uri + this.url + '?estado=' + estado) ;
+    return this.http.get<Evaluacion[]>(this.uri + this.url + '?estado=' + estado + '&fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal) ;
 
    }
 

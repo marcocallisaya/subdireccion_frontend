@@ -19,6 +19,8 @@ export class EvaluacionFormComponent implements OnInit, OnDestroy {
 
   BanderaDatos: boolean;
 
+  BanderaBusqueda;
+
   evaluacion$: Subscription = new Subscription();
 
   myForm: FormGroup; // formulario reactivo
@@ -31,7 +33,11 @@ export class EvaluacionFormComponent implements OnInit, OnDestroy {
 
   evaluacion: Evaluacion; // datos del modelo
 
-  tramites: Tramite[];
+  tramites;
+
+  tramiteSeleccionado;
+
+  tipos = [{value: 'referencia', codigo: 'Referencia'},{value: 'codigo', codigo: 'Codigo'}];
 
   estadoEvaluacion = ['CORRECTO', 'INCORRECTO', 'CON ERRORES'];
 
@@ -48,6 +54,23 @@ export class EvaluacionFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cargarDatos();
+  }
+
+  cargarDatosBusqueda(nombre, tipo): void {
+    this.tramite.getWithQuery(tipo, nombre, 'DERIVACION').subscribe( (res: any) => {
+      this.tramites = res.data;
+      console.log(res);
+    //  this.BanderaBusqueda = true;
+    });
+  }
+
+  seleccionarSolicitante(solicitante): void {
+    this.tramiteSeleccionado = solicitante;
+    this.BanderaBusqueda = true;
+   }
+
+   reBusqueda(): void {
+    this.BanderaBusqueda = false;
   }
 
   cargarDatos(): void {
@@ -68,11 +91,11 @@ export class EvaluacionFormComponent implements OnInit, OnDestroy {
         this.BanderaTitulo = 'REGISTRO';
       } else {
         // actualizar
+        console.log(res.data);
         this.evaluacion = res.data;
         this.BanderaBoton = true;
         this.BanderaTitulo = 'ACTUALIZACION';
       }
-      this.cargarDatosAdicionales();
       this.cargarFormulario();
       this.BanderaDatos = true;
     }));
@@ -81,22 +104,18 @@ export class EvaluacionFormComponent implements OnInit, OnDestroy {
   // {value: this.evaluacion?.tramite_id || '', disabled: this.BanderaBoton }
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      estado_evaluacion: [ this.evaluacion?.estado_evaluacion || '', Validators.required],
-      tramite_id: [ {value: this.evaluacion?.tramite_id || '', disabled: this.BanderaBoton }, Validators.required],
-      descripcion: [this.evaluacion?.descripcion || '', Validators.required]
+      estado_evaluacion: [ this.evaluacion?.estado_evaluacion || 'CORRECTO'],
+      tramite_id: [ {value: this.evaluacion?.tramite_id || '', disabled: this.BanderaBoton }],
+      descripcion: [this.evaluacion?.descripcion || '', Validators.required],
+      ingreso: [this.evaluacion?.ingreso || this.obtenerFechaActual()]
     });
   }
 
-  cargarDatosAdicionales(): void {
-    zip(
-      this.tramite.getOnly('DERIVACION')
-    ).subscribe( resp => {
-      const [resp1] = resp;
-      this.tramites = resp1.data;
-    });
-
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
   }
-
 
   enviar(myForm): void {
     console.log(myForm.value);

@@ -7,6 +7,7 @@ import { SolicitudService } from 'src/app/core/services/solicitud.service';
 import { CentroFormacion } from 'src/app/shared/models/centro_formacion.model';
 import { Solicitante } from 'src/app/shared/models/solicitante.model';
 import { Solicitud } from 'src/app/shared/models/solicitud.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reporte-detalles',
@@ -42,7 +43,7 @@ export class ReporteDetallesComponent implements OnInit {
 
   generatePDF(): void {
     this.BanderaVista = false;
-    const data = {data: this.solicitudes, centro: this.myForm.get('centro').value, solicitante: this.myForm.get('solicitante').value};
+    const data = {data: this.solicitudes, fechaInicial: this.myForm.get('fecha_inicial').value, fechaFinal: this.myForm.get('fecha_final').value};
     this.servicio.generateReportPdf(data).subscribe(res => {
       console.log(res);
       this.onNoClick();
@@ -55,18 +56,32 @@ export class ReporteDetallesComponent implements OnInit {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       solicitante: [''],
-      centro: ['']
+      centro: [''],
+      fecha_inicial:[this.obtenerFechaActual()],
+      fecha_final:[this.obtenerFechaActual()]
     });
   }
+
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+  }
+
 
   mostrarReporte(): void {
     const solicitante = this.myForm.get('solicitante').value;
     const centro = this.myForm.get('centro').value;
-    this.servicio.getWithState(solicitante, centro).subscribe((res: any) => {
+    const fechaInicial = this.myForm.get('fecha_inicial').value;
+    const fechaFinal = this.myForm.get('fecha_final').value;
+    this.servicio.getWithState(solicitante, centro, fechaInicial, fechaFinal).subscribe((res: any) => {
       this.solicitudes = res.data;
       this.BanderaVista = true;
       this.BanderaDatos = false; }, err => {
         console.log(err);
+        Swal.fire( 'Error',
+        err.error.errors.fechaFinal[0],
+        'error');
        });
   }
 

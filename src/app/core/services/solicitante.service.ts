@@ -41,6 +41,14 @@ export class SolicitanteService {
 
    }
 
+   getWithQuery( nombre: string, tipo: string): Observable <ListaSolicitante> {
+
+    return this.http.get<ListaSolicitante>(this.uri + this.url +
+                                          '?&pregunta=' + nombre +
+                                          '&tipo=' + tipo);
+
+   }
+
    getWithState(estado, tipo): Observable <Solicitante[]> {
 
     return this.http.get<Solicitante[]>(this.uri + this.url + '?estado=' + estado

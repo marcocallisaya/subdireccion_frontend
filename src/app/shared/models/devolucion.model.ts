@@ -3,6 +3,7 @@ export interface Devolucion {
     estado_documento: string;
     recomendacion: string;
     created_at: Date;
+    ingreso: Date;
     tramite_id: number;
     tramite: any;
 }

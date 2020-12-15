@@ -22,6 +22,8 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
 
   BanderaDatos: boolean;
 
+  BanderaBusqueda;
+
   derivacion$: Subscription = new Subscription();
 
   myForm: FormGroup; // formulario reactivo
@@ -32,9 +34,13 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
 
   codigo; // id del modelo
 
+  tramiteSeleccionado;
+
   derivacion: Derivacion; // datos del modelo
 
-  tramites: Tramite[];  funcionarios: Funcionario[];
+  tramites;  funcionarios: Funcionario[];
+
+  tipos = [{value: 'referencia', codigo: 'Referencia'},{value: 'codigo', codigo: 'Codigo'}];
 
   uri = 'derivacion';
 
@@ -52,6 +58,19 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargarDatos();
   }
+
+  cargarDatosBusqueda(nombre, tipo): void {
+    this.tramite.getWithQuery(tipo, nombre, 'SOLICITUD').subscribe( (res: any) => {
+      this.tramites = res.data;
+      console.log(res);
+    //  this.BanderaBusqueda = true;
+    });
+  }
+
+  seleccionarSolicitante(solicitante): void {
+    this.tramiteSeleccionado = solicitante;
+    this.BanderaBusqueda = true;
+   }
 
   cargarDatos(): void {
     this.derivacion$.add(
@@ -84,23 +103,31 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
   cargarFormulario(): void {
     this.myForm = this.fb.group({
       tramite_id: [ {value: this.derivacion?.tramite_id || '', disabled: this.BanderaBoton }, Validators.required],
-      funcionario_id: [this.derivacion?.funcionario_id || '', Validators.required],
-      fecha_limite: [{value: this.derivacion?.tramite.fecha_limite || '', disabled: this.BanderaBoton }, Validators.required]
+      funcionario_id: [this.derivacion?.funcionario_id || 2, Validators.required],
+      fecha_limite: [{value: this.derivacion?.tramite.fecha_limite || this.obtenerFechaActual(), disabled: this.BanderaBoton }, Validators.required],
+      ingreso: [this.derivacion?.ingreso || this.obtenerFechaActual(), Validators.required]
     });
   }
 
+
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+  }
   cargarDatosAdicionales(): void {
     zip(
-      this.tramite.getOnly('SOLICITUD'),
       this.funcionario.get()
     ).subscribe( resp => {
-      const [resp1, resp2] = resp;
-      this.tramites = resp1.data;
-      this.funcionarios = resp2;
+      const [resp1] = resp;
+      this.funcionarios = resp1;
     });
 
   }
 
+  reBusqueda(): void {
+    this.BanderaBusqueda = false;
+  }
 
   enviar(myForm): void {
     console.log(myForm.value);
@@ -113,8 +140,29 @@ export class DerivacionFormComponent implements OnInit, OnDestroy {
       },
       error => {
         console.log(error);
+        const errores =  this.tratarErrores(error.error.errors);
+        this.mostrarError(errores);
       }
     );
+  }
+
+  tratarErrores(errores): string {
+    let datos = '';
+    if (errores.fecha_limite !=  null) {
+      const error = '<div>' + errores.fecha_limite[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+   
+    return datos;
+  }
+
+  mostrarError(errores): void {
+    console.log(errores);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      html: errores
+    });
   }
 
 

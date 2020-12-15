@@ -40,7 +40,7 @@ export class SolicitudComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['referencia'];
+  displayedColumns: string[] = ['referencia', 'ingreso'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},

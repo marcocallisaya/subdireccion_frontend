@@ -28,7 +28,7 @@ export class ReporteDetallesComponent implements OnInit {
 
   generatePDF(): void {
     this.BanderaVista = false;
-    const data = {data: this.tramites, estado: this.myForm.get('estado').value };
+    const data = {data: this.tramites, estado: this.myForm.get('estado').value, fechaInicial: this.myForm.get('fecha_inicial').value, fechaFinal: this.myForm.get('fecha_final').value };
     this.servicio.generateReportPdf(data).subscribe(res => {
       console.log(res);
       this.onNoClick();
@@ -40,13 +40,23 @@ export class ReporteDetallesComponent implements OnInit {
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      estado: ['']
+      estado: [''],
+      fecha_inicial: [this.obtenerFechaActual()],
+      fecha_final: [this.obtenerFechaActual()]
     });
+  }
+
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
   }
 
   mostrarReporte(): void {
     const estado = this.myForm.get('estado').value;
-    this.servicio.getWithState(estado).subscribe((res: any) => {
+    const fechaInicial = this.myForm.get('fecha_inicial').value;
+    const fechaFinal = this.myForm.get('fecha_final').value;
+    this.servicio.getWithState(estado, fechaInicial, fechaFinal).subscribe((res: any) => {
       console.log(res);
       this.tramites = res.data;
       this.BanderaDatos = false;

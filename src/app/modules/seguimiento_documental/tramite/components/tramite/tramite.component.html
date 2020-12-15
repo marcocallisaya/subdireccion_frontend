@@ -1,20 +1,27 @@
-<div class="row justify-content-around">
+<div class="row justify-content-center">
     <div class="col-3  mt-4">
         <button mat-raised-button color="accent" (click)="abrirReporteDetalles()">Ver Reporte de Listado <i class="fas fa-clipboard-list"></i> </button>
     </div>
-    <div class="col-5 row justify-content-center">
-        <div class="col-6 mt-2">
-            <mat-form-field class="example-full-width">
-                <mat-label>Referencia</mat-label>
-                <input matInput placeholder="Ingresa una referencia" #nombre>
-            </mat-form-field>
-        </div>
-        <div class="col-6 mt-4">
-            <button (click)="cargarDatosBusqueda(nombre.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
+    <div class="col-3 mt-2">
+        <mat-form-field >
+            <mat-label>Buscar por</mat-label>
+            <mat-select #tipo>
+                <mat-option *ngFor="let item of tipos"  [value]="item.value">
+                  {{item.codigo}}
+                </mat-option>
+              </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="col-3 mt-2">
+        <mat-form-field class="example-full-width">
+            <mat-label>Busqueda</mat-label>
+            <input matInput placeholder="Ingresa un registro" #nombre>
+        </mat-form-field>
+    </div>
+        <div class="col-2 mt-4">
+            <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value, tipo.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
         </div>
       
-       
-    </div>
     </div>
     
     <div class="container mt-4">
@@ -31,7 +38,7 @@
                    [pageSize]="pageSize"
                    [pageIndex]="currentPage - 1"
                    [pageSizeOptions]="pageSizeOptions"
-                   (page)="pagination($event, nombre.value)"></mat-paginator>
+                   (page)="pagination($event, nombre.value, tipo.value)"></mat-paginator>
                 </div>   
                 <div [hidden]="BanderaDatos">
                    <app-spinner></app-spinner>

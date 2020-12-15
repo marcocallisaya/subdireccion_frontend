@@ -37,11 +37,15 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
 
   solicitantes: Solicitante[]; centros: CentroFormacion[]; tipos: TipoTramite[];
 
-  estado = [{nombre: 'PASIVO', valor: 'pasivo'}, {nombre: 'ACTIVO', valor: 'activo'}];
+  solicitanteSeleccionado;
+
+  BanderaBusqueda;
 
   uri = 'solicitud';
 
   filteredProducts; nameLiteral = '';
+
+  tiposSolicitante = [{codigo: 'Nombre', value: 'nombre'}, {codigo: 'Carnet', value: 'ci'}];
 
   constructor(private fb: FormBuilder,
               private servicio: SolicitudService,
@@ -91,20 +95,41 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
       centro_formacion_id: [this.solicitud?.centro_formacion_id || '', Validators.required],
       referencia: [{value: this.solicitud?.tramite.referencia || '', disabled: this.BanderaBoton }, Validators.required],
       tipo_tramite_id: [{value: this.solicitud?.tramite.tipo_tramite_id || '', disabled: this.BanderaBoton}, Validators.required],
-      solicitante_id: [this.solicitud?.solicitante_id || '', Validators.required]
+      solicitante_id: [this.solicitud?.solicitante_id || '', Validators.required],
+      ingreso: [this.solicitud?.ingreso || this.obtenerFechaActual(), Validators.required]
     });
+  }
+
+  cargarDatosBusqueda(nombre, tipo): void {
+    this.solicitante.getWithQuery(nombre, tipo).subscribe( (res: any) => {
+      this.solicitantes = res;
+      console.log(res);
+    });
+  }
+
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+  }
+
+  seleccionarSolicitante(solicitante): void {
+    this.solicitanteSeleccionado = solicitante;
+    this.BanderaBusqueda = true;
+  }
+
+  reBusqueda(): void {
+    this.BanderaBusqueda = false;
   }
 
   cargarDatosAdicionales(): void {
     zip(
       this.centro.get(),
-      this.solicitante.get(),
       this.tipo.get()
     ).subscribe( resp => {
-      const [resp1, resp2, resp3] = resp;
+      const [resp1, resp2] = resp;
       this.centros = resp1;
-      this.solicitantes = resp2;
-      this.tipos = resp3;
+      this.tipos = resp2;
     });
 
   }
@@ -170,6 +195,7 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
       const error = '<div>' + errores.referencia[0] + '</div> <br>';
       datos = datos.concat(error);
     }
+   
     return datos;
   }
 

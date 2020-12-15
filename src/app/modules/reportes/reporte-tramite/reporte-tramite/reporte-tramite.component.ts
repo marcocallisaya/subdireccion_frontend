@@ -14,25 +14,44 @@ import { TramiteIndividualComponent } from '../tramite-individual/tramite-indivi
 })
 export class ReporteTramiteComponent implements OnInit {
 
+  BanderaBusqueda;
   BanderaBoton = false;
   BanderaDatos: boolean;
   BanderaVista: boolean;
-  tipos; tipo;
+  tipos; tipo: any;
+  tramiteSeleccionado;
   solicitantes; solicitante;
   funcionarios; funcionario;
   lista;
   documentos;
   todo;
   myForm: FormGroup; // formulario reactivo
-  tramites: Tramite[];
+  tramites;
   tramite;
-
+  types = [{value: 'referencia', codigo: 'Referencia'},{value: 'codigo', codigo: 'Codigo'}];
   constructor(private fb: FormBuilder, private reporte: ReporteService, private servicio: TramiteService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.cargarTramites();
     this.BanderaDatos = true;
     this.cargarFormulario();
+  }
+
+  cargarDatosBusqueda(nombre, tipo): void {
+    this.servicio.getWithQueryII(tipo, nombre).subscribe( (res: any) => {
+      this.tramites = res.data;
+      console.log(res);
+    //  this.BanderaBusqueda = true;
+    });
+  }
+
+  seleccionarSolicitante(solicitante): void {
+    this.tramiteSeleccionado = solicitante;
+    this.BanderaBusqueda = true;
+   }
+
+   reBusqueda(): void {
+    this.BanderaBusqueda = false;
+  
   }
 
   cargarTramites(): void {
@@ -57,11 +76,16 @@ export class ReporteTramiteComponent implements OnInit {
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      fecha_inicial:  ['', Validators.required],
-      fecha_final: ['', Validators.required]
+      fecha_inicial:  [this.obtenerFechaActual(), Validators.required],
+      fecha_final: [this.obtenerFechaActual(), Validators.required]
     });
   }
 
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+  }
 
   mostrarReporte(): void {
     const fechaInicial = this.myForm.get('fecha_inicial').value;
@@ -91,10 +115,6 @@ export class ReporteTramiteComponent implements OnInit {
       });
   }
 
-  changeState(item): void {
-    this.tramite = item;
-    this.BanderaBoton = true;
-  }
 
   atras(): void {
     this.BanderaDatos = true;
@@ -107,7 +127,7 @@ export class ReporteTramiteComponent implements OnInit {
   }
 
   abrir(): void {
-    this.dialog.open(TramiteIndividualComponent, {maxWidth:  '60vw', maxHeight: '90vh', data: this.tramite});
+    this.dialog.open(TramiteIndividualComponent, {maxWidth:  '60vw', maxHeight: '90vh', data: this.tramiteSeleccionado});
   }
 
 }

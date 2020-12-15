@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { LinkComponent } from './components/link/link.component';
 import { TableComponent } from './components/table/table.component';
 import {BotonCrearComponent} from './components/boton-crear/boton-crear.component';
+import {BuscarTramiteComponent} from './components/buscar-tramite/buscar-tramite.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
@@ -20,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TableComponent,
     SpinnerComponent,
     BotonCrearComponent,
+    BuscarTramiteComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TableComponent,
     SpinnerComponent,
     BotonCrearComponent,
+    BuscarTramiteComponent,
     FormsModule,
     ReactiveFormsModule
   ],

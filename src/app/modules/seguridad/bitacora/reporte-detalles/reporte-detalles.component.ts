@@ -51,10 +51,16 @@ export class ReporteDetallesComponent implements OnInit {
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      fecha_inicial: ['', Validators.required],
-      fecha_final: ['', Validators.required],
+      fecha_inicial: [this.obtenerFechaActual(), Validators.required],
+      fecha_final: [this.obtenerFechaActual(), Validators.required],
       usuario: ['']
     });
+  }
+
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
   }
 
   mostrarReporte(): void {

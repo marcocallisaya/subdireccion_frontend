@@ -1,42 +1,80 @@
-<div class="row justify-content-around">
+<div class="row justify-content-center">
    
-    <div class="col-6  mt-4">
-        <button mat-raised-button color="accent" (click)="abrirReporteDetalles()">Ver Reporte de Listado </button>
+    <div class="col-3  mt-4">
+        <button style="width: 100%;" mat-raised-button color="accent" (click)="abrirReporteDetalles()">Ver Reporte de Listado </button>
     </div>
-    <div class="col-6 row justify-content-center">
-        <div class="col-5 mt-2">
-            <mat-form-field class="example-full-width">
-                <mat-label>Actividad</mat-label>
-                <input matInput placeholder="Ingresa un nombre" #nombre>
-            </mat-form-field>
-        </div>
-        <div class="col-5 mt-4">
-            <button (click)="cargarDatosBusqueda(nombre.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
-        </div>
-      
-       
-    </div>
-    </div>
-    
+</div>
+
+    <form [formGroup]="myForm">
+        <div class="row mt-3 justify-content-center">
+            <div class="col-sm-3">
+                <mat-form-field class="ancho-completo">
+                    <mat-label>Usuario*</mat-label>
+                    <mat-select formControlName="usuario" name="usuario">
+                        <mat-option value=""> TODOS </mat-option>
+                        <mat-option *ngFor="let item of usuarios"  [value]="item.id">
+                          {{item.usuario}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="ancho-completo">
+                  <mat-label>Fecha Inicial*</mat-label>
+                  <input type="date" matInput formControlName="fecha_inicial" name="fecha_inicial">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field class="ancho-completo">
+                  <mat-label>Fecha Final*</mat-label>
+                  <input type="date" matInput formControlName="fecha_final" name="fecha_final">
+                </mat-form-field>
+              </div>
+              <div class="col-3 mt-2">
+                <button style="width: 80%;" (click)="cargarDatosBusqueda()"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
+            </div> 
+        </div> 
+    </form>
+
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-6">
-                <div [hidden]="!BanderaDatos" class="mat-elevation-z8">
-                   <app-table (envio)="cargar($event)" 
-                              [dataSource]="dataSource" 
-                              [headers]="displayedColumns" 
-                              [opciones]="opciones">
-                   </app-table>
+            <div class="col-9">
+                <div  class="mat-elevation-z8">
+                    <table style="width: 100%;" mat-table [dataSource]="dataSource">
+                        <ng-container  matColumnDef="usuario">
+                          <th class="text-center" mat-header-cell *matHeaderCellDef> Usuario </th>
+                          <td mat-cell *matCellDef="let element"> {{element.usuario.usuario}} </td>
+                        </ng-container>
+                        <ng-container  matColumnDef="actividad">
+                            <th  class="text-center" mat-header-cell *matHeaderCellDef> Actividad </th>
+                            <td mat-cell *matCellDef="let element"> {{element.actividad }} </td>
+                          </ng-container>
+                          <ng-container  matColumnDef="fecha">
+                            <th  class="text-center" mat-header-cell *matHeaderCellDef> Fecha </th>
+                            <td mat-cell *matCellDef="let element"> {{ element.updated_at | date: 'dd/MM/yyyy'}} </td>
+                          </ng-container>
+                          <ng-container  matColumnDef="hora">
+                            <th  class="text-center" mat-header-cell *matHeaderCellDef> Hora </th>
+                            <td mat-cell *matCellDef="let element"> {{ element.updated_at | date: 'shortTime'}} </td>
+                          </ng-container>
+                       
+                       
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    
+
+
                    <mat-paginator 
                    [length]="length"
                    [pageSize]="pageSize"
                    [pageIndex]="currentPage - 1"
                    [pageSizeOptions]="pageSizeOptions"
-                   (page)="pagination($event, nombre.value)"></mat-paginator>
+                   (page)="pagination($event)"></mat-paginator>
                 </div>   
-                <div [hidden]="BanderaDatos">
+               <!--  <div *ngIf="BanderaDatos">
                    <app-spinner></app-spinner>
-                </div> 
+                </div>  -->
             </div>
         </div>
     </div>

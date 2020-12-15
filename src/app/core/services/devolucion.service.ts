@@ -39,9 +39,9 @@ export class DevolucionService {
 
    }
 
-   getWithState(estado): Observable <Devolucion[]> {
+   getWithState(estado, fechaInicial, fechaFinal): Observable <Devolucion[]> {
 
-    return this.http.get<Devolucion[]>(this.uri + this.url + '?estado=' + estado) ;
+    return this.http.get<Devolucion[]>(this.uri + this.url + '?estado=' + estado + '&fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal) ;
 
    }
 

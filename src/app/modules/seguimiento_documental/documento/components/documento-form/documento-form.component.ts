@@ -22,6 +22,8 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
 
   BanderaDatos: boolean;
 
+  BanderaBusqueda;
+
   documento$: Subscription = new Subscription();
 
   myForm: FormGroup; // formulario reactivo
@@ -34,7 +36,11 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
 
   documento: Documento; // datos del modelo
 
+  tramiteSeleccionado;
+
   tiposDocumento; ubicaciones; tramites;
+
+  tipos = [{value: 'referencia', codigo: 'Referencia'},{value: 'codigo', codigo: 'Codigo'}];
 
   estado = [{nombre: 'PASIVO', valor: 'pasivo'}, {nombre: 'ACTIVO', valor: 'activo'}];
 
@@ -53,6 +59,19 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargarDatos();
   }
+
+  cargarDatosBusqueda(nombre, tipo): void {
+    this.tramite.getWithQueryII(tipo, nombre).subscribe( (res: any) => {
+      this.tramites = res.data;
+      console.log(res);
+    //  this.BanderaBusqueda = true;
+    });
+  }
+
+  seleccionarSolicitante(solicitante): void {
+    this.tramiteSeleccionado = solicitante;
+    this.BanderaBusqueda = true;
+   }
 
   cargarDatos(): void {
     this.documento$.add(
@@ -84,25 +103,30 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      nombre: [this.documento?.nombre || '', Validators.required],
-      descripcion: [this.documento?.descripcion || '', Validators.required],
-      numero_paginas: [this.documento?.numero_paginas || '', Validators.required],
-      tipo_documento_id: [this.documento?.tipo_documento_id || '', Validators.required],
+      nombre: [this.documento?.nombre || ''],
+      descripcion: [this.documento?.descripcion || ''],
+      numero_paginas: [this.documento?.numero_paginas || ''],
+      tipo_documento_id: [this.documento?.tipo_documento_id || 1, Validators.required],
       ubicacion_id: [this.documento?.ubicacion_id || ''],
-      tramite_id: [this.documento?.tramite_id || '', Validators.required]
+      ingreso: [this.documento?.ingreso || this.obtenerFechaActual()],
+      tramite_id: [ {value: this.documento?.tramite_id || '', disabled: this.BanderaBoton }, Validators.required]
     });
+  }
+
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
   }
 
   cargarDatosAdicionales(): void {
     zip(
       this.tipoDocumento.get(),
-      this.ubicacion.get(),
-      this.tramite.get()
+      this.ubicacion.get()
     ).subscribe( resp => {
-      const [resp1, resp2, resp3] = resp;
+      const [resp1, resp2] = resp;
       this.tiposDocumento = resp1;
       this.ubicaciones = resp2;
-      this.tramites = resp3.data;
     });
 
   }
@@ -151,6 +175,10 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
       title: 'Error...',
       html: errores
     });
+  }
+
+  reBusqueda(): void {
+    this.BanderaBusqueda = false;
   }
 
 

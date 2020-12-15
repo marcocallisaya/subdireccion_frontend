@@ -33,18 +33,31 @@ export class TramiteService {
     return this.http.get<any>(this.uri + this.url + '?tipo=' + tipo);
   }
 
-   getFiltered(perPage: number, currentPage: number, nombre: string): Observable <ListaTramite> {
+   getFiltered(perPage: number, currentPage: number, nombre: string, tipo: string): Observable <ListaTramite> {
 
     return this.http.get<ListaTramite>(this.uri + this.url +
                                               '?per_page=' + perPage +
                                                '&page=' + currentPage +
-                                               '&consulta=' + nombre);
+                                               '&consulta=' + nombre + 
+                                               '&tipo=' + tipo);
 
    }
 
-   getWithState(estado): Observable <Tramite[]> {
+   getWithState(estado, fechaInicial, fechaFinal): Observable <Tramite[]> {
 
-    return this.http.get<Tramite[]>(this.uri + this.url + '?estado=' + estado);
+    return this.http.get<Tramite[]>(this.uri + this.url + '?estado=' + estado + '&fechaInicio=' + fechaInicial + '&fechaFinal=' + fechaFinal);
+
+   }
+
+   getWithQuery(tipo: string, consulta: string, estado_tramite: string): Observable <Tramite[]> {
+
+    return this.http.get<Tramite[]>(this.uri + this.url + '?tipo=' + tipo + '&pregunta=' + consulta + '&estado_tramite=' + estado_tramite);
+
+   }
+
+    getWithQueryII(tipo: string, consulta: string): Observable <Tramite[]> {
+     const estado = '';
+    return this.http.get<Tramite[]>(this.uri + this.url + '?tipo=' + tipo + '&preguntaII=' + consulta + '&estado_tramite=' + estado);
 
    }
 

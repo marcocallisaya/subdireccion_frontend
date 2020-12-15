@@ -34,6 +34,8 @@ export class TramiteComponent implements OnInit, OnDestroy {
 
   tramite$: Subscription = new Subscription();
 
+  tipos = [{codigo: 'Referencia', value: 'referencia'}, {codigo: 'Codigo', value: 'codigo'}];
+
   constructor(private router: Router,
               private servicio: TramiteService,
               public dialog: MatDialog,
@@ -83,9 +85,9 @@ export class TramiteComponent implements OnInit, OnDestroy {
     });
   }
 
-  cargarDatosBusqueda(nombre: string): void {
+  cargarDatosBusqueda(nombre: string, tipo: string): void {
       this.comprobarBuscadorVacio(nombre);
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre, tipo);
       this.banderaDatos = nombre;
   }
 
@@ -96,8 +98,8 @@ export class TramiteComponent implements OnInit, OnDestroy {
     }
   }
 
-  cargarTablaFiltrada(size: number, current: number, nombre: string): void {
-    this.tramite$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
+  cargarTablaFiltrada(size: number, current: number, nombre: string, tipo: string): void {
+    this.tramite$ =  this.servicio.getFiltered(size, current, nombre, tipo).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
      this.length = res.meta?.pagination.total;
@@ -176,18 +178,18 @@ export class TramiteComponent implements OnInit, OnDestroy {
 }
 
    // evento de paginacion
-   pagination(event: PageEvent, nombre: string): void {
+   pagination(event: PageEvent, nombre: string, tipo): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex + 1;
-    this.verificarTipoTabla(nombre);
+    this.verificarTipoTabla(nombre, tipo);
   }
 
-  verificarTipoTabla(nombre: string): void {
+  verificarTipoTabla(nombre: string, tipo): void {
     if (nombre === '') {
       this.cargarTabla(this.pageSize, this.currentPage);
     }
     else {
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre, tipo);
     }
   }
 

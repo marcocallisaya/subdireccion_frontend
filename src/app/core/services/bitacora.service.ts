@@ -46,6 +46,13 @@ export class BitacoraService {
 
    }
 
+   getAmongDatesPaginated(fechaInicial, fechaFinal, usuario, perPage: number, currentPage: number): Observable <any> {
+
+    return this.http.get<any>(this.uri + this.url + '?fechaInicial=' + fechaInicial +
+                                   '&fechaFinal=' + fechaFinal + '&usuario=' + usuario + '&per_page=' + perPage + '&page=' + currentPage);
+
+   }
+
    send(body: Bitacora): Observable <Bitacora> {
 
      return this.http.post<Bitacora>(this.uri + this.url, body);

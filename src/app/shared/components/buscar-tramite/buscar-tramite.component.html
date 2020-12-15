@@ -1,0 +1,41 @@
+<h6 class="text-center"><b>Tramite</b></h6>
+            <div class="row" *ngIf="!BanderaBusqueda">
+             
+                <div class="col-4 mt-2">
+                  <mat-form-field class="ancho-completo">
+                      <mat-label>Buscar por</mat-label>
+                      <mat-select #tipo>
+                          <mat-option *ngFor="let item of tipos"  [value]="item.value">
+                            {{item.codigo}}
+                          </mat-option>
+                        </mat-select>
+                  </mat-form-field>
+              </div>
+              <div class="col-4 mt-2">
+                  <mat-form-field class="ancho-completo">
+                      <mat-label>Busqueda</mat-label>
+                      <input matInput placeholder="Ingresa un registro" #nombre>
+                  </mat-form-field>
+              </div>
+              <div class="col-4 mt-4 mb-2">
+                  <button class="ancho-completo"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
+              </div>
+             <div class="col-12"*ngIf="!BanderaBusqueda">
+             
+                <table style="width: 100%;" class="mt-2 ">
+                  <tr>
+                    <th class="text-center">Referencia</th>
+                    <th class="text-center">Solicitante</th>
+                    <th class="text-center">Seleccionar</th>
+                  </tr>
+                  <tr *ngFor="let item of tramites">
+                    <td class="text-center">{{item.referencia}}</td>
+                    <td class="text-center">{{item.solicitante.nombre}}</td>
+                    <td class="text-center"> <button  mat-mini-fab color="primary" >
+                      <i class="fas fa-check-circle"></i>
+                    </button></td>
+                  </tr>
+                </table>
+              </div>
+             </div>
+            

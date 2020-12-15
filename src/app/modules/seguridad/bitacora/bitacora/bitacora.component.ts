@@ -1,10 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BitacoraService } from 'src/app/core/services/bitacora.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { Bitacora } from 'src/app/shared/models/bitacora.model';
+import { Usuario } from 'src/app/shared/models/usuario.model';
+import Swal from 'sweetalert2';
 import { ModalComponent } from '../modal/modal.component';
 import { ReporteDetallesComponent } from '../reporte-detalles/reporte-detalles.component';
 
@@ -19,18 +23,21 @@ export class BitacoraComponent implements OnInit, OnDestroy {
   consultarPermiso = 'consultar_bitacora';
   reportePermiso = 'reporte_bitacora';
   permisos = JSON.parse(localStorage.getItem('permisos'));
-
+  myForm: FormGroup; // formulario reactivo
   banderaNombre ;
+  usuarios: Usuario[];
 
   bitacora$: Subscription = new Subscription();
 
   constructor(private router: Router,
               private servicio: BitacoraService,
               public dialog: MatDialog,
+              private fb: FormBuilder,
+              private usuario: UsuarioService,
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['actividad'];
+  displayedColumns: string[] = ['usuario', 'actividad', 'fecha', 'hora'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'}];
@@ -38,7 +45,7 @@ export class BitacoraComponent implements OnInit, OnDestroy {
 
   dataSource; // fuente de datos para la tabla
 
-  BanderaDatos: boolean; // bandera para la carga de datos
+  BanderaDatos = false; // bandera para la carga de datos
 
   // variables para la paginacion
   length = 100;
@@ -48,8 +55,30 @@ export class BitacoraComponent implements OnInit, OnDestroy {
   pageEvent: PageEvent;
 
   ngOnInit(): void {
-    this.cargarTabla(this.pageSize, this.currentPage);
+    this.cargarDatosAdicionales();
+    this.cargarFormulario();
+    // this.BanderaDatos = true;
+   // this.cargarTabla(this.pageSize, this.currentPage);
     this.cambiarIdiomaPaginacion();
+  }
+
+  cargarFormulario(): void {
+    this.myForm = this.fb.group({
+      fecha_inicial: [this.obtenerFechaActual(), Validators.required],
+      fecha_final: [this.obtenerFechaActual(), Validators.required],
+      usuario: ['']
+    });
+  }
+
+  obtenerFechaActual(): string {
+    let f = new Date();
+    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
+    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+  }
+
+
+  cargarDatosAdicionales(): void {
+    this.usuario.get().subscribe((res: any) => this.usuarios = res.data);
   }
 
   cargarTabla(size: number, current: number): void {
@@ -61,24 +90,30 @@ export class BitacoraComponent implements OnInit, OnDestroy {
       });
     }
 
-  cargarDatosBusqueda(nombre: string): void {
-      this.comprobarBuscadorVacio(nombre);
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
-      this.banderaNombre = nombre;
+  cargarDatosBusqueda(): void {
+    this.pageSize = 5;
+    this.currentPage = 1;
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage);
   }
 
-  comprobarBuscadorVacio(nombre: string): void {
-    if (this.banderaNombre !== nombre) {
-      this.pageSize = 5;
-      this.currentPage =  1;
-    }
-  }
+ 
 
-  cargarTablaFiltrada(size: number, current: number, nombre: string): void {
-    this.bitacora$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
+  cargarTablaFiltrada(size: number, current: number): void {
+    const usuario = this.myForm.get('usuario').value;
+    const fechaInicial = this.myForm.get('fecha_inicial').value;
+    const fechaFinal = this.myForm.get('fecha_final').value;
+    this.bitacora$ =  this.servicio.getAmongDatesPaginated(fechaInicial, fechaFinal, usuario, this.pageSize, this.currentPage).subscribe((res: any) =>
     {
-     this.dataSource = res.data; console.log(res);
+     this.dataSource = res.data; 
+     console.log(res);
+     this.BanderaDatos = true;
      this.length = res.total;
+    }, err => {
+      Swal.fire(
+        'Error',
+        err.error.errors.fechaFinal[0],
+        'error'
+      );
     });
   }
 
@@ -99,20 +134,12 @@ export class BitacoraComponent implements OnInit, OnDestroy {
   }
 
    // evento de paginacion
-   pagination(event: PageEvent, nombre: string): void {
+   pagination(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex + 1;
-    this.verificarTipoTabla(nombre);
+    this.cargarTablaFiltrada(this.pageSize, this.currentPage);
   }
 
-  verificarTipoTabla(nombre: string): void {
-    if (nombre === '') {
-      this.cargarTabla(this.pageSize, this.currentPage);
-    }
-    else {
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
-    }
-  }
 
   cambiarIdiomaPaginacion(): void {
     this.paginator.itemsPerPageLabel = 'Registros por página';

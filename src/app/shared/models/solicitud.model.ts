@@ -9,6 +9,7 @@ export interface Solicitud {
     solicitante_id: number;
     centro_formacion_id: number;
     tramite: Tramite;
+    ingreso: Date;
     solicitante: Solicitante;
     centro_formacion: CentroFormacion;
 
