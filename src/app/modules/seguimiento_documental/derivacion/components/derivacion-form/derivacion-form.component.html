@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-    <div class="col-xs-12 col-md-9 mt-5">
+    <div class="col-xs-12 col-md-9 mt-3">
 
       <ng-container  *ngIf="BanderaDatos;else spinner">
         <mat-card class="example-card">
@@ -38,7 +38,19 @@
                       </mat-form-field>
                   </div>
                   <div class="col-4 mt-4 mb-2">
-                      <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  tipo.value)"  mat-raised-button color="primary">Buscar <i class="fas fa-search"></i></button>
+                      <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  tipo.value, fecha_inicial.value, fecha_final.value)"  mat-raised-button color="primary">Buscar <i class="fas fa-search"></i></button>
+                  </div>
+                  <div class="col-sm-4">
+                    <mat-form-field class="ancho-completo">
+                      <mat-label>Fecha Inicial*</mat-label>
+                      <input type="date" matInput #fecha_inicial [value]="obtenerFechaActual()">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-4">
+                    <mat-form-field class="ancho-completo">
+                      <mat-label>Fecha Final*</mat-label>
+                      <input type="date" matInput #fecha_final [value]="obtenerFechaActual()">
+                    </mat-form-field>
                   </div>
                  <div class="col-12" *ngIf="!BanderaBusqueda">
                  

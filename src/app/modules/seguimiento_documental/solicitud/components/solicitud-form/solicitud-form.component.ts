@@ -155,9 +155,9 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
   enviar(myForm): void {
     console.log(myForm.value);
     this.servicio.send(myForm.value).subscribe(
-      res => {
+      (res: any) => {
         Swal.fire( 'Felicidades',
-        'La solicitud ha sido registrada con exito',
+        'El tramite con el codigo "' + res.data.codigo +  '" ha sido registrada con exito',
         'success');
         this.router.navigate(['/sistema/' + this.uri]);
       },

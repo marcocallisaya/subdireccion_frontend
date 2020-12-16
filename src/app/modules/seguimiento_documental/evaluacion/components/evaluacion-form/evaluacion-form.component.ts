@@ -56,11 +56,17 @@ export class EvaluacionFormComponent implements OnInit, OnDestroy {
     this.cargarDatos();
   }
 
-  cargarDatosBusqueda(nombre, tipo): void {
-    this.tramite.getWithQuery(tipo, nombre, 'DERIVACION').subscribe( (res: any) => {
+  cargarDatosBusqueda(nombre, tipo, fechaInicial, fechaFinal): void {
+    this.tramite.getWithQuery(tipo, nombre, 'DERIVACION', fechaInicial, fechaFinal).subscribe( (res: any) => {
       this.tramites = res.data;
       console.log(res);
     //  this.BanderaBusqueda = true;
+    }, err => {
+      Swal.fire(
+        'Error',
+        err.error.errors.fechaFinal[0],
+        'error'
+      );
     });
   }
 

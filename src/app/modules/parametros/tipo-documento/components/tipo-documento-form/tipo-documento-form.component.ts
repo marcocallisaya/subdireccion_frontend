@@ -118,7 +118,7 @@ export class TipoDocumentoFormComponent implements OnInit, OnDestroy {
     Swal.fire({
       icon: 'error',
       title: 'Error...',
-      html: error.error.errors.descripcion[0]
+      html: error
     });
   }
 
@@ -134,6 +134,10 @@ export class TipoDocumentoFormComponent implements OnInit, OnDestroy {
     }
     if (errores.nombre !=  null) {
       const error = '<div>' + errores.nombre[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
+    if (errores.codigo !=  null) {
+      const error = '<div>' + errores.codigo[0] + '</div> <br>';
       datos = datos.concat(error);
     }
     return datos;

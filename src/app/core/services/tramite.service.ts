@@ -49,15 +49,15 @@ export class TramiteService {
 
    }
 
-   getWithQuery(tipo: string, consulta: string, estado_tramite: string): Observable <Tramite[]> {
+   getWithQuery(tipo = '', consulta = '', estado_tramite: string, fechaInicial, fechaFinal): Observable <Tramite[]> {
 
-    return this.http.get<Tramite[]>(this.uri + this.url + '?tipo=' + tipo + '&pregunta=' + consulta + '&estado_tramite=' + estado_tramite);
+    return this.http.get<Tramite[]>(this.uri + this.url + '?tipo=' + tipo + '&pregunta=' + consulta + '&estado_tramite=' + estado_tramite + '&fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
 
    }
 
-    getWithQueryII(tipo: string, consulta: string): Observable <Tramite[]> {
+    getWithQueryII(tipo = '', consulta = '', fechaInicial, fechaFinal): Observable <Tramite[]> {
      const estado = '';
-    return this.http.get<Tramite[]>(this.uri + this.url + '?tipo=' + tipo + '&preguntaII=' + consulta + '&estado_tramite=' + estado);
+    return this.http.get<Tramite[]>(this.uri + this.url + '?tipo=' + tipo + '&preguntaII=' + consulta + '&estado_tramite=' + estado + '&fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal);
 
    }
 

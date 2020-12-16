@@ -36,11 +36,17 @@ export class ReporteTramiteComponent implements OnInit {
     this.cargarFormulario();
   }
 
-  cargarDatosBusqueda(nombre, tipo): void {
-    this.servicio.getWithQueryII(tipo, nombre).subscribe( (res: any) => {
+  cargarDatosBusqueda(nombre, tipo, fechaInicial, fechaFinal): void {
+    this.servicio.getWithQueryII(tipo, nombre, fechaInicial, fechaFinal).subscribe( (res: any) => {
       this.tramites = res.data;
       console.log(res);
     //  this.BanderaBusqueda = true;
+    }, err => {
+      Swal.fire(
+        'Error',
+        err.error.errors.fechaFinal[0],
+        'error'
+      );
     });
   }
 

@@ -61,8 +61,20 @@
                         </mat-form-field>
                     </div>
                     <div class="col-4 mt-4 mb-2">
-                        <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  buscar.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
+                        <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  buscar.value, fecha_inicial.value, fecha_final.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
                     </div>
+                    <div class="col-sm-4">
+                        <mat-form-field class="ancho-completo">
+                          <mat-label>Fecha Inicial*</mat-label>
+                          <input type="date" matInput #fecha_inicial [value]="obtenerFechaActual()">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field class="ancho-completo">
+                          <mat-label>Fecha Final*</mat-label>
+                          <input type="date" matInput #fecha_final [value]="obtenerFechaActual()">
+                        </mat-form-field>
+                      </div>
                    <div class="col-12" *ngIf="!BanderaBusqueda">
                    
                       <table style="width: 100%;" class="mt-2 ">

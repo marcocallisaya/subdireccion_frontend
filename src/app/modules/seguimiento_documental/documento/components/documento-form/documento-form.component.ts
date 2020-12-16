@@ -60,11 +60,17 @@ export class DocumentoFormComponent implements OnInit, OnDestroy {
     this.cargarDatos();
   }
 
-  cargarDatosBusqueda(nombre, tipo): void {
-    this.tramite.getWithQueryII(tipo, nombre).subscribe( (res: any) => {
+  cargarDatosBusqueda(nombre, tipo, fechaInicial, fechaFinal): void {
+    this.tramite.getWithQueryII(tipo, nombre, fechaInicial, fechaFinal).subscribe( (res: any) => {
       this.tramites = res.data;
       console.log(res);
     //  this.BanderaBusqueda = true;
+    }, err => {
+      Swal.fire(
+        'Error',
+        err.error.errors.fechaFinal[0],
+        'error'
+      );
     });
   }
 
