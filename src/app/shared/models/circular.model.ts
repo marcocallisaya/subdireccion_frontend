@@ -2,6 +2,9 @@ import {Funcionario} from './funcionario.model';
 
 export interface Circular {
     id: number;
+    remitente: string;
+    receptor: string;
+    fecha_registro: Date;
     codigo: string;
     referencia: string;
     url: string;

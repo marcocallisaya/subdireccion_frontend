@@ -2,6 +2,9 @@ import {Funcionario} from './funcionario.model';
 
 export interface Convocatoria {
     id: number;
+    titulo: string;
+    distrito: string;
+    fecha_publicacion: Date;
     fecha_limite: Date;
     referencia: string;
     url: string;

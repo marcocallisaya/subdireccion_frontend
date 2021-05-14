@@ -56,15 +56,17 @@ export class DatosUsuarioComponent implements OnInit, OnDestroy {
 
   actualizar(): void {
     console.log(this.myForm.value);
-    this.servicio.update(this.myForm.value, this.codigo).subscribe(res => {
+    this.servicio.updatePassword(this.myForm.value, this.codigo).subscribe(res => {
       Swal.fire(
         'Felicidades',
         'Contraseña actualizada exitosamente',
         'success'
       );
+      console.log(res);
       this.router.navigate(['/sistema']);
     },
       error => {
+        console.log(error);
         const errores =  this.tratarErrores(error.error.errors);
         this.mostrarErrores(errores);
       });

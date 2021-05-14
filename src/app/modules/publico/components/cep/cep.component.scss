@@ -9,3 +9,9 @@ h6 {
 mat-card-title {
     text-align: center;
 }
+
+mat-card-actions {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+ }

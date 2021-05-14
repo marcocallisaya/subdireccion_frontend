@@ -15,14 +15,33 @@
           <mat-card-content>
            <form  [formGroup]="myForm">
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-6">
                 <mat-form-field class="ancho-completo">
                   <mat-label>Fecha Limite*</mat-label>
                   <input type="date" matInput formControlName="fecha_limite" name="fecha_limite">
                 </mat-form-field>
               </div>
+              <div class="col-sm-6">
+                <mat-form-field class="ancho-completo">
+                  <mat-label>Fecha de Publicacion*</mat-label>
+                  <input type="date" matInput formControlName="fecha_publicacion" name="fecha_publicacion">
+                </mat-form-field>
+              </div>
             </div>
-
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="ancho-completo">
+                  <mat-label>Titulo*</mat-label>
+                  <input type="text" matInput formControlName="titulo" name="titulo">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="ancho-completo">
+                  <mat-label>Distrito*</mat-label>
+                  <input type="text" matInput formControlName="distrito" name="distrito">
+                </mat-form-field>
+              </div>
+            </div>
             <div class="row">
               <div class="col-sm-12">
                 <mat-form-field class="ancho-completo">

@@ -82,7 +82,10 @@ export class CircularFormComponent implements OnInit, OnDestroy {
     this.myForm = this.fb.group({
       codigo: [this.circular?.codigo || '', Validators.required],
       referencia: [this.circular?.referencia || '', Validators.required],
-      funcionario_id: [this.circular?.funcionario_id || this.token.getDatosPersonales().id]
+      funcionario_id: [this.circular?.funcionario_id || this.token.getDatosPersonales().id],
+      remitente: [this.circular?.remitente || '', Validators.required],
+      receptor: [this.circular?.receptor || '', Validators.required],
+      fecha_registro: [this.circular?.fecha_registro || '', Validators.required]
     });
   }
 

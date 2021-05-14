@@ -82,7 +82,10 @@ export class ConvocatoriaFormComponent implements OnInit, OnDestroy {
     this.myForm = this.fb.group({
       fecha_limite: [this.convocatoria?.fecha_limite || '', Validators.required],
       referencia: [this.convocatoria?.referencia || '', Validators.required],
-      funcionario_id: [this.convocatoria?.funcionario_id || this.token.getDatosPersonales().id]
+      funcionario_id: [this.convocatoria?.funcionario_id || this.token.getDatosPersonales().id],
+      titulo: [this.convocatoria?.titulo || '', Validators.required],
+      distrito: [this.convocatoria?.distrito || '', Validators.required],
+      fecha_publicacion: [this.convocatoria?.fecha_publicacion || Validators.required]
     });
   }
 

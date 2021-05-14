@@ -63,6 +63,12 @@ export class UsuarioService {
 
   }
 
+  updatePassword(body: any, id: number): Observable <Usuario> {
+
+    return this.http.put<Usuario>(this.uri + this.url + '/' + id + '/cambiarContrasena', body);
+
+  }
+
   changeState(body: any, id: number): Observable <any> {
 
     return this.http.put<any>(this.uri + this.url + '/' + id , body);
