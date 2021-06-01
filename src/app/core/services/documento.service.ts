@@ -42,12 +42,13 @@ export class DocumentoService {
 
    }
 
-   getFiltered(perPage: number, currentPage: number, nombre: string): Observable <ListaDocumento> {
+   getFiltered(perPage: number, currentPage: number, nombre: string, tipo: string): Observable <ListaDocumento> {
 
     return this.http.get<ListaDocumento>(this.uri + this.url +
                                               '?per_page=' + perPage +
                                                '&page=' + currentPage +
-                                               '&consulta=' + nombre);
+                                               '&consulta=' + nombre +
+                                               '&tipo=' + tipo);
     }
 
    send(body: Documento): Observable <Documento> {

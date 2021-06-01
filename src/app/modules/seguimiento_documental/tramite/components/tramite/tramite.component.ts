@@ -4,10 +4,7 @@ import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TramiteService } from 'src/app/core/services/tramite.service';
-import { Devolucion } from 'src/app/shared/models/devolucion.model';
-import { Evaluacion } from 'src/app/shared/models/evaluacion.model';
 import { Solicitante } from 'src/app/shared/models/solicitante.model';
-import { Solicitud } from 'src/app/shared/models/solicitud.model';
 import { Tramite } from 'src/app/shared/models/tramite.model';
 import { DerivacionModalComponent } from '../derivacion-modal/derivacion-modal.component';
 import { DevolucionModalComponent } from '../devolucion-modal/devolucion-modal.component';
@@ -32,6 +29,9 @@ export class TramiteComponent implements OnInit, OnDestroy {
 
   banderaDatos: string ;
 
+  titulo;
+  dias: number;
+
   tramite$: Subscription = new Subscription();
 
   tipos = [{codigo: 'Referencia', value: 'referencia'}, {codigo: 'Codigo', value: 'codigo'}];
@@ -42,17 +42,7 @@ export class TramiteComponent implements OnInit, OnDestroy {
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['tramite_estado' , 'referencia', 'codigo'];
-
-  // objeto con los atributos de las opciones de la tabla
-  opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
-              {nombre: 'solicitante', boton: 'warn', icono: 'fas fa-user-alt'},
-              {nombre: 'solicitud', boton: 'accent', icono: 'fas fa-clipboard-check'},
-              {nombre: 'derivacion', boton: 'primary', icono: 'fas fa-share-square'},
-              {nombre: 'evaluacion', boton: 'accent', icono: 'fas fa-glasses'},
-              {nombre: 'devolucion', boton: 'primary', icono: 'fas fa-file-alt'},
-              {nombre: 'documentos', boton: 'accent', icono: 'fas fa-file-alt'}];
-
+  displayedColumns: string[] = [ 'codigo', 'referencia', 'tramite_estado',  'tiempo' ,   'ver', 'solicitante', 'solicitud', 'derivacion', 'evaluacion', 'devolucion', 'documentos' ];
 
   dataSource; // fuente de datos para la tabla
 
@@ -140,7 +130,7 @@ export class TramiteComponent implements OnInit, OnDestroy {
   verDevolucion(devolucion: any): void {
     if (this.verificarPermisos(this.consultarPermiso)) {
       this.dialog.open(DevolucionModalComponent, {width: '40vw', data:  devolucion });
-    } 
+    }
   }
 
   verDocumentos(documentos: any): void {
@@ -149,33 +139,21 @@ export class TramiteComponent implements OnInit, OnDestroy {
     }
  }
 
- cargar(data): void {
-  switch (data.tipoAccion) {
-    case 'ver':
-      this.ver(data.informacion);
-      break;
-    case 'editar':
-      this.router.navigate(['/sistema/tramite/form/' + data.identificador]);
-      break;
-    case 'solicitante':
-        this.verSolicitante(data.informacion.solicitud.solicitante);
-        break;
-    case 'solicitud':
-        this.verSolicitud(data.informacion);
-        break;
-    case 'derivacion':
-        this.verDerivacion(data.informacion);
-        break;
-    case 'evaluacion':
-        this.verEvaluacion(data.informacion);
-        break;
-    case 'devolucion':
-        this.verDevolucion(data.informacion);
-        break;
-    default:
-        this.verDocumentos(data.informacion);
+  comprobarDerivacion(data: any): boolean {
+    return (data.derivacion === null) ? true : false;
   }
-}
+
+  comprobarEvaluacion(data: any): boolean {
+    return (data.evaluacion === null) ? true : false;
+  }
+
+  comprobarDevolucion(data: any): boolean {
+    return (data.devolucion === null) ? true : false;
+  }
+
+  comprobarDocumentos(data: any): boolean {
+    return (data.documentos.length === 0) ? true : false;
+  }
 
    // evento de paginacion
    pagination(event: PageEvent, nombre: string, tipo): void {
@@ -191,6 +169,63 @@ export class TramiteComponent implements OnInit, OnDestroy {
     else {
       this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre, tipo);
     }
+  }
+
+  // metodos para las etiquetas
+
+  colorEstado(element, fechaLimite): string {
+
+    if (element.derivacion === null) {
+      this.titulo = 'Sin derivacion';
+      return 'badge-info';
+    }
+
+    if (element.tramite_estado === 'DEVOLUCION') {
+      this.titulo = 'Completado';
+      return 'badge-dark';
+    }
+
+    const fechaInicial = element.derivacion.created_at;
+    const fechaI = new Date();
+    const fechaII = new Date(fechaLimite);
+
+    const resta = fechaII.getTime() - fechaI.getTime();
+
+    const dias = Math.round(resta / (1000 * 60 * 60 * 24)) ;
+    // this.dias = dias;
+    this.tituloEstado(dias + 1);
+    if ((dias + 1) < 0) {
+      return 'badge-danger';
+    }else if ((dias + 1) <= 3) {
+      return 'badge-dark';
+    } else if ((dias + 1) <= 6) {
+      return 'badge-warning';
+    } else {
+      return 'badge-success';
+    }
+  }
+
+  tituloEstado(dias): void {
+    if (dias < 0) {
+      this.titulo =  'Atrasado ' + dias * -1 + ' dia(s)';
+    }
+    else{
+      this.titulo =  dias + ' dias';
+    }
+    
+   /*  if (dias < 0) {
+      this.titulo = dias + ' dias';
+    }else if (dias <= 3) {
+      this.titulo = 'ATRASADO';
+    } else if (dias <= 7) {
+      this.titulo = 'NO OLVIDAR';
+    } else {
+      this.titulo = 'A TIEMPO';
+    } */
+  }
+
+  controlarDias(dias): number {
+    return dias < 0 ? 0 : dias;
   }
 
   abrirReporteDetalles(): void  {

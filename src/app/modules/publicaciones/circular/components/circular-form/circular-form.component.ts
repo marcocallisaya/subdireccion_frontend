@@ -85,7 +85,7 @@ export class CircularFormComponent implements OnInit, OnDestroy {
       funcionario_id: [this.circular?.funcionario_id || this.token.getDatosPersonales().id],
       remitente: [this.circular?.remitente || '', Validators.required],
       receptor: [this.circular?.receptor || '', Validators.required],
-      fecha_registro: [this.circular?.fecha_registro || '', Validators.required]
+      fecha_registro: [this.circular?.fecha_registro || this.obtenerFechaActual(), Validators.required]
     });
   }
 
@@ -117,6 +117,18 @@ export class CircularFormComponent implements OnInit, OnDestroy {
         this.mostrarError(errores);
       }
     );
+  }
+
+  obtenerFechaActual(): string {
+    let f = new Date(); let d ; let m ; let y = f.getFullYear(); 
+
+    if (f.getDate()<10) { d = "0" + f.getDate();} else {d = f.getDate();}
+
+    if (f.getMonth()<10) {m = "0" + (f.getMonth() + 1); } else {m = (f.getMonth() + 1);}
+
+    let date = y + "-" + m + "-" + d;
+
+    return  date;
   }
 
   tratarErrores(errores): string {

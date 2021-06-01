@@ -24,7 +24,7 @@
             </form>
         </mat-card-content>
         <mat-card-actions>
-            <div class="row mt-3 justify-content-center">
+            <div class="row mt-1 mb-1 justify-content-center">
                 <div class="col-4">
                     <button class="ancho-completo" mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="mostrarReporte()">Filtrar
                         Datos</button>
@@ -34,50 +34,52 @@
         </mat-card-actions>
     </mat-card>
 
-    <mat-card class="mt-5" style="width: 80%; margin: auto;">
-        <mat-card-title>
+    <mat-card class="mt-4" style="width: 80%; margin: auto;">
+
+        <mat-card-content class="tramite">
             <h4 class="text-left">Reporte Individual</h4>
-        </mat-card-title>
-        <mat-card-content>
-            <div class="row mb-3" *ngIf="!BanderaBoton">
+            <div class="row mb-3 justify-content-center" *ngIf="!BanderaBoton">
              
-                <div class="col-sm-12">
+                <div class="col-sm-11">
                   <div class="row" *ngIf="!BanderaBusqueda">
                    
-                      <div class="col-4 mt-2">
-                        <mat-form-field class="ancho-completo">
-                            <mat-label>Buscar por</mat-label>
-                            <mat-select #buscar>
-                                <mat-option *ngFor="let item of types"  [value]="item.value">
-                                  {{item.codigo}}
-                                </mat-option>
-                              </mat-select>
-                        </mat-form-field>
+                   
+                        <div class="col-4 mt-2">
+                            <mat-form-field class="ancho-completo">
+                                <mat-label>Buscar por</mat-label>
+                                <mat-select #buscar value="codigo">
+                                    <mat-option *ngFor="let item of types"  [value]="item.value">
+                                      {{item.codigo}}
+                                    </mat-option>
+                                  </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4 mt-2">
+                            <mat-form-field class="ancho-completo">
+                                <mat-label>Busqueda</mat-label>
+                                <input matInput placeholder="Ingresa un registro" #nombre>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4 mt-4 mb-2">
+                            <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  buscar.value, fecha_inicial.value, fecha_final.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
+                        </div>
+                        <div class="col-sm-4">
+                            <mat-form-field class="ancho-completo">
+                              <mat-label>Fecha Inicial*</mat-label>
+                              <input type="date" matInput #fecha_inicial [value]="obtenerFechaActual()">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-sm-4">
+                            <mat-form-field class="ancho-completo">
+                              <mat-label>Fecha Final*</mat-label>
+                              <input type="date" matInput #fecha_final [value]="obtenerFechaActual()">
+                            </mat-form-field>
+                          </div>
                     </div>
-                    <div class="col-4 mt-2">
-                        <mat-form-field class="ancho-completo">
-                            <mat-label>Busqueda</mat-label>
-                            <input matInput placeholder="Ingresa un registro" #nombre>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-4 mt-4 mb-2">
-                        <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  buscar.value, fecha_inicial.value, fecha_final.value)"  mat-raised-button color="warn">Buscar <i class="fas fa-search"></i></button>
-                    </div>
-                    <div class="col-sm-4">
-                        <mat-form-field class="ancho-completo">
-                          <mat-label>Fecha Inicial*</mat-label>
-                          <input type="date" matInput #fecha_inicial [value]="obtenerFechaActual()">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-4">
-                        <mat-form-field class="ancho-completo">
-                          <mat-label>Fecha Final*</mat-label>
-                          <input type="date" matInput #fecha_final [value]="obtenerFechaActual()">
-                        </mat-form-field>
-                      </div>
+                     
                    <div class="col-12" *ngIf="!BanderaBusqueda">
                    
-                      <table style="width: 100%;" class="mt-2 ">
+                      <table style="width: 100%;" class="mt-2 " *ngIf="spiner && tablaBandera">
                         <tr>
                           <th class="text-center">Referencia</th>
                           <th class="text-center">Solicitante</th>
@@ -93,26 +95,32 @@
                           </button></td>
                         </tr>
                       </table>
+                      <div class="spiner" *ngIf="!spiner">
+                          <app-spinner></app-spinner>
+                      </div>
                     </div>
                    </div>
                   
-                  <div class="row" *ngIf="BanderaBusqueda">
-                    <div class="col-7">
-                     <mat-form-field  class="ancho-completo">
-                       <mat-label>Tramite*</mat-label>
-                       <mat-select [(ngModel)]="tramiteSeleccionado.id">
-                         <mat-option [value]="tramiteSeleccionado.id">
-                           {{tramiteSeleccionado.referencia}}
-                         </mat-option>
-                       </mat-select>
-                     </mat-form-field>
-                    </div>
-                    <div class="col-5">
-                     <button  class="ancho-completo" (click)="reBusqueda()"  mat-raised-button color="warn"> Volver a Buscar <i class="fas fa-search"></i></button>
-                    </div>
-                  </div>
+                   <div class="col-sm-12">
+                    <div class="row" *ngIf="BanderaBusqueda">
+                        <div class="col-7">
+                         <mat-form-field  class="ancho-completo">
+                           <mat-label>Tramite*</mat-label>
+                           <mat-select [(ngModel)]="tramiteSeleccionado.id">
+                             <mat-option [value]="tramiteSeleccionado.id">
+                               {{tramiteSeleccionado.referencia}}
+                             </mat-option>
+                           </mat-select>
+                         </mat-form-field>
+                        </div>
+                        <div class="col-5">
+                         <button  class="ancho-completo" (click)="reBusqueda()"  mat-raised-button color="warn"> Volver a Buscar <i class="fas fa-search"></i></button>
+                        </div>
+                      </div>
+                   </div>
+                 
                 </div>
-              </div>
+            
         </mat-card-content>
         <mat-card-actions>
             <div class="row justify-content-center ">
@@ -173,7 +181,7 @@
                         </div>
                         </div>
                         <div class="col-3">
-                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <h5>Top 3 </h5>
                             <table class="mt-3">
                                 <tr>
                                     <th> Nombre </th>  <th> Cantidad </th>
@@ -230,7 +238,7 @@
                           </div>
                         </div>
                         <div class="col-3">
-                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <h5>Top 3 </h5>
                             <table class="mt-3">
                                 <tr>
                                     <th> Nombre </th>  <th> Cantidad </th>
@@ -288,7 +296,7 @@
                           </div>
                         </div>
                         <div class="col-3">
-                            <h5>Top 3 <i class="fas fa-crown"></i></h5>
+                            <h5>Top 3 </h5>
                             <table class="mt-3">
                                 <tr>
                                     <th> Nombre </th>  <th> Cantidad </th>

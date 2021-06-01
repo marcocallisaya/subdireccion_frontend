@@ -79,12 +79,23 @@ export class FuncionarioFormComponent implements OnInit, OnDestroy {
       nombre: [this.funcionario?.nombre || '', Validators.required],
       apellido: [this.funcionario?.apellido || '', Validators.required],
       cargo: [this.funcionario?.cargo || '', Validators.required],
-      fecha_nacimiento: [this.funcionario?.fecha_nacimiento || '', Validators.required],
+      fecha_nacimiento: [this.funcionario?.fecha_nacimiento || this.obtenerFechaActual(), Validators.required],
       genero: [this.funcionario?.genero || '', Validators.required],
       telefono: [this.funcionario?.telefono || '', Validators.required]
     });
   }
 
+  obtenerFechaActual(): string {
+    let f = new Date(); let d ; let m ; let y = f.getFullYear(); 
+
+    if (f.getDate()<10) { d = "0" + f.getDate();} else {d = f.getDate();}
+
+    if (f.getMonth()<10) {m = "0" + (f.getMonth() + 1); } else {m = (f.getMonth() + 1);}
+
+    let date = y + "-" + m + "-" + d;
+
+    return  date;
+  }
 
 
   enviar(myForm): void {

@@ -12,6 +12,8 @@
               </div>
             </div>
            
+          
+
           <mat-card-content>
            <form  [formGroup]="myForm">
             <div class="row">
@@ -60,13 +62,16 @@
                 </mat-form-field>
               </div>
             </div>
-            <h6 class="text-center"><b>Solicitante</b></h6>
-            <div class="row" *ngIf="!BanderaBusqueda">
+            <br> <br>
+           
+            <mat-card class="solicitante">
+              <h6 class="text-center"><b>Solicitante</b></h6>
+              <div class="row" *ngIf="!BanderaBusqueda">
              
                 <div class="col-4 mt-2">
                   <mat-form-field class="ancho-completo">
                       <mat-label>Buscar por</mat-label>
-                      <mat-select #tipo>
+                      <mat-select #tipo value="ci">
                           <mat-option *ngFor="let item of tiposSolicitante"  [value]="item.value">
                             {{item.codigo}}
                           </mat-option>
@@ -84,7 +89,7 @@
               </div>
              <div class="col-12"*ngIf="!BanderaBusqueda">
              
-                <table style="width: 100%;" class="mt-2 ">
+                <table style="width: 100%;" class="mt-2" *ngIf="spiner && tablaBandera">
                   <tr>
                     <th class="text-center">Nombre Completo</th>
                     <th class="text-center">Carnet</th>
@@ -98,6 +103,7 @@
                     </button></td>
                   </tr>
                 </table>
+                <div class="spiner" *ngIf="!spiner"> <app-spinner></app-spinner> </div>
               </div>
              </div>
              <div class="row" *ngIf="BanderaBusqueda">
@@ -115,7 +121,12 @@
                 <button class="ancho-completo" (click)="reBusqueda()"  mat-raised-button color="warn"> Volver a Buscar <i class="fas fa-search"></i></button>
                </div>
              </div>
-           </form>
+            </mat-card>
+            
+          
+          
+          
+          </form>
           </mat-card-content>
           <mat-card-actions>
             <div class="row justify-content-center">

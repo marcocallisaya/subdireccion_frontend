@@ -15,81 +15,91 @@
           <mat-card-content>
            <form  [formGroup]="myForm">
     
-            <div class="row mb-3" *ngIf="!BanderaBoton">
-             
-              <div class="col-sm-12">
-                <h6 class="text-center"><b>Tramite</b></h6>
-                <div class="row" *ngIf="!BanderaBusqueda">
-                 
+            <mat-card class="tramite" *ngIf="!BanderaBoton">
+              <div class="row mb-2" >
+            
+                <div class="col-sm-12">
+                  <h6 class="text-center"><b>Tramite</b></h6>
+                  <div class="row" *ngIf="!BanderaBusqueda">
+                   
+                      <div class="col-4 mt-2">
+                        <mat-form-field class="ancho-completo">
+                            <mat-label>Buscar por</mat-label>
+                            <mat-select #tipo value="codigo">
+                                <mat-option *ngFor="let item of tipos"  [value]="item.value">
+                                  {{item.codigo}}
+                                </mat-option>
+                              </mat-select>
+                        </mat-form-field>
+                    </div>
                     <div class="col-4 mt-2">
-                      <mat-form-field class="ancho-completo">
-                          <mat-label>Buscar por</mat-label>
-                          <mat-select #tipo>
-                              <mat-option *ngFor="let item of tipos"  [value]="item.value">
-                                {{item.codigo}}
-                              </mat-option>
-                            </mat-select>
-                      </mat-form-field>
-                  </div>
-                  <div class="col-4 mt-2">
-                      <mat-form-field class="ancho-completo">
-                          <mat-label>Busqueda</mat-label>
-                          <input matInput placeholder="Ingresa un registro" #nombre>
-                      </mat-form-field>
-                  </div>
-                  <div class="col-4 mt-4 mb-2">
-                      <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  tipo.value, fecha_inicial.value, fecha_final.value)"  mat-raised-button color="primary">Buscar <i class="fas fa-search"></i></button>
-                  </div>
-                  <div class="col-sm-4">
-                    <mat-form-field class="ancho-completo">
-                      <mat-label>Fecha Inicial*</mat-label>
-                      <input type="date" matInput #fecha_inicial [value]="obtenerFechaActual()">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-sm-4">
-                    <mat-form-field class="ancho-completo">
-                      <mat-label>Fecha Final*</mat-label>
-                      <input type="date" matInput #fecha_final [value]="obtenerFechaActual()">
-                    </mat-form-field>
-                  </div>
-                 <div class="col-12" *ngIf="!BanderaBusqueda">
-                 
-                    <table style="width: 100%;" class="mt-2 ">
-                      <tr>
-                        <th class="text-center">Referencia</th>
-                        <th class="text-center">Solicitante</th>
-                        <th class="text-center">Ingreso</th>
-                        <th class="text-center">Seleccionar</th>
-                      </tr>
-                      <tr *ngFor="let item of tramites">
-                        <td class="text-center">{{item.referencia}}</td>
-                        <td class="text-center">{{item.solicitud.solicitante.nombre}}</td>
-                        <td class="text-center">{{item.solicitud.ingreso | date: 'dd/MM/yyyy'}}</td>
-                        <td class="text-center"> <button (click)="seleccionarSolicitante(item)"  mat-mini-fab color="primary" >
-                          <i class="fas fa-check-circle"></i>
-                        </button></td>
-                      </tr>
-                    </table>
-                  </div>
-                 </div>
-                
-                <div class="row" *ngIf="BanderaBusqueda">
-                  <div class="col-7">
-                   <mat-form-field  class="ancho-completo">
-                     <mat-label>Tramite*</mat-label>
-                     <mat-select  formControlName="tramite_id" name="tramite_id" [(ngModel)]="tramiteSeleccionado.id">
-                       <mat-option [value]="tramiteSeleccionado.id">
-                         {{tramiteSeleccionado.referencia}}
-                       </mat-option>
-                     </mat-select>
-                   </mat-form-field>
-                  </div>
-                  <div class="col-5">
-                   <button class="ancho-completo" (click)="reBusqueda()"  mat-raised-button color="warn"> Volver a Buscar <i class="fas fa-search"></i></button>
+                        <mat-form-field class="ancho-completo">
+                            <mat-label>Busqueda</mat-label>
+                            <input matInput placeholder="Ingresa un registro" #nombre>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-4 mt-4 mb-2">
+                        <button class="ancho-completo" (click)="cargarDatosBusqueda(nombre.value,  tipo.value, fecha_inicial.value, fecha_final.value)"  mat-raised-button color="primary">Buscar <i class="fas fa-search"></i></button>
+                    </div>
+                    
+                      <div class="col-sm-4">
+                          <mat-form-field class="ancho-completo">
+                            <mat-label>Fecha Inicial*</mat-label>
+                            <input type="date" matInput #fecha_inicial [value]="obtenerFechaActual()">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4">
+                          <mat-form-field class="ancho-completo">
+                            <mat-label>Fecha Final*</mat-label>
+                            <input type="date" matInput #fecha_final [value]="obtenerFechaActual()">
+                          </mat-form-field>
+                        </div>
+                  
+                   <div class="col-12" *ngIf="!BanderaBusqueda">
+                   
+                      <table style="width: 100%;" class="mt-2 " *ngIf="spiner && tablaBandera">
+                        <tr>
+                          <th class="text-center">Referencia</th>
+                          <th class="text-center">Solicitante</th>
+                          <th class="text-center">Ingreso</th>
+                          <th class="text-center">Seleccionar</th>
+                        </tr>
+                        <tr *ngFor="let item of tramites">
+                          <td class="text-center">{{item.referencia}}</td>
+                          <td class="text-center">{{item.solicitud.solicitante.nombre}}</td>
+                          <td class="text-center">{{item.solicitud.ingreso | date: 'dd/MM/yyyy'}}</td>
+                          <td class="text-center"> <button (click)="seleccionarSolicitante(item)"  mat-mini-fab color="primary" >
+                            <i class="fas fa-check-circle"></i>
+                          </button></td>
+                        </tr>
+                      </table>
+                      <div class="spiner" *ngIf="!spiner">
+                        <app-spinner></app-spinner>
+                      </div>
+                    </div>
+                   </div>
+                  
+                  <div class="row" *ngIf="BanderaBusqueda">
+                    <div class="col-7">
+                     <mat-form-field  class="ancho-completo">
+                       <mat-label>Tramite*</mat-label>
+                       <mat-select  formControlName="tramite_id" name="tramite_id" [(ngModel)]="tramiteSeleccionado.id">
+                         <mat-option [value]="tramiteSeleccionado.id">
+                           {{tramiteSeleccionado.referencia}}
+                         </mat-option>
+                       </mat-select>
+                     </mat-form-field>
+                    </div>
+                    <div class="col-5">
+                     <button class="ancho-completo" (click)="reBusqueda()"  mat-raised-button color="warn"> Volver a Buscar <i class="fas fa-search"></i></button>
+                    </div>
                   </div>
                 </div>
+              
+               
+  
               </div>
-            </div>
+            </mat-card>
             
             <div class="row">
                 <div class="col-sm-12">

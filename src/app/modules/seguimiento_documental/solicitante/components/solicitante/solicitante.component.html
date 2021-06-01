@@ -6,7 +6,7 @@
         <div class="col-3 mt-2">
             <mat-form-field >
                 <mat-label>Buscar por</mat-label>
-                <mat-select #tipo>
+                <mat-select #tipo value="ci">
                     <mat-option *ngFor="let item of tipos"  [value]="item.value">
                       {{item.codigo}}
                     </mat-option>

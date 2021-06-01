@@ -17,9 +17,12 @@
    </div>
    <div class="row">
     
-    <div class="col-sm-12">
+    <div class="col-sm-6">
       <h4 > <b>Funcionario : </b></h4>
       <p> {{data?.derivacion.funcionario.nombre + ' ' +  data?.derivacion.funcionario.apellido }}</p>
+    </div>
+    <div class="col-sm-6">
+      <h4 > <b>Fecha Limite : </b> {{data.fecha_limite|date: "dd/MM/yyyy"}}</h4>
     </div>
   </div>
 

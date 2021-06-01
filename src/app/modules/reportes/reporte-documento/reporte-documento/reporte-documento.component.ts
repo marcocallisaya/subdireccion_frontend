@@ -52,6 +52,8 @@ export class ReporteDocumentoComponent implements OnInit {
 
 
   cargarFormulario(): void {
+    console.log('aqui estan las fecha');
+    console.log(this.obtenerFechaActual());
     this.myForm = this.fb.group({
       fecha_inicial:  [this.obtenerFechaActual(), Validators.required],
       fecha_final: [this.obtenerFechaActual(), Validators.required]
@@ -59,12 +61,19 @@ export class ReporteDocumentoComponent implements OnInit {
   }
 
   obtenerFechaActual(): string {
-    let f = new Date();
-    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
-    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+    let f = new Date(); let d ; let m ; let y = f.getFullYear(); 
+
+    if (f.getDate()<10) { d = "0" + f.getDate();} else {d = f.getDate();}
+
+    if (f.getMonth()<10) {m = "0" + (f.getMonth() + 1); } else {m = (f.getMonth() + 1);}
+
+    let date = y + "-" + m + "-" + d;
+
+    return  date;
   }
 
   mostrarReporte(): void {
+    console.log(this.myForm.get('fecha_inicial').value);
     const fechaInicial = this.myForm.get('fecha_inicial').value;
     const fechaFinal = this.myForm.get('fecha_final').value;
     this.servicio.getAmongDates(fechaInicial, fechaFinal).subscribe((res: any) => {

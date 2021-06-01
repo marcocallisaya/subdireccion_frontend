@@ -28,6 +28,9 @@ export class ReporteTramiteComponent implements OnInit {
   myForm: FormGroup; // formulario reactivo
   tramites;
   tramite;
+  spiner = true;
+  tablaBandera = false;
+
   types = [{value: 'referencia', codigo: 'Referencia'},{value: 'codigo', codigo: 'Codigo'}];
   constructor(private fb: FormBuilder, private reporte: ReporteService, private servicio: TramiteService, public dialog: MatDialog) { }
 
@@ -37,9 +40,12 @@ export class ReporteTramiteComponent implements OnInit {
   }
 
   cargarDatosBusqueda(nombre, tipo, fechaInicial, fechaFinal): void {
+    this.spiner = false;
     this.servicio.getWithQueryII(tipo, nombre, fechaInicial, fechaFinal).subscribe( (res: any) => {
       this.tramites = res.data;
       console.log(res);
+      this.spiner = true;
+      this.tablaBandera = true;
     //  this.BanderaBusqueda = true;
     }, err => {
       Swal.fire(
@@ -88,9 +94,15 @@ export class ReporteTramiteComponent implements OnInit {
   }
 
   obtenerFechaActual(): string {
-    let f = new Date();
-    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
-    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+    let f = new Date(); let d ; let m ; let y = f.getFullYear(); 
+    
+    if (f.getDate()<10) { d = "0" + f.getDate();} else {d = f.getDate();}
+
+    if (f.getMonth()<10) {m = "0" + (f.getMonth() + 1); } else {m = (f.getMonth() + 1);}
+
+    let date = y + "-" + m + "-" + d;
+
+    return  date;
   }
 
   mostrarReporte(): void {

@@ -36,7 +36,7 @@ export class DocumentoComponent implements OnInit, OnDestroy{
               private paginator: MatPaginatorIntl) { }
 
   // lista de atributos del modelo para la tabla
-  displayedColumns: string[] = ['nombre', 'estado', 'descripcion'];
+  displayedColumns: string[] = ['codigo', 'nombre', 'estado', 'descripcion'];
 
   // objeto con los atributos de las opciones de la tabla
   opciones = [{nombre: 'ver', boton: 'accent', icono: 'fas fa-eye'},
@@ -45,6 +45,7 @@ export class DocumentoComponent implements OnInit, OnDestroy{
               {nombre: 'desabilitar', boton: 'primary', icono: 'fas fa-lock'},
               {nombre: 'eliminar', boton: 'warn', icono: 'fas fa-trash-alt'}];
 
+  tipos = [{codigo: 'Nombre', value: 'nombre'}, {codigo: 'Codigo', value: 'codigo'}];
 
   dataSource; // fuente de datos para la tabla
 
@@ -71,9 +72,9 @@ export class DocumentoComponent implements OnInit, OnDestroy{
       });
     }
 
-  cargarDatosBusqueda(nombre: string): void {
+  cargarDatosBusqueda(nombre: string, tipo: string ): void {
       this.comprobarBuscadorVacio(nombre);
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre, tipo);
       this.banderaDatos = nombre;
   }
 
@@ -84,8 +85,8 @@ export class DocumentoComponent implements OnInit, OnDestroy{
     }
   }
 
-  cargarTablaFiltrada(size: number, current: number, nombre: string): void {
-    this.documento$ =  this.servicio.getFiltered(size, current, nombre).subscribe((res: any) =>
+  cargarTablaFiltrada(size: number, current: number, nombre: string, tipo: string): void {
+    this.documento$ =  this.servicio.getFiltered(size, current, nombre, tipo).subscribe((res: any) =>
     {
      this.dataSource = res.data; console.log(res);
      this.length = res.total;
@@ -194,18 +195,18 @@ export class DocumentoComponent implements OnInit, OnDestroy{
   }
 
    // evento de paginacion
-   pagination(event: PageEvent, nombre: string): void {
+   pagination(event: PageEvent, nombre: string, tipo: string): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex + 1;
-    this.verificarTipoTabla(nombre);
+    this.verificarTipoTabla(nombre, tipo);
   }
 
-  verificarTipoTabla(nombre: string): void {
+  verificarTipoTabla(nombre: string, tipo: string): void {
     if (nombre === '') {
       this.cargarTabla(this.pageSize, this.currentPage);
     }
     else {
-      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre);
+      this.cargarTablaFiltrada(this.pageSize, this.currentPage, nombre, tipo);
     }
   }
 

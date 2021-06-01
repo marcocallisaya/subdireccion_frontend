@@ -5,7 +5,7 @@
     <div class="col-3 mt-2">
         <mat-form-field >
             <mat-label>Buscar por</mat-label>
-            <mat-select #tipo>
+            <mat-select #tipo value="codigo">
                 <mat-option *ngFor="let item of tipos"  [value]="item.value">
                   {{item.codigo}}
                 </mat-option>
@@ -26,13 +26,64 @@
     
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-11">
+            <div class="col-12">
                 <div [hidden]="!BanderaDatos" class="mat-elevation-z8">
-                   <app-table (envio)="cargar($event)" 
+                  <!--  <app-table (envio)="cargar($event)" 
                               [dataSource]="dataSource" 
                               [headers]="displayedColumns" 
                               [opciones]="opciones">
-                   </app-table>
+                   </app-table> -->
+                   <table mat-table [dataSource]="dataSource">
+                   
+                      <ng-container matColumnDef="codigo">
+                        <th mat-header-cell *matHeaderCellDef> Codigo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="referencia">
+                        <th mat-header-cell *matHeaderCellDef> Referencia </th>
+                        <td mat-cell *matCellDef="let element"> {{element.referencia}} </td>
+                      </ng-container>
+                      
+                        <ng-container matColumnDef="tramite_estado">
+                        <th mat-header-cell *matHeaderCellDef> Estado </th>
+                        <td mat-cell *matCellDef="let element"> {{element.tramite_estado}} </td>
+                      </ng-container>
+                    
+                      <ng-container matColumnDef="tiempo">
+                        <th mat-header-cell *matHeaderCellDef> Dias para concluir </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> <h5><span  [ngClass]="['badge',colorEstado(element, element.fecha_limite)]">{{titulo}}</span></h5>  </td>
+                      </ng-container>
+                      <ng-container matColumnDef="ver">
+                        <th mat-header-cell *matHeaderCellDef> Ver </th>
+                        <td mat-cell *matCellDef="let element"> <button mat-mini-fab color="accent" (click)="ver(element)"> <i class="fas fa-eye"></i></button> </td>
+                      </ng-container>
+                      <ng-container matColumnDef="solicitante">
+                        <th mat-header-cell *matHeaderCellDef> Solicitante </th>
+                        <td mat-cell *matCellDef="let element"> <button mat-mini-fab color="warn" (click)="verSolicitante(element)"> <i class="fas fa-user-alt"></i></button> </td>
+                      </ng-container>
+                      <ng-container matColumnDef="solicitud">
+                        <th mat-header-cell *matHeaderCellDef> Solicitud </th>
+                        <td mat-cell *matCellDef="let element"> <button mat-mini-fab color="accent" (click)="verSolicitud(element)"> <i class="fas fa-clipboard-check"></i></button> </td>
+                      </ng-container>
+                      <ng-container matColumnDef="derivacion">
+                        <th mat-header-cell *matHeaderCellDef> Derivacion </th>
+                        <td mat-cell *matCellDef="let element"> <button mat-mini-fab [disabled]="comprobarDerivacion(element)" (click)="verDerivacion(element)" color="primary">  <i class="fas fa-share-square"></i></button> </td>
+                      </ng-container>
+                      <ng-container matColumnDef="evaluacion">
+                        <th mat-header-cell *matHeaderCellDef> Evaluacion </th>
+                        <td mat-cell *matCellDef="let element"> <button mat-mini-fab color="accent" [disabled]="comprobarEvaluacion(element)" (click)="verEvaluacion(element)"> <i class="fas fa-glasses"></i></button> </td>
+                      </ng-container>
+                      <ng-container matColumnDef="devolucion">
+                        <th mat-header-cell *matHeaderCellDef> Devolucion </th>
+                        <td mat-cell *matCellDef="let element"> <button mat-mini-fab color="primary" [disabled]="comprobarDevolucion(element)" (click)="verDevolucion(element)"> <i class="fas fa-archive"></i></button> </td>
+                      </ng-container>
+                      <ng-container matColumnDef="documentos">
+                        <th mat-header-cell *matHeaderCellDef> Documentos </th>
+                        <td mat-cell *matCellDef="let element"> <button mat-mini-fab color="accent" [disabled]="comprobarDocumentos(element)" (click)="verDocumentos(element)"> <i class="fas fa-file-alt"></i></button> </td>
+                      </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
                    <mat-paginator 
                    [length]="length"
                    [pageSize]="pageSize"

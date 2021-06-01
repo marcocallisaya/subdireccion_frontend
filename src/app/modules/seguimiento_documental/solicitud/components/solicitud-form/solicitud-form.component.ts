@@ -47,6 +47,10 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
 
   tiposSolicitante = [{codigo: 'Nombre', value: 'nombre'}, {codigo: 'Carnet', value: 'ci'}];
 
+  spiner = true;
+
+  tablaBandera = false;
+
   constructor(private fb: FormBuilder,
               private servicio: SolicitudService,
               private route: ActivatedRoute,
@@ -101,20 +105,30 @@ export class SolicitudFormComponent implements OnInit, OnDestroy {
   }
 
   cargarDatosBusqueda(nombre, tipo): void {
+    this.spiner = false;
     this.solicitante.getWithQuery(nombre, tipo).subscribe( (res: any) => {
       this.solicitantes = res;
       console.log(res);
+      this.spiner = true;
+      this.tablaBandera = true;
     });
   }
 
   obtenerFechaActual(): string {
-    let f = new Date();
-    console.log(f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() );
-    return f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+    let f = new Date(); let d ; let m ; let y = f.getFullYear(); 
+    
+    if (f.getDate()<10) { d = "0" + f.getDate();} else {d = f.getDate();}
+
+    if (f.getMonth()<10) {m = "0" + (f.getMonth() + 1); } else {m = (f.getMonth() + 1);}
+
+    let date = y + "-" + m + "-" + d;
+
+    return  date;
   }
 
   seleccionarSolicitante(solicitante): void {
     this.solicitanteSeleccionado = solicitante;
+    console.log(this.solicitanteSeleccionado);
     this.BanderaBusqueda = true;
   }
 

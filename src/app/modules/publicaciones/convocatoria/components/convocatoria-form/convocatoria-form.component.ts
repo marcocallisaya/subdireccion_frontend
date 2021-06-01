@@ -80,12 +80,12 @@ export class ConvocatoriaFormComponent implements OnInit, OnDestroy {
 
   cargarFormulario(): void {
     this.myForm = this.fb.group({
-      fecha_limite: [this.convocatoria?.fecha_limite || '', Validators.required],
+      fecha_limite: [this.convocatoria?.fecha_limite || this.obtenerFechaActual(), Validators.required],
       referencia: [this.convocatoria?.referencia || '', Validators.required],
       funcionario_id: [this.convocatoria?.funcionario_id || this.token.getDatosPersonales().id],
       titulo: [this.convocatoria?.titulo || '', Validators.required],
       distrito: [this.convocatoria?.distrito || '', Validators.required],
-      fecha_publicacion: [this.convocatoria?.fecha_publicacion || Validators.required]
+      fecha_publicacion: [this.convocatoria?.fecha_publicacion || this.obtenerFechaActual(), Validators.required]
     });
   }
 
@@ -125,7 +125,23 @@ export class ConvocatoriaFormComponent implements OnInit, OnDestroy {
       const error = '<div>' + errores.referencia[0] + '</div> <br>';
       datos = datos.concat(error);
     }
+    if (errores.fecha_limite !=  null) {
+      const error = '<div>' + errores.fecha_limite[0] + '</div> <br>';
+      datos = datos.concat(error);
+    }
     return datos;
+  }
+
+  obtenerFechaActual(): string {
+    let f = new Date(); let d ; let m ; let y = f.getFullYear(); 
+
+    if (f.getDate()<10) { d = "0" + f.getDate();} else {d = f.getDate();}
+
+    if (f.getMonth()<10) {m = "0" + (f.getMonth() + 1); } else {m = (f.getMonth() + 1);}
+
+    let date = y + "-" + m + "-" + d;
+
+    return  date;
   }
 
   actualizar(): void {

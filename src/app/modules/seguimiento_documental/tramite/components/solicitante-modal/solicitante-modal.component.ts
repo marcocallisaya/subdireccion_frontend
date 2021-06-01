@@ -10,7 +10,7 @@ import { Solicitante } from 'src/app/shared/models/solicitante.model';
 export class SolicitanteModalComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<SolicitanteModalComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: Solicitante) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) { }
 
 
 onNoClick(): void {

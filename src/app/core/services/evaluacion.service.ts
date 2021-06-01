@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConstantesService } from 'src/app/config/constantes.service';
 import {Evaluacion, ListaEvaluacion} from 'src/app/shared/models/evaluacion.model';
+import { LoginService } from '../authentication/login.service';
+import { TokenService } from '../authentication/token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +15,17 @@ export class EvaluacionService {
   constructor(
     private http: HttpClient,
     private urls: ConstantesService,
+    private token: LoginService
   ) { }
 
    uri = this.urls.URL;
    url = 'evaluacion';
-
+    // verificar si es un tecnico o el superadmin
+    // enviar el id del tecnico
    getPaginated(perPage: number, currentPage: number): Observable <ListaEvaluacion> {
-
-    return this.http.get<ListaEvaluacion>(this.uri + this.url + '?per_page=' + perPage + '&page=' + currentPage);
+    const funcionario_id = this.token.getUsuario().funcionario_id;
+    return this.http.get<ListaEvaluacion>(this.uri + this.url + '?per_page='
+       + perPage + '&page=' + currentPage + '&funcionarioId=' + funcionario_id);
 
    }
 
@@ -31,17 +36,19 @@ export class EvaluacionService {
    }
 
    getFiltered(perPage: number, currentPage: number, nombre: string): Observable <ListaEvaluacion> {
-
+    const funcionario_id = this.token.getUsuario().funcionario_id;
     return this.http.get<ListaEvaluacion>(this.uri + this.url +
                                               '?per_page=' + perPage +
                                                '&page=' + currentPage +
-                                               '&consulta=' + nombre);
+                                               '&consulta=' + nombre +
+                                               '&funcionarioId=' + funcionario_id);
 
    }
 
    getWithState(estado, fechaInicial, fechaFinal): Observable <Evaluacion[]> {
-
-    return this.http.get<Evaluacion[]>(this.uri + this.url + '?estado=' + estado + '&fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal) ;
+    const funcionario_id = this.token.getUsuario().funcionario_id;
+    return this.http.get<Evaluacion[]>(this.uri + this.url + '?estado=' +
+      estado + '&fechaInicial=' + fechaInicial + '&fechaFinal=' + fechaFinal + '&funcionarioId=' + funcionario_id) ;
 
    }
 
